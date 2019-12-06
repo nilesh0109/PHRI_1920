@@ -1,4 +1,4 @@
-# Scripts for creating movements. Motion team: Lara, Vadym, Christopher
+# Scripts for creating movements. Motion team: Lara, Vadym, Christoper
 
 ## Believe movement. 
 See also a video. Take into consideration that V-REP simulation uses not the 
