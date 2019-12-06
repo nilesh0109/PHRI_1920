@@ -1,0 +1,6 @@
+- speaker: "Ship"
+  audio: "scene_1_ship_0"
+- speaker: "Bob"
+  audio: "scene_1_bob_1"
+- speaker: "Alex"
+  audio: "scene_1_alex_1"
