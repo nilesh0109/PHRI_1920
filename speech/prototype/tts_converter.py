@@ -10,20 +10,20 @@ with open('script.yml', mode='r') as yml_file:
 # Create a new Polly Session
 polly_client = boto3.Session().client('polly')
 
-
-# %% Call AWS Polly to convert text to mp3
-def synthesize(client, speaker, text, line):
-    response = client.synthesize_speech(Text=text, VoiceId=speakers[speaker]['voice'], TextType='ssml',
-                                        Engine=speakers[speaker]['engine'], OutputFormat='mp3')
-    file = open(f'generated_sounds/line_{line}_{speaker}.mp3', 'wb')
-    file.write(response['AudioStream'].read())
-    file.close()
-
 # %% main
-for idx, row in enumerate(script):
-    # call AWS Polly
-    try:
-        synthesize(polly_client, row["speaker"], row["text"], idx)
-        print(f'Processed line {idx}.')
-    except Exception as e:
-        print(f'Skipped line {idx}: {e}')
+for scene_idx, scene in enumerate(script):
+    for line_idx, line in enumerate(scene['scene']):
+        name = line["speaker"]
+        voice = speakers[name]['voice']
+        engine = speakers[name]['engine']
+        try:
+            # call AWS Polly
+            response = polly_client.synthesize_speech(Text=line["text"], VoiceId=voice, TextType='ssml',
+                                                      Engine=engine, OutputFormat='mp3')
+            # write to .mp3 file
+            file = open(f'generated_sounds/scene_{scene_idx}_line_{line_idx}_{name}.mp3', 'wb')
+            file.write(response['AudioStream'].read())
+            file.close()
+            print(f'Processed Scene {scene_idx}, Line {line_idx}.')
+        except Exception as e:
+            print(f'Skipped Line {line_idx}: {e}')
