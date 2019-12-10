@@ -9,18 +9,18 @@ def move():
     dt = rospy.Publisher('/nico/motion/disableTorqueAll', empty, queue_size=10)
     rospy.init_node('mover', anonymous=True)
     rate = rospy.Rate(10)  # 10hz
-    speed = 0.02
-    pub.publish("r_shoulder_y", 50, speed)
+    speed = 0.05
+    pub.publish("r_shoulder_y", 100, speed)
     #pub.publish("r_shoulder_z", 50, speed)
     pub.publish("r_arm_x", -10, speed)
-    pub.publish("r_elbow_y", -140 , speed)
-    pub.publish("r_wrist_x", -25 , speed)
-    time.sleep(5)
+    pub.publish("r_elbow_y", -130 , speed)
+    pub.publish("r_wrist_z", -120 , speed)
+    time.sleep(3)
     pub.publish("r_shoulder_y", 0, speed)
     pub.publish("r_shoulder_z", 0, speed)
-    pub.publish("r_arm_x", 0, speed)
+    pub.publish("r_arm_x", -10, speed)
     pub.publish("r_elbow_y", 0 , speed)
-    pub.publish("r_wrist_x", -0 , speed)
+    pub.publish("r_wrist_z", -0 , speed)
     time.sleep(2)
     dt.publish()
     return
