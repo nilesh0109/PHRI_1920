@@ -8,7 +8,7 @@ def move():
     pub = rospy.Publisher('/nico/motion/setAngle', sff, queue_size=10)
     dt = rospy.Publisher('/nico/motion/disableTorqueAll', empty, queue_size=10)
     oph = rospy.Publisher('/nico/motion/openHand', s, queue_size=10)
-    face = rospy.Publisher('/nico/faceExpression', s, queue_size=10)
+    face = rospy.Publisher('/nico/faceExpression/sendFaceExpression', s, queue_size=10)
     rospy.init_node('mover', anonymous=True)
     rate = rospy.Rate(10)  # 10hz
     speed = 0.05
