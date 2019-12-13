@@ -24,7 +24,7 @@ class Poses:
         self.seta = rospy.Publisher('/nico/motion/setAngle', sff, queue_size=30)
         self.dt = rospy.Publisher('/nico/motion/disableTorqueAll', empty, queue_size=2)
         self.oph = rospy.Publisher('/nico/motion/openHand', s, queue_size=2)
-        self.face = rospy.Publisher('/nico/faceExpression', s, queue_size=30)
+        self.face = rospy.Publisher('/nico/faceExpression/sendFaceExpression', s, queue_size=30)
         rospy.init_node('pose', anonymous=True)
         return
 
