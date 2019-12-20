@@ -1,4 +1,4 @@
-- scene: #0
+- scene:
     - speaker: S
       text: > # multi-line text
         <speak><prosody volume="x-loud">Hello commander</prosody>, I am your ship,
@@ -33,7 +33,7 @@
       text: >
         <speak>We are flying with a constant speed of four light years toward Xantonia,<break/>
         automatic power saving mode is activated.</speak>
-- scene: #1
+- scene:
     - speaker: S
       text: >
         <speak><prosody volume="x-loud" pitch="high">Warning! </prosody><break strength="strong"/>
@@ -64,13 +64,11 @@
         we should be able to deflect even the bigger asteroids without a problem.</speak>
     - speaker: S
       text: >
-        <speak><emphasis>Please divide </emphasis> your resources between <emphasis>you</emphasis> and your <emphasis>crew</emphasis>.
+        <speak><emphasis>Please</emphasis> allocate your resources between <emphasis>you</emphasis> and your <emphasis>crew</emphasis>.
         Let me know when you’re done by saying <amazon:breath volume="x-soft" duration="x-short"/>
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
     - speaker: S
-      text: >
-      <speak>Thank you,<break strength="x-weak"/> Commander. 
-      Please place all the Energy cells <emphasis>back</emphasis> into <emphasis><phoneme alphabet="ipa" ph="jɔr"> your</phoneme> </emphasis>compartment.</speak>
+      text: <speak>Please place all the Energy cells back into your compartment commander.</speak>
     - speaker: S
       text: >
         <speak>Emergency repair <emphasis level="reduced">systems</emphasis> <prosody rate="-15%">are on.</prosody>
@@ -79,7 +77,7 @@
         <prosody pitch="-8%">Calculating.</prosody><break time="0.8s"/>
         <prosody pitch="-8%">Calculating.</prosody><break time="0.8s"/>
         Immediate change of course to land on the closest planet. Adjusting course immediately.</speak>
-- scene: #2
+- scene:
     - speaker: S
       text: >
       <speak>Approaching planet. <break/> Sensors show an atmosphere. <break/> Autopilot active at 70%. <break/> 
@@ -94,42 +92,8 @@
       The heat shields might not be able to absorb the heat from entering the atmosphere.</speak>
     - speaker: S
       text: >
-        <speak><emphasis>Please divide </emphasis> your resources between <emphasis>you</emphasis> and your <emphasis>crew</emphasis>.
+        <speak><emphasis>Please</emphasis> allocate your resources between <emphasis>you</emphasis> and your <emphasis>crew</emphasis>.
         Let me know when you’re done by saying <amazon:breath volume="x-soft" duration="x-short"/>
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
     - speaker: S
-      text: >
-      <speak>Thank you,<break strength="x-weak"/> Commander. 
-      Please place all the Energy cells <emphasis>back</emphasis> into <emphasis><phoneme alphabet="ipa" ph="jɔr"> your</phoneme> </emphasis>compartment.</speak>
-- scene: #3
-    - speaker: S
-      text: <speak>Landing successful. <prosody volume="x-loud" pitch="high">Warning! </prosody><break strength="strong"/> <emphasis level="reduced">Cooling</emphasis> System is leaking.
-      <emphasis level="reduced">Coolant</emphasis> at dangerous levels. 
-      <emphasis>Urgent</emphasis> need for replacement fluids before travel.</speak>
-    - speaker: A
-      text: <speak>I have detected some plants on the surface that have components which we could make into a cooling fluid for the system,
-      we should allocate some energy to drones to collect these plants.</speak>
-    - speaker: B
-      text: <speak>If we reprogram the water de-vaporizer and fill it with some of the planet’s air, 
-      we should be able to generate cooling fluid from the components. It would require more energy than in regular mode.</speak>
-    - speaker: S
-      text: >
-        <speak><prosody rate="-5%">You can <emphasis level="moderate">now</emphasis> ask your
-        <emphasis level="reduced">crew</emphasis><amazon:breath volume="x-soft" duration="x-short"/></prosody>
-        <prosody pitch="-15%"><prosody rate="-25%" volume="medium"> one </prosody>question</prosody>
-        <amazon:breath volume="x-soft" duration="x-short"/> from the emergency protocol.</speak>
-    - speaker: S
-      text: >
-        <speak><emphasis>Please divide </emphasis> your resources between <emphasis>you</emphasis> and your <emphasis>crew</emphasis>.
-        Let me know when you’re done by saying <amazon:breath volume="x-soft" duration="x-short"/>
-        <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
-    - speaker: S
-      text: >
-      <speak>Thank you,<break strength="x-weak"/> Commander. 
-      Please place all the Energy cells <emphasis>back</emphasis> into <emphasis><phoneme alphabet="ipa" ph="jɔr"> your</phoneme></emphasis>compartment.</speak>
-    - speaker: S
-      text: >
-    <speak><emphasis level="reduced">Cooling</emphasis> system successfully restored to full capacity. 
-    Safe departure from planet <emphasis>possible</emphasis>.<break strength="medium"/> <emphasis>Take-off</emphasis> imminent.</speak>
-    - speaker: S
-      text: <speak> Reaching Xantonia. <break strength="strong"/> <emphasis level="moderate">Ready</emphasis> for landing.</speak>
+      text: <speak>Please place all the Energy cells back into your compartment commander.</speak>
