@@ -25,7 +25,7 @@ class Poses:
         self.dt = rospy.Publisher('/nico/motion/disableTorqueAll', empty, queue_size=2)
         self.oph = rospy.Publisher('/nico/motion/openHand', s, queue_size=2)
         self.face = rospy.Publisher('/nico/faceExpression/sendFaceExpression', s, queue_size=30)
-        rospy.init_node('pose', anonymous=True)
+        #rospy.init_node('pose', anonymous=True)
         return
 
     ''' Moves head to indicate no '''
