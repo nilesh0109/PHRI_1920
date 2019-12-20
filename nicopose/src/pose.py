@@ -27,6 +27,7 @@ class Move():
         if (p.pose_name in self.function_dict):
             fname = self.mover_path + self.function_dict[p.pose_name]
             self.mov.play_movement(fname, move_speed=0.04)
+            self.robot.disableTorqueAll()
             res.msgback = 1
         else:
             print("Pose not found.")
