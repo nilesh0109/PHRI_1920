@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-from beginner_tutorials.srv import SpeechRecognition, SpeechRecognitionResponse
+from state_machine.srv import SpeechRecognition, SpeechRecognitionResponse
 import random
 import rospy
 
 def handle_question_recognition(req):
-    response = random.choice(["repeat", "question0"])
+    response = random.choice(["repeat", "question0", "cancel"])
     print "Returning '{}'".format(response)
     return SpeechRecognitionResponse(response)
 

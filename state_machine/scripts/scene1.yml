@@ -5,4 +5,4 @@
 - speaker: "a"
   audio: "scene_1_alex_1"
 - speaker: "p"
-  once: True
+  once: False

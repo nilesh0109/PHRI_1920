@@ -7,3 +7,4 @@ question0:
 repeat:
   - speaker: s
     audio: repeat
+cancel: []

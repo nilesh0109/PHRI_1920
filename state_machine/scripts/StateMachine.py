@@ -5,11 +5,11 @@ import smach
 import yaml
 from os.path import dirname, abspath
 from smach_ros import ServiceState
-from beginner_tutorials.srv import SpeechRecognition,SpeechRecognitionResponse
+from state_machine.srv import SpeechRecognition,SpeechRecognitionResponse
 
 class SceneFlow(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=['say_robot_line', 'say_ship_line','participant_input','ressource_allocation','scenes_finished'], output_keys=["speaker", "audio", "scene"])
+        smach.State.__init__(self, outcomes=['say_robot_line', 'say_ship_line','participant_input','ressource_allocation','scenes_finished'], output_keys=["speaker", "audio", "scene", "qa_once"])
         self.scene_index = 0
         self.scenes = ["scene1",]
         self.load_dialog_script()
@@ -19,6 +19,7 @@ class SceneFlow(smach.State):
         if self.dialog < len(self.script):
             speaker = self.script[self.dialog]["speaker"]
             if speaker == "p":
+              userdata.qa_once = self.script[self.dialog]["once"]
               self.dialog += 1
               return 'participant_input'
             else :
@@ -56,7 +57,7 @@ class Speak(smach.State):
 
 class SayResponses(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=['say_robot_line','say_ship_line','participant_input','questions_done'], input_keys=["question", "scene"], output_keys=["speaker", "audio"])
+        smach.State.__init__(self, outcomes=['say_robot_line','say_ship_line','participant_input','questions_done'], input_keys=["question", "scene", "qa_once"], output_keys=["speaker", "audio"])
         self.repeat_once = False
         self.answer_index = 0
         with open(dirname(abspath(__file__)) + "/questions.yml", "r") as f:
@@ -67,7 +68,7 @@ class SayResponses(smach.State):
         answers = self.question_answers[userdata.question]
         if userdata.scene in answers:
           answers = answers[userdata.scene]
-        else:
+        elif userdata.question == "repeat":
           self.repeat_once = True
         if self.answer_index < len(answers):
             answer = answers[self.answer_index]
@@ -83,6 +84,8 @@ class SayResponses(smach.State):
             if self.repeat_once:
               self.repeat_once = False
               return 'participant_input'
+            elif not userdata.qa_once and userdata.question != "cancel":
+              return 'participant_input'
             else:
               return 'questions_done'
       
@@ -97,6 +100,7 @@ def main():
     sm.userdata.audio = ""
     sm.userdata.scene = "scene1"
     sm.userdata.question = ""
+    sm.userdata.qa_once = False
 
     # Open the container
     with sm:
