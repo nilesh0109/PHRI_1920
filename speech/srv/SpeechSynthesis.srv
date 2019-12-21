@@ -1,0 +1,4 @@
+string sentence
+string voice
+---
+bool success
