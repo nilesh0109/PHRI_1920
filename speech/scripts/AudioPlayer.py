@@ -5,27 +5,29 @@
 ### requires pip install SoundFile
 ### requires pip install sounddevice
 import soundfile as sf
-#import sounddevice as sd
+import sounddevice as sd
 import time
 import threading
 from speech.msg import SpeechProgress
 import rospy
+import math
 
 class AudioPlayer():
     def __init__(self, filename):
         self.audiofile = filename
         self.progress = 0
-        self.dur = 30 #in secs
+        #self.dur = 30 #in secs
         self.isPlaying = False
 
-    def __play(self):
+    def __play(self, data,fs):
         #global isPlaying
         self.isPlaying = True
+        #print(len(data), fs)
         try:
-            #sd.play(data, fs)
+            sd.play(data, fs)
             print('Speech playiing')
-            time.sleep(self.dur)
-            #sd.wait()
+            #time.sleep(self.dur)
+            sd.wait()
             self.isPlaying = False
             print('Speech finished')
         except:
@@ -37,11 +39,12 @@ class AudioPlayer():
         rate = rospy.Rate(5)
         print('publishing started')
         start = rospy.Time.now()
+        print('duration is', self.dur)
         while self.isPlaying:
             t = rospy.Time.now()
             self.progress = ((t.secs - start.secs) * 100 / self.dur)
-            print('start ==> ',start.secs, 'current ====>',t.secs, 'progress==>', self.progress)
-            default_msg = SpeechProgress(t, 'Hello Nico', self.progress)
+            #print('start ==> ',start.secs, 'current ====>',t.secs, 'progress==>', self.progress)
+            default_msg = SpeechProgress(t, 'Hello', self.progress)
             pub.publish(default_msg)
             rate.sleep()
             #print(self.progress)
@@ -49,9 +52,10 @@ class AudioPlayer():
 
     
     def play(self):
-        
-        #data, fs = sf.read('/long_audio.wav', dtype='float32')
-        play_thread = threading.Thread(target= self.__play)
+        data, fs = sf.read('/informatik2/students/home/8vijayra/Desktop/sample.wav', dtype='float32')
+        self.dur = math.ceil(len(data)/fs)
+
+        play_thread = threading.Thread(target= self.__play, args=( data,fs))
         progress_thread = threading.Thread(target= self.__share_progress)
 
         threads = [play_thread, progress_thread]

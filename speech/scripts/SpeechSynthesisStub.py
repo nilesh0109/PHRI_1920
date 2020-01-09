@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from speech.srv import SpeechSynthesis, SpeechSynthesisResponse
-from nicoaudio.AudioPlayer import AudioPlayer
+#from nicoaudio.AudioPlayer import AudioPlayer
 import random
 import rospy
 from AudioPlayer import AudioPlayer
