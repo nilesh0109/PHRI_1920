@@ -1,22 +1,28 @@
 #!/usr/bin/env python
 
 from speech.srv import SpeechSynthesis, SpeechSynthesisResponse
+from nicoaudio.AudioPlayer import AudioPlayer
 import random
 import rospy
 from AudioPlayer import AudioPlayer
 
-def handle_synthesis_request(req):
+sound_dict = {"hello_commander": "scene_0_line_0_S.mp3",
+              "systems_clear":   "scene_0_line_1_S.mp3"}
 
+def play_audio(file_name, sounds_dir="generated_sounds/"):
+    # load file
+    playback = AudioPlayer(sounds_dir + file_name)
+    # start playback
+    playback.play()
+    # wait until playback is finished
+    time.sleep(playback.duration - playback.position)
+
+def handle_synthesis_request(req):
     print "Sentence {} done.".format(req.sentence)
     player = AudioPlayer(' ')
     player.play()
     return SpeechSynthesisResponse(True)
 
-def share_progress(player, sentence):
-    pub = rospy.Publisher('speech_progress', SpeechProgress, queue_size=25)
-    while player.isPlaying:
-        default_msg = SpeechProgress(player.progress, sentence, player.dur)
-        pub.publish(default_msg)
 
 def speech_synthesis_server():
     rospy.init_node('speech_synthesis_server')
