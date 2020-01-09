@@ -23,40 +23,42 @@ class SceneFlow(smach.State):
             output_keys=["speaker", "audio", "scene", "qa_once"],
         )
         self.scene_index = 0
-        self.scenes = ["scene1"]
         self.load_dialog_script()
+        self.scenes = sorted(self.script.keys())
 
     def execute(self, userdata):
         rospy.loginfo("Executing state SCENE")
-        if self.dialog < len(self.script):
-            speaker = self.script[self.dialog]["speaker"]
+        if self.dialog < len(self.script[self.scenes[self.scene_index]]):
+            speaker = self.script[self.scenes[self.scene_index]][self.dialog]["speaker"]
             if speaker == "p":
-                userdata.qa_once = self.script[self.dialog]["once"]
+                userdata.qa_once = self.script[self.scenes[self.scene_index]][
+                    self.dialog
+                ]["once"]
                 self.dialog += 1
                 return "participant_input"
             else:
                 userdata.speaker = speaker
-                userdata.audio = self.script[self.dialog]["audio"]
+                userdata.audio = self.script[self.scenes[self.scene_index]][
+                    self.dialog
+                ]["audio"]
                 self.dialog += 1
                 if speaker == "s":
                     return "say_ship_line"
                 else:
                     return "say_robot_line"
-        elif self.scene_index < len(self.scenes):
+        elif self.scene_index < (len(self.scenes) - 1):
             self.scene_index += 1
+            self.dialog = 0
             if self.scene_index < len(self.scenes):
                 userdata.scene = self.scenes[self.scene_index]
-                self.load_dialog_script()
+                # self.load_dialog_script()
             return "ressource_allocation"
         else:
             return "scenes_finished"
 
     def load_dialog_script(self):
         self.dialog = 0
-        with open(
-            dirname(abspath(__file__)) + "/" + self.scenes[self.scene_index] + ".yml",
-            "r",
-        ) as f:
+        with open(dirname(abspath(__file__)) + "/scene.yml", "r") as f:
             self.script = yaml.safe_load(f)
 
 
@@ -147,7 +149,7 @@ def main():
                 "say_robot_line": "SPEAK",
                 "say_ship_line": "SPEAK",
                 "participant_input": "GET_QUESTION",
-                "ressource_allocation": "experiment_ended",
+                "ressource_allocation": "SCENE",
                 "scenes_finished": "experiment_ended",
             },
         )
