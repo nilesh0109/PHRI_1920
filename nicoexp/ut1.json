@@ -1,0 +1,30 @@
+{
+	"posename_1": [
+		{
+			"time": 15,
+			"exp" : "happy"
+		},
+		{
+			"time": 25,
+			"exp" : "surprised"
+		},
+		{
+			"time": 35,
+			"exp" : "happy"
+		}
+	],
+	"posename_2": [
+		{
+			"time": 15,
+			"exp" : "happy"
+		},
+		{
+			"time": 25,
+			"exp" : "surprised"
+		},
+		{
+			"time": 35,
+			"exp" : "happy"
+		}
+	],
+}
