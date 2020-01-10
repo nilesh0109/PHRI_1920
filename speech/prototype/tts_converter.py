@@ -1,5 +1,6 @@
 import boto3
 import yaml
+import wave
 
 # Load configuration: selected Polly voices for Robot A, Robot B and Ship S.
 with open('speakers.yml', mode='r') as yml_file:
@@ -19,11 +20,12 @@ for scene_idx, scene in enumerate(script):
         try:
             # call AWS Polly
             response = polly_client.synthesize_speech(Text=line["text"], VoiceId=voice, TextType='ssml',
-                                                      Engine=engine, OutputFormat='mp3')
-            # write to .mp3 file
-            file = open(f'generated_sounds/scene_{scene_idx}_line_{line_idx}_{name}.mp3', 'wb')
-            file.write(response['AudioStream'].read())
-            file.close()
+                                                      Engine=engine, OutputFormat='pcm')
+            # write PCM data to a .wav file
+            file_path = f'generated_sounds/scene_{scene_idx}_line_{line_idx}_{name}.wav'
+            with wave.open(file_path, 'wb') as wav_file:
+                wav_file.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
+                wav_file.writeframes(response['AudioStream'].read())
             print(f'Processed Scene {scene_idx}, Line {line_idx}.')
         except Exception as e:
             print(f'Skipped Line {line_idx}: {e}')
