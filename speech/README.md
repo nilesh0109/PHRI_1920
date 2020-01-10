@@ -25,7 +25,7 @@ to the provided scene_ID. It also publishes the audio progress on `speech_progre
 
 ## HOW TO
 **Run the package**
-- pip install requirement.txt
+- pip install -r requirement.txt
 - cd <CATKIN_WS>
 - catkin_make
 - source devel/setup.bash
