@@ -40,6 +40,7 @@ class AudioPlayer():
         while self.isPlaying:
             t = rospy.Time.now()
             self.progress = ((t.secs - start.secs) * 100 / self.dur)
+            if self.progress > 100: self.progress=100
             #print('start ==> ',start.secs, 'current ====>',t.secs, 'progress==>', self.progress)
             default_msg = SpeechProgress(t, 'Hello', self.progress)
             self.pub.publish(default_msg)

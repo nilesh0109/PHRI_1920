@@ -20,7 +20,7 @@ def play_audio(file_name, sounds_dir="generated_sounds/"):
 
 def handle_synthesis_request(req):
     print 'Sentence {} done.'.format(req.sentence)
-    player = AudioPlayer(' ')
+    player = AudioPlayer()
     filepath = dirname(dirname(abspath(__file__))) + '/generated_sounds/sample.wav'
     player.play(filepath)
     return SpeechSynthesisResponse(True)
