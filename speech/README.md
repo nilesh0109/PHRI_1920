@@ -17,28 +17,32 @@ You should end up with both a `config` and `credentials` file a `.aws` folder in
 ## Text-To-Speech (TTS)
 
 We use Amazon Polly to generate .wav sound files from input text and provided a service `speech_synthesis` 
-for running the soundfile. The service takes the scene_ID, voice_ID as input and plays the audiofile corresponding
+for running the soundfile. The service takes the <scene_ID, voice_ID> as input and plays the audiofile corresponding
 to the provided scene_ID. It also publishes the audio progress on `speech_progress` rostopic.
 
 ## HOW TO
 
-#Start the service
-`rosrun speech SpeechSynthesisStub.py`
+**Start the service**
+```
+rosrun speech SpeechSynthesisStub.py
+```
 
-#Call the service
-`rosservice call speech_synthesis '<SCENE ID>' '<VOICE ID>'`
+**Call the service**
+```
+rosservice call speech_synthesis '<SCENE ID>' '<VOICE ID>'
+```
 
-#Setup a subscriber to subscribe to rosTopic
-`import rospy`
-`from speech.msg import SpeechProgress`
+**Setup a subscriber to subscribe to rosTopic**
+```
+import rospy
+from speech.msg import SpeechProgress
 
-`sub = rospy.Subscriber('speech_progress', SpeechProgress, callback)`
-`def callback(data):`
-`    rospy.loginfo(rospy.get_caller_id() + "I heard %d %s %d", data.stamp.secs, data.sentence, data.progress)`
+sub = rospy.Subscriber('speech_progress', SpeechProgress, callback)
+def callback(data):
+    rospy.loginfo(rospy.get_caller_id() + "I heard %d %s %d", data.stamp.secs, data.sentence, data.progress)
+```
 
-#Monitor the rostopic for getting the speech progress[for debugging]
-`rostopic echo speech_progress`
-
-
-
-
+**Monitor the rostopic for getting the speech progress**(for debugging])
+```
+rostopic echo speech_progress
+```
