@@ -1,0 +1,4 @@
+string sentence
+int32 delay
+---
+bool success
