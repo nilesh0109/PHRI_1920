@@ -1,4 +1,4 @@
 string sentence
-string voice
+int32 delay
 ---
 bool success

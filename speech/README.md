@@ -20,7 +20,7 @@ We use Amazon Polly to generate .wav sound files from input text.
 
 ## Speech Production Service
 
-we have provided a service `speech_synthesis` for playing the soundfile for each scene. The service takes the <scene_ID, voice_ID> as input and plays the audiofile corresponding
+we have provided a service `speech_synthesis` for playing the soundfile for each scene. The service takes the <scene_ID, delay> as input and plays the audiofile corresponding
 to the provided scene_ID. It also publishes the audio progress on `speech_progress` rostopic.
 
 ## HOW TO
@@ -37,7 +37,7 @@ rosrun speech SpeechSynthesisStub.py
 
 **Call the service**
 ```
-rosservice call speech_synthesis '<SCENE ID>' '<VOICE ID>'
+rosservice call speech_synthesis '<SCENE ID>' <delay in sec>
 ```
 
 **Setup a subscriber to subscribe to rosTopic**
