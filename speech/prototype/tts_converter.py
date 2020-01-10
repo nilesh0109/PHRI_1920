@@ -28,4 +28,6 @@ for scene_idx, scene in enumerate(script):
                 wav_file.writeframes(response['AudioStream'].read())
             print(f'Processed Scene {scene_idx}, Line {line_idx}.')
         except Exception as e:
-            print(f'Skipped Line {line_idx}: {e}')
+            print(f'Error in Scene {scene_idx}, Line {line_idx}:'
+                  f'\n Error: {e}'
+                  f'\n Text: {line["text"]}')
