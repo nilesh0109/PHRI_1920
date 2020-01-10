@@ -16,11 +16,19 @@ You should end up with both a `config` and `credentials` file a `.aws` folder in
 
 ## Text-To-Speech (TTS)
 
-We use Amazon Polly to generate .wav sound files from input text and provided a service `speech_synthesis` 
-for running the soundfile. The service takes the <scene_ID, voice_ID> as input and plays the audiofile corresponding
+We use Amazon Polly to generate .wav sound files from input text.
+
+## Speech Production Service
+
+we have provided a service `speech_synthesis` for playing the soundfile for each scene. The service takes the <scene_ID, voice_ID> as input and plays the audiofile corresponding
 to the provided scene_ID. It also publishes the audio progress on `speech_progress` rostopic.
 
 ## HOW TO
+**Run the package**
+- pip install requirement.txt
+- cd <CATKIN_WS>
+- catkin_make
+- source devel/setup.bash
 
 **Start the service**
 ```
