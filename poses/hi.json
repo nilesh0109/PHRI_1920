@@ -1,0 +1,17 @@
+[
+  {
+    "type": "MOVEMENT",
+    "time": 0,
+    "value": "hi.csv"
+  },
+  {
+    "type": "EXPRESSION",
+    "time": 10,
+    "value": "happiness"
+  },
+  {
+    "type": "UTTERANCE",
+    "time": 15,
+    "value": "hi.csv"
+  }
+]
