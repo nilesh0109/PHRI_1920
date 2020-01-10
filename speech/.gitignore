@@ -1,2 +1,2 @@
 .idea
-prototype/generated_sounds/**.mp3
+**/generated_sounds/**.wav

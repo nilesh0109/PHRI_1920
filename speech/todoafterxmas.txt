@@ -1,0 +1,3 @@
+Nilesh -> service
+Emy -> Try recognition with sentence list
+Pepi -> Helps with state machine?
