@@ -1,0 +1,19 @@
+scene1:
+  - speaker: "s"
+    audio: "scene_1_ship_0"
+  - speaker: "b"
+    audio: "scene_1_bob_1"
+  - speaker: "a"
+    audio: "scene_1_alex_1"
+  - speaker: "p"
+    once: False
+scene2:
+  - speaker: "s"
+    audio: "scene_2_ship_0"
+  - speaker: "b"
+    audio: "scene_2_bob_1"
+  - speaker: "a"
+    audio: "scene_2_alex_1"
+  - speaker: "p"
+    once: False
+
