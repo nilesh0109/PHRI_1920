@@ -5,6 +5,7 @@ import time
 import rospy
 from nicopose.srv import Pose, PoseResponse
 from nicomotion import Mover, Motion
+from nicoface.FaceExpression import faceExpression
 import json
 import glob
 import re
@@ -15,26 +16,25 @@ TYPE_MOVEMENT = "MOVEMENT"
 TYPE_UTTERANCE = "UTTERANCE"
 TYPE_EXPRESSION = "EXPRESSION"
 
-
-def fetch_poses():
-    poses = {}
-
-    for filename in glob.glob("../../../../poses/*.json"):
-        with open(filename, 'r') as f:
-            name = re.search(r"^.*/(.*).json$", filename).group(1)
-            poses[name] = json.load(f)
-
-    return poses
-
 class Move():
 
     def __init__(self):
         self.robot = Motion.Motion('../../../../json/nico_humanoid_upper_rh7d.json', vrep=False)
         self.mov = Mover.Mover(self.robot, stiff_off=True)
+        self.fe = faceExpression()
         self.poses = fetch_poses()
         return
 
+    @staticmethod
+    def fetch_poses():
+        poses = {}
 
+        for filename in glob.glob("../../../../poses/*.json"):
+            with open(filename, 'r') as f:
+                name = re.search(r"^.*/(.*).json$", filename).group(1)
+                poses[name] = json.load(f)
+
+        return poses
 
     def response(self, p):
         res = PoseResponse()
@@ -47,11 +47,9 @@ class Move():
             return res
 
         for task in tasks:
-            thread = threading.Thread(target=self.task_job, args=(task,))
-            thread.start()
-            thread.join()
+            self.task_job(task)
 
-        # self.relax()
+        self.relax()
         res.msgback = 1
 
         return res
@@ -88,7 +86,7 @@ class Move():
         return
 
     def play_expression(self, expression_name):
-        # TODO: IMPLEMENTATION OF EXPRESSION
+        self.fe.sendFaceExpression(expression_name)
         return
 
 
