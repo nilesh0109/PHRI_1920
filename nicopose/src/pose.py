@@ -13,7 +13,6 @@ import re
 import threading
 
 TYPE_MOVEMENT = "MOVEMENT"
-TYPE_UTTERANCE = "UTTERANCE"
 TYPE_EXPRESSION = "EXPRESSION"
 
 class Move():
@@ -79,10 +78,6 @@ class Move():
     def play_movement(self, movement_name):
         self.mov.play_movement(movement_name, move_speed=0.01)
         self.relax()
-        return
-
-    def play_utterance(self, utterance_name):
-        # TODO: IMPLEMENTATION OF UTTERANCE
         return
 
     def play_expression(self, expression_name):
