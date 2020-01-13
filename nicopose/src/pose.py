@@ -62,17 +62,11 @@ class Move():
 
     def task_job(self, task):
         time.sleep(task["time"])
-
         if task["type"] == TYPE_MOVEMENT:
             print("EXECUTING MOVEMENT {} at time {} ----- ".format(task["value"], task["time"]))
             self.play_movement(task["value"])
-
-            return
         elif task["type"] == TYPE_EXPRESSION:
             print("EXECUTING EXPRESSION {} at time {} ----- ".format(task["value"], task["time"]))
-            return
-        elif task["type"] == TYPE_UTTERANCE:
-            print("EXECUTING UTTERANCE {} at time {} ----- ".format(task["value"], task["time"]))
         return
 
     def play_movement(self, movement_name):
