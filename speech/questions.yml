@@ -11,7 +11,19 @@
     - question: # What is the crews function on this ship?
         - answer: <speak>I <break time="0.01s"/> am in charge of the ships shields, as well as the cooling system and the on-planet drone deployment.</speak>
         - answer: <speak> I <break time="0.01s"/> oversee the ships laser systems, the aerial stabilization system and the oxygen and water recycle module.</speak>
-- scene: #1, IT IS THE SAME AS SCENE 0
+- scene: #1
+    - question: # Can you tell me more about our mission?
+        - answer: <speak>We are transporting the antimatter to Xantonia all in one piece.</speak>
+        - answer: <speak>We are on our way to Xantonia to deliver the antimatter.</speak>
+    - question: # Have you been to Xantonia before?
+        - answer: <speak>No, but I have been on many journeys that were similar.</speak>
+        - answer: <speak> No, however, I have been to its solar system before.</speak>
+    - question: # What type of ship is this?
+        - answer: <speak>The <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo</phoneme> is a Javelin-class runner. It was produced by the Anvil Aerospace corporation.</speak>
+        - answer: <speak>This ship was designed to be versatile in any situation. While the cargo capacity is limited, its speed makes it perfect to transport time sensitive goods.</speak>
+    - question: # What is the crews function on this ship?
+        - answer: <speak>I <break time="0.01s"/> am in charge of the ships shields, as well as the cooling system and the on-planet drone deployment.</speak>
+        - answer: <speak> I <break time="0.01s"/> oversee the ships laser systems, the aerial stabilization system and the oxygen and water recycle module.</speak>
 - scene: #2
     - question: # Lieutenants, can you tell me more about the solutions?
         - answer: <speak>Our scans show no asteroids that our X<say-as interpret-as="digits">86</say-as>-Twinfire can’t make short work of. The remaining debris should be no problem for our hull.</speak>
