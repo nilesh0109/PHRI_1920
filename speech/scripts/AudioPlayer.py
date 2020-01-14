@@ -42,13 +42,14 @@ class AudioPlayer():
             t = rospy.Time.now()
             self.progress = ((t.secs - start.secs) * 100 / self.dur)
             if self.progress > 100: self.progress=100
-            default_msg = SpeechProgress(t, 'Hello', self.progress)
+            default_msg = SpeechProgress(t, self.audiofile, self.progress)
             self.pub.publish(default_msg)
             self.rate.sleep()
             #time.sleep(0.1)
 
     
     def play(self, filename):
+        self.audiofile=filename
         data, fs = sf.read(filename, dtype='float32')
         self.dur = math.ceil(len(data)/fs)
 

@@ -1,0 +1,9 @@
+A:
+  voice: Matthew
+  engine: neural
+B:
+  voice: Matthew
+  engine: neural
+S:
+  voice: Joanna
+  engine: standard

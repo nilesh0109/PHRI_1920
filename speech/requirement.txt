@@ -1,6 +1,7 @@
+boto3
 catkin_pkg
-pyaml
 empy
+pyaml
 rospkg
-SoundFile
 sounddevice
+SoundFile
