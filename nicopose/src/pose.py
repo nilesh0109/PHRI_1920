@@ -45,8 +45,10 @@ class Move():
             res.msgback = 0
             return res
 
+        prev_time = 0
         for task in tasks:
-            self.task_job(task)
+            self.task_job(task, prev_time)
+            prev_time = task["time"]
 
         self.relax()
         res.msgback = 1
@@ -60,13 +62,16 @@ class Move():
         # Maybe head comes to center?
         return
 
-    def task_job(self, task):
-        time.sleep(task["time"])
-        if task["type"] == TYPE_MOVEMENT:
+    def task_job(self, task, prev_time):
+        delay = task["time"] - prev_time
+        time.sleep(delay)
+
+        if type == TYPE_MOVEMENT:
             print("EXECUTING MOVEMENT {} at time {} ----- ".format(task["value"], task["time"]))
             self.play_movement(task["value"])
-        elif task["type"] == TYPE_EXPRESSION:
+        elif type == TYPE_EXPRESSION:
             print("EXECUTING EXPRESSION {} at time {} ----- ".format(task["value"], task["time"]))
+            self.play_expression(task["value"])
         return
 
     def play_movement(self, movement_name):
