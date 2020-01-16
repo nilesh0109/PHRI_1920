@@ -1,2 +1,2 @@
 .idea
-**/generated_sounds/**.wav
+generated_sounds/*.wav
