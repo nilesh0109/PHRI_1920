@@ -190,5 +190,65 @@
     "speech_delay": 0,
     "speed": 0.08,
     "pose_filename": "confident.csv"
+  },
+  "scene_3_question_1_answer_0": {
+    "gesture_delay": 0,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "thumb_up.csv"
+  },
+  "scene_3_question_1_answer_1": {
+    "gesture_delay": 0,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "thumb_up.csv"
+  },
+  "scene_4_question_1_answer_0": {
+    "gesture_delay": 1,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "confident.csv"
+  },
+  "scene_4_question_1_answer_1": {
+    "gesture_delay": 1,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "confident.csv"
+  },
+  "scene_2_question_2_answer_0": {
+    "gesture_delay": 1,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "confident.csv"
+  },
+  "scene_2_question_2_answer_1": {
+    "gesture_delay": 1,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "confident.csv"
+  },
+  "scene_3_question_2_answer_0": {
+    "gesture_delay": 1.5,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "no.csv"
+  },
+  "scene_3_question_2_answer_1": {
+    "gesture_delay": 2.5,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "no.csv"
+  },
+  "scene_4_question_2_answer_0": {
+    "gesture_delay": 0,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "confident.csv"
+  },
+  "scene_4_question_2_answer_1": {
+    "gesture_delay": 1,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "confident.csv"
   }
 }
