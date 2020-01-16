@@ -1,10 +1,8 @@
-question0:
-  scene1:
-    - speaker: a
-      audio: a_scene0_answer0
-    - speaker: b
-      audio: b_scene0_answer0
+scene_0_question_0:
+  - speaker: "a"
+    audio: "scene_0_question_0_answer_a"
+  - speaker: "b"
+    audio: "scene_0_question_0_answer_b"
 repeat:
   - speaker: s
     audio: repeat
-cancel: []
