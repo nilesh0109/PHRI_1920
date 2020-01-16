@@ -1,7 +1,7 @@
 Production service:
 
     Receives: an id and a delay:
-        id -> "scene"_number_speaker_speakerline | "scene"_number_"question"_number_"answer"_number | "repeat"
+        id -> "scene"_number_speaker_speakerline | "scene"_number_"question"_number_"answer"_speaker | "repeat"
             number -> "0" | "1" | "2" | ...
             speaker -> "a" | "b" | "s"
             speakerline -> "0" | "1" | "2" | ...

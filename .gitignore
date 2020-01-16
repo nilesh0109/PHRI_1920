@@ -1,3 +1,7 @@
+*.pyc
+**/.idea/
+.idea/
+**.idea/
 .DS_Store
 *.pyc
 
