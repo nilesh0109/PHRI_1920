@@ -1,8 +1,35 @@
 {
   "scene_0_A_line_0": [
     {
-      "time": 5,
+      "expression_delay": 7,
+      "duration": 1,
       "fe": "happiness"
+    }
+  ],
+  "scene_2_A_line_0": [
+    {
+      "expression_delay": 0,
+      "duration": 2,
+      "fe": "surprise"
+    }
+  ],
+  "scene_2_S_line_0": [
+    {
+      "expression_delay": 0.2,
+      "duration": 2,
+      "fe": "surprise"
+    },
+    {
+      "expression_delay": 6,
+      "duration": 2,
+      "fe": "fear"
+    }
+  ],
+  "scene_4_S_line_0": [
+    {
+      "expression_delay": 1.5,
+      "duration": 2,
+      "fe": "sadness"
     }
   ]
 }
