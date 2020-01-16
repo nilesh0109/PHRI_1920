@@ -52,5 +52,5 @@ def callback(data):
 
 **Monitor the rostopic for getting the speech progress**(for debugging])
 ```
-rostopic echo speech_progress
+rostopic echo /speech_progress
 ```
