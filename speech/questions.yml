@@ -9,8 +9,8 @@
         - answer: <speak>The <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo</phoneme> is a Javelin-class runner. It was produced by the Anvil Aerospace corporation.</speak>
         - answer: <speak>This ship was designed to be versatile in any situation. While the cargo capacity is limited, its speed makes it perfect to transport time sensitive goods.</speak>
     - question: # What is the crews function on this ship?
-        - answer: <speak>I <break time="0.01s"/> am in charge of the ships shields, as well as the cooling system and the on-planet drone deployment.</speak>
-        - answer: <speak> I <break time="0.01s"/> oversee the ships laser systems, the aerial stabilization system and the oxygen and water recycle module.</speak>
+        - answer: <speak> I am lieutenant <say-as interpret-as="digits">732</say-as>-A. I am in charge of the ships shields, as well as the cooling system and the on-planet drone deployment.</speak>
+        - answer: <speak> I am lieutenant <say-as interpret-as="digits">732</say-as>-B. I oversee the ships laser systems, the aerial stabilization system and the oxygen and water recycle module.</speak>
 - scene: #1, IT IS THE SAME AS SCENE 0
 - scene: #2
     - question: # Lieutenants, can you tell me more about the solutions?
@@ -18,9 +18,9 @@
         - answer: <speak>Since this is a new ship type with improved Tachyon-shields <break time="0.01s"/> we should be able to deflect even the bigger asteroids without a problem.</speak>
     - question: # How confident are you in these solutions?
         - answer: <speak>I am confident that our X<say-as interpret-as="digits">86</say-as>-Twinfire will be more than enough to disintegrate all incoming projectiles and reduce the threat too</speak>
-        - answer: <speak> I have faith that the Tachyon-shields we have equipped are our best option in protecting the hull, the added energy will make us immune to these rocks.</speak>
+        - answer: <speak>I have faith that the Tachyon-shields we have equipped are our best option in protecting the hull, the added energy will make us immune to these rocks.</speak>
     - question: # What do you think about each others ideas?
-        - answer: <speak> The Tachyon-fields are not a guaranteed defense against asteroid-inflicted damage that exceeds the maximum threshold of shock our hull can endure. </speak>
+        - answer: <speak>The Tachyon-fields are not a guaranteed defense against asteroid-inflicted damage that exceeds the maximum threshold of shock our hull can endure. </speak>
         - answer: <speak>Since we are flying at a very high speed, the X<say-as interpret-as="digits">86</say-as>-Twinfire might not be able to acquire targets going at the speed of light in the direction of our ship.</speak>
 - scene: #3
     - question: # Lieutenants, can you tell me more about the solutions?
@@ -37,8 +37,8 @@
        - answer: <speak>The detected flora has a striking resemblance to Terra-B<say-as interpret-as="digits">638</say-as>, drones have previously managed to extract the necessary amounts of glycol for the cooling fluid.</speak>
        - answer: <speak>Our models show that reprogramming the water de-vapourizer should not pose a significant challenge. The  gathered gas can be reassembled into the cooling fluid.</speak> 
     - question: # How confident are you in these solutions?
-        - answer: <speak> Based on previous experiences on Terra-B<say-as interpret-as="digits">638</say-as>, the chemical composition of the plant’s sap will be able to form a cooling fluid for our cooling system.</speak>
-        - answer: <speak> This sentence has to be revised </speak>
+        - answer: <speak> Based on previous experiences, the chemical composition of the plant’s sap will be able to form a cooling fluid for our cooling system.</speak>
+        - answer: <speak>It is fully within our capabilities to reprogram the water De-vaporizer to extract cooling fluid from the planet’s air to cool our systems</speak>
     - question: # What do you think about each others ideas?
         - answer: <speak>Repurposing water De-vaporizer is untested and may not provide us with an adequate replacement fluid.</speak>
         - answer: <speak>We do not have sufficient information about  this planet’s wildlife and what lurks outside in this uncharted territory.</speak>
