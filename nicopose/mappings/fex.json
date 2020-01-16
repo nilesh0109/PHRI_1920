@@ -1,11 +1,13 @@
 {
-  "scene_0_A_line_0": [
+  "scene_0_A_line_0":
+  [
     {
       "expression_delay": 7,
       "fe": "happiness"
     }
   ],
-  "scene_2_A_line_0": [
+  "scene_2_A_line_0":
+  [
     {
       "expression_delay": 0,
       "fe": "surprise"
@@ -15,7 +17,8 @@
       "fe": "neutral"
     }
   ],
-  "scene_2_S_line_0": [
+  "scene_2_S_line_0":
+  [
     {
       "expression_delay": 0,
       "fe": "neutral"
@@ -37,7 +40,8 @@
       "fe": "neutral"
     }
   ],
-  "scene_4_S_line_0": [
+  "scene_4_S_line_0":
+  [
     {
       "expression_delay": 0,
       "fe": "neutral"
