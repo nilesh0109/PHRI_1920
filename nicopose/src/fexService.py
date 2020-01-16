@@ -20,7 +20,7 @@ class Fexp():
         return
 
     def response(self, uid):
-        #print(uid.param)
+        print(uid.param)
         try:
             res = FexResponse()
             for i in range(0, len(self.explist[uid.param])):

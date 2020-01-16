@@ -4,8 +4,7 @@
 import time
 import json
 import rospy
-import rosservice
-from nicopose.srv import Pose, PoseResponse
+from nicopose.srv import Pose, PoseResponse, Fex, FexRequest
 from nicomotion import Mover, Motion
 
 class Move():
@@ -14,6 +13,7 @@ class Move():
     mov = None
     mover_path = "../../../../moves_and_positions/"
     utmlist = None
+    utm_json = "utmove.json"
     def __init__(self):
         self.robot = Motion.Motion('../../../../json/nico_humanoid_upper_rh7d.json', vrep=False)
         self.mov = Mover.Mover(self.robot, stiff_off=True)
@@ -24,7 +24,13 @@ class Move():
 
     def response(self, uid):
         print(uid.param)
-        rosservice.call_service("fex", uid)
+        grr = rospy.ServiceProxy('/fex', Fex)
+        frq = FexRequest()
+        frq.param = str(uid)
+        try:
+            rrr = grr(frq)
+        except rospy.ServiceException:
+            print(rospy.ServiceException)
         try:
             res = PoseResponse()
             fname = self.mover_path + self.utmlist[uid.param]['pose_filename']
