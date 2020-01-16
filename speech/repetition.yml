@@ -1,2 +1,3 @@
-- speaker: S
-    - text: <speak>I'm sorry, your answer was not understood <break time="0.1s"/> could you please repeat?</speak>
+- sentence:
+  - speaker: S
+    text: <speak>I'm sorry, your answer was not understood <break time="0.1s"/> could you please repeat?</speak>

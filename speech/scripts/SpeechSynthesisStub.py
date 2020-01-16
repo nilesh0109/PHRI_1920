@@ -11,7 +11,7 @@ def handle_synthesis_request(req):
     filepath = dirname(dirname(abspath(__file__))) + '/generated_sounds/{}.wav'.format(req.sentence)
     if req.delay:
         rospy.sleep(req.delay)
-    player.play(filepath)
+    player.play(filepath, req.sentence)
     print 'Sentence {} done.'.format(req.sentence)
     print '<--------------------------------------------->'
     return SpeechSynthesisResponse(True)

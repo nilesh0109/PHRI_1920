@@ -17,7 +17,7 @@ class AudioPlayer():
         self.progress = 0
         TOPIC_NAME = 'speech_progress'
         self.pub = rospy.Publisher(TOPIC_NAME, SpeechProgress, queue_size=25)
-        self.rate = rospy.Rate(5)
+        self.rate = rospy.Rate(10)
         #self.dur = 30 #in secs
         self.isPlaying = False
 
@@ -36,22 +36,22 @@ class AudioPlayer():
             print('EXCEPTION !')
 
     def __share_progress(self):
-        print('publishing started')
+        print('publishing started ')
         start = rospy.Time.now()
         while self.isPlaying:
             t = rospy.Time.now()
-            self.progress = ((t.secs - start.secs) * 100 / self.dur)
-            if self.progress > 100: self.progress=100
+            self.progress = ((t.secs - start.secs + (t.nsecs - start.nsecs)*1e-9) * 100 / self.dur)
+            if self.progress > 99: self.progress=100
             default_msg = SpeechProgress(t, self.audiofile, self.progress)
             self.pub.publish(default_msg)
             self.rate.sleep()
             #time.sleep(0.1)
 
     
-    def play(self, filename):
+    def play(self, filepath, filename):
         self.audiofile=filename
-        data, fs = sf.read(filename, dtype='float32')
-        self.dur = math.ceil(len(data)/fs)
+        data, fs = sf.read(filepath, dtype='float32')
+        self.dur = math.floor(len(data)/fs)+1
 
         play_thread = threading.Thread(target= self.__play, args=( data,fs))
         progress_thread = threading.Thread(target= self.__share_progress)
