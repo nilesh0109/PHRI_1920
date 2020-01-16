@@ -4,11 +4,11 @@
 import time
 import json
 import rospy
-from nicopose.srv import Pose, PoseResponse, Fex, FexRequest
+from nicopose.srv import Pose, PoseResponse
 from nicomotion import Mover, Motion
+from std_msgs.msg import String
 
 class Move():
-    utm_json = None
     robot = None
     mov = None
     mover_path = "../../../../moves_and_positions/"
@@ -24,13 +24,8 @@ class Move():
 
     def response(self, uid):
         print(uid.param)
-        grr = rospy.ServiceProxy('/fex', Fex)
-        frq = FexRequest()
-        frq.param = str(uid)
-        try:
-            rrr = grr(frq)
-        except rospy.ServiceException:
-            print(rospy.ServiceException)
+        pub = rospy.Publisher('fex', String, queue_size=10)
+        pub.publish(uid.param)
         try:
             res = PoseResponse()
             fname = self.mover_path + self.utmlist[uid.param]['pose_filename']
