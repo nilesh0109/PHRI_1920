@@ -1,0 +1,25 @@
+Production service:
+
+    Receives: an id and a delay:
+        id -> "scene"_number_speaker_speakerline | "scene"_number_"question"_number_"answer"_number | "repeat"
+            number -> "0" | "1" | "2" | ...
+            speaker -> "a" | "b" | "s"
+            speakerline -> "0" | "1" | "2" | ...
+        delay -> in seconds?
+    
+    Does: play the script line, question or answer with correspondent filename. On the 2 speakers connected to the robot.
+            (There will be two services that do this one for each robot)
+    
+    Returs: Confirms that it has completed the task successfully.
+            
+
+Recognition service:
+
+    Receives: an id that describes the situation
+        id -> "scene"_number | "done"
+            number -> "0" | "1" | "2" | "3" | "4"
+        
+    Does: Starts listening from the microphone and identifies what has been said based on the situation.
+    
+    Returns: "scene"_number_"question"_number | "repetition_request" | "done_confirmation" | "time_out"
+        number -> "0" | "1" | "2" | ...
