@@ -2,34 +2,53 @@
   "scene_0_A_line_0": [
     {
       "expression_delay": 7,
-      "duration": 1,
       "fe": "happiness"
     }
   ],
   "scene_2_A_line_0": [
     {
       "expression_delay": 0,
-      "duration": 2,
       "fe": "surprise"
+    },
+    {
+      "expression_delay": 2,
+      "fe": "neutral"
     }
   ],
   "scene_2_S_line_0": [
     {
+      "expression_delay": 0,
+      "fe": "neutral"
+    },
+    {
       "expression_delay": 0.2,
-      "duration": 2,
       "fe": "surprise"
     },
     {
+      "expression_delay": 2,
+      "fe": "neutral"
+    },
+    {
       "expression_delay": 6,
-      "duration": 2,
       "fe": "fear"
+    },
+    {
+      "expression_delay": 7,
+      "fe": "neutral"
     }
   ],
   "scene_4_S_line_0": [
     {
+      "expression_delay": 0,
+      "fe": "neutral"
+    },
+    {
       "expression_delay": 1.5,
-      "duration": 2,
       "fe": "sadness"
+    },
+    {
+      "expression_delay": 3,
+      "fe": "neutral"
     }
   ]
 }

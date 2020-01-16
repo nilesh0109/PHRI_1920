@@ -34,5 +34,17 @@
     "speech_delay": 0,
     "speed": 0.08,
     "pose_filename": "s2s0.csv"
+  },
+  "scene_3_question_0_answer_0": {
+    "gesture_delay": 0,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "s3q0.csv"
+  },
+  "scene_3_question_0_answer_1": {
+    "gesture_delay": 0,
+    "speech_delay": 0,
+    "speed": 0.08,
+    "pose_filename": "s3q0.csv"
   }
 }
