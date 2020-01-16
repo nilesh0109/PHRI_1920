@@ -47,6 +47,7 @@ for scene_idx, scene in enumerate(script):
 
 # Question files
 name = "A"
+answer_mapping = {0: 'A', 1:'B'}
 voice = speakers[name]['voice']
 engine = speakers[name]['engine']
 for scene_idx, scene in enumerate(questions):
@@ -57,13 +58,13 @@ for scene_idx, scene in enumerate(questions):
 		        response = polly_client.synthesize_speech(Text=answer["answer"], VoiceId=voice, TextType='ssml',
 		                                                  Engine=engine, OutputFormat='pcm')
 		        # write PCM data to a .wav file
-		        file_path = f'generated_sounds/scene_{scene_idx}_question_{question_idx}_answer_{answer_idx}.wav'
+		        file_path = f'generated_sounds/scene_{scene_idx}_question_{question_idx}_answer_{answer_mapping[answer_idx]}.wav'
 		        with wave.open(file_path, 'wb') as wav_file:
 		            wav_file.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
 		            wav_file.writeframes(response['AudioStream'].read())
-		        print(f'Processed Scene {scene_idx}, Question {question_idx}, Answer{answer_idx}.')
+		        print(f'Processed Scene {scene_idx}, Question {question_idx}, Answer{answer_mapping[answer_idx]}.')
 		    except Exception as e:
-		        print(f'Error in Scene {scene_idx},Question {question_idx}, Answer{answer_idx}.'
+		        print(f'Error in Scene {scene_idx},Question {question_idx}, Answer{answer_mapping[answer_idx]}.'
 		              f'\n Error: {e}'
 		              f'\n Text: {answer["answer"]}')
 
@@ -73,7 +74,7 @@ voice = speakers[name]['voice']
 engine = speakers[name]['engine']
 try:
 	response = polly_client.synthesize_speech(Text=repetition[0]['sentence'][0]['text'], VoiceId=voice, TextType='ssml', Engine=engine, OutputFormat='pcm')
-	file_path = 'generated_sounds/repeat'
+	file_path = 'generated_sounds/repeat.wav'
 	with wave.open(file_path, 'wb') as wav_file:
 		wav_file.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
 		wav_file.writeframes(response['AudioStream'].read())
