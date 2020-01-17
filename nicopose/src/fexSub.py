@@ -10,7 +10,7 @@ from std_msgs.msg import String
 
 class Fexp():
     fe = None
-    fex_json = "fex.json"
+    fex_json = "../mappings/fex.json"
     explist = None
 
     def __init__(self):

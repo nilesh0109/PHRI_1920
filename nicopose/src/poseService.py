@@ -13,7 +13,7 @@ class Move():
     mov = None
     mover_path = "../../../../moves_and_positions/"
     utmlist = None
-    utm_json = "utmove.json"
+    utm_json = "../mappings/utmove.json"
     def __init__(self):
         self.robot = Motion.Motion('../../../../json/nico_humanoid_upper_rh7d.json', vrep=False)
         self.mov = Mover.Mover(self.robot, stiff_off=True)
