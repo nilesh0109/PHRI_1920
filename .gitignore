@@ -3,5 +3,10 @@
 .idea/
 **.idea/
 .DS_Store
+<<<<<<< HEAD
 *.pyc
 
+=======
+venv
+NICO.log
+>>>>>>> motion
