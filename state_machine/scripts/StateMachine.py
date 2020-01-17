@@ -25,6 +25,7 @@ def main():
 
     sm.userdata.speaker = ""
     sm.userdata.audio = ""
+    sm.userdata.param = ""
     sm.userdata.scene = "scene1"
     sm.userdata.question = ""
     sm.userdata.qa_once = False

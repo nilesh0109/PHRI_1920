@@ -16,7 +16,7 @@ class SceneFlow(smach.State):
                 "ressource_allocation",
                 "scenes_finished",
             ],
-            output_keys=["speaker", "audio", "scene", "qa_once", "delay"],
+            output_keys=["speaker", "audio", "scene", "qa_once", "delay", "param"],
         )
         self.scene_index = 0
         self.load_dialog_script()
@@ -39,8 +39,9 @@ class SceneFlow(smach.State):
                     self.dialog += 1
                     return "participant_input"
                 else:
-                    userdata.speaker = speaker
+                    userdata.speaker = speakerself.script[self.scenes[self.scene_index]][self.dialog]["audio"]
                     userdata.audio = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
+                    userdata.param = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
                     userdata.delay = self.script[self.scenes[self.scene_index]][self.dialog]["delay"]
                     self.dialog += 1
                     if speaker == "s":

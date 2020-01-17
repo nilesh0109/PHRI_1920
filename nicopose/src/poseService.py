@@ -15,10 +15,11 @@ class Move():
     utmlist = None
     utm_json_format = "../mappings/utmove_{}_{}.json"
     def __init__(self, label, position):
-        self.robot = Motion.Motion('../../../../json/nico_humanoid_upper_rh7d.json', vrep=False)
+        self.robot = Motion.Motion('../../../../../json/nico_humanoid_upper_rh7d.json', vrep=False)
         self.mov = Mover.Mover(self.robot, stiff_off=True)
         self.position = position
         self.label = label
+
 
         utm_json = self.utm_json_format.format(label, position)
 
