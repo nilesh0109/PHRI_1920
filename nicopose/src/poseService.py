@@ -29,7 +29,8 @@ class Move():
 
     def response(self, uid):
         print(uid.param)
-        pub = rospy.Publisher('fex', String, queue_size=10)
+        topic_name = "{}/fex".format(self.label)
+        pub = rospy.Publisher(topic_name, String, queue_size=10)
         pub.publish(uid.param)
         try:
             res = PoseResponse()
@@ -39,8 +40,8 @@ class Move():
             self.mov.play_movement(fname, move_speed=sp)
             self.relax()
             res.msgback = 1
-        except:
-            print("Pose not found.")
+        except Exception as e:
+            print(e)
             res.msgback = 0
         return res
 
@@ -51,11 +52,10 @@ class Move():
         return
 
     def disableTorqueBody(self):
-        for motor in self.robot.motors:
+        for motor in self.robot._robot.motors:
             if motor.name == "head_z" or motor.name == "head_y":
                 continue
             motor.compliant = True
-
 
 
 
