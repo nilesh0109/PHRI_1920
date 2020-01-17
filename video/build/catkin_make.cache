@@ -1,0 +1,2 @@
+
+-DCATKIN_DEVEL_PREFIX=/informatik2/students/home/8zell/Desktop/phri1920_dev/video/devel -DCMAKE_INSTALL_PREFIX=/informatik2/students/home/8zell/Desktop/phri1920_dev/video/install -G Unix Makefiles
