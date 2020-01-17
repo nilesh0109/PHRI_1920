@@ -6,7 +6,7 @@ import smach
 from smach_ros import ServiceState
 from speech.srv import SpeechRecognition, SpeechRecognitionRequest
 from vision.srv import CountResources
-from states import SceneFlow, SayResponses, Speak
+from states import SceneFlow, SayResponses, Speak, MakeUtterance
 
 # main
 def main():
@@ -36,6 +36,8 @@ def main():
     sm.userdata.sentence = ""
     sm.userdata.qa_once = False
     sm.userdata.no_of_objects = 69420
+    sm.userdata.delay = 0
+    sm.userdata.nvc_id = 0
 
     # Open the container
     with sm:
@@ -44,8 +46,9 @@ def main():
             "SCENE",
             SceneFlow.SceneFlow(args.scene_file, args.scene, args.entry),
             transitions={
-                "say_robot_line": "SPEAK",
-                "say_ship_line": "SPEAK",
+                "say_robot_line_a": "SPEAKA",
+                "say_robot_line_b": "SPEAKB",
+                "say_ship_line": "SPEAKS",
                 "participant_input": "GET_QUESTION",
                 "ressource_allocation": "WAIT_FOR_CUBES",
                 "unknown_event": "aborted",
@@ -53,11 +56,21 @@ def main():
             },
         )
         smach.StateMachine.add(
-            "SPEAK", Speak.Speak(), transitions={"speech_done": "SCENE"}
+            "SPEAKA",
+            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"},
         )
 
         smach.StateMachine.add(
-            "SPEAK2", Speak.Speak(), transitions={"speech_done": "RESOLVE_QUESTION"}
+            "SPEAKB",
+            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"},
+        )
+
+        smach.StateMachine.add(
+            "SPEAKS",
+            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"},
         )
 
         smach.StateMachine.add(
@@ -72,8 +85,9 @@ def main():
             "RESOLVE_QUESTION",
             SayResponses.SayResponses(),
             transitions={
-                "say_robot_line": "SPEAK2",
-                "say_ship_line": "SPEAK2",
+                "say_robot_line_a": "ANSWERA",
+                "say_robot_line_b": "ANSWERB",
+                "say_ship_line": "ANSWERS",
                 "participant_input": "GET_QUESTION",
                 "questions_done": "SCENE",
             },
@@ -96,6 +110,32 @@ def main():
                 "/count_objects", CountResources, response_slots=["no_of_objects"]
             ),
             transitions={"succeeded": "SCENE"},
+        )
+        smach.StateMachine.add(
+            "ANSWERA",
+            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            transitions={
+                "utterance_done": "RESOLVE_QUESTION",
+                "utterance_failed": "SCENE",
+            },
+        )
+
+        smach.StateMachine.add(
+            "ANSWERB",
+            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            transitions={
+                "utterance_done": "RESOLVE_QUESTION",
+                "utterance_failed": "SCENE",
+            },
+        )
+
+        smach.StateMachine.add(
+            "ANSWERS",
+            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            transitions={
+                "utterance_done": "RESOLVE_QUESTION",
+                "utterance_failed": "SCENE",
+            },
         )
         # Callback for service response
         # def add_two_result_cb(userdata, response):
