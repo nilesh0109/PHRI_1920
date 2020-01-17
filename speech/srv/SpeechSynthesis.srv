@@ -1,4 +1,5 @@
-string sentence
+string audio
+string speaker
 int32 delay
 ---
 bool success

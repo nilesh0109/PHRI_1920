@@ -5,22 +5,25 @@ import random
 import rospy
 from AudioPlayer import AudioPlayer
 from os.path import dirname, abspath
-
+import sys
 def handle_synthesis_request(req):
-    player = AudioPlayer()
-    filepath = dirname(dirname(abspath(__file__))) + '/generated_sounds/{}.wav'.format(req.sentence)
+    player = AudioPlayer(req.speaker)
+    filepath = dirname(dirname(abspath(__file__))) + '/generated_sounds/{}.wav'.format(req.audio)
     if req.delay:
         rospy.sleep(req.delay)
-    player.play(filepath, req.sentence)
-    print 'Sentence {} done.'.format(req.sentence)
+    player.play(filepath, req.audio)
+    print 'Sentence {} done.'.format(req.audio)
     print '<--------------------------------------------->'
     return SpeechSynthesisResponse(True)
 
-def speech_synthesis_server():
+def speech_synthesis_server(robot_name=''):
     rospy.init_node('speech_synthesis_server')
-    s = rospy.Service('speech_synthesis', SpeechSynthesis, handle_synthesis_request)
+    s = rospy.Service(robot_name+'/speech_synthesis', SpeechSynthesis, handle_synthesis_request)
     print "Speech synthesis service launched."
     rospy.spin()
 
 if __name__ == "__main__":
-    speech_synthesis_server()
+    if len(sys.argv)>1:
+        speech_synthesis_server(sys.argv[1])
+    else:
+        speech_synthesis_server()

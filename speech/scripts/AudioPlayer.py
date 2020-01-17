@@ -13,9 +13,9 @@ import rospy
 import math
 
 class AudioPlayer():
-    def __init__(self):
+    def __init__(self, robot_name=''):
         self.progress = 0
-        TOPIC_NAME = 'speech_progress'
+        TOPIC_NAME = robot_name+'/speech_progress'
         self.pub = rospy.Publisher(TOPIC_NAME, SpeechProgress, queue_size=25)
         self.rate = rospy.Rate(10)
         #self.dur = 30 #in secs
@@ -40,9 +40,10 @@ class AudioPlayer():
         start = rospy.Time.now()
         while self.isPlaying:
             t = rospy.Time.now()
-            self.progress = ((t.secs - start.secs + (t.nsecs - start.nsecs)*1e-9) * 100 / self.dur)
+            time = t.secs - start.secs + (t.nsecs - start.nsecs)*1e-9
+            self.progress =  time * 100 / self.dur
             if self.progress > 99: self.progress=100
-            default_msg = SpeechProgress(t, self.audiofile, self.progress)
+            default_msg = SpeechProgress(self.audiofile, self.progress)
             self.pub.publish(default_msg)
             self.rate.sleep()
             #time.sleep(0.1)
@@ -54,6 +55,7 @@ class AudioPlayer():
         self.dur = math.floor(len(data)/fs)+1
 
         play_thread = threading.Thread(target= self.__play, args=( data,fs))
+        #play_thread = threading.Thread(target= self.__play, args=('' ,0))
         progress_thread = threading.Thread(target= self.__share_progress)
 
         threads = [play_thread, progress_thread]

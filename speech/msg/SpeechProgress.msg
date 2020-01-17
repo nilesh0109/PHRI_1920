@@ -7,8 +7,8 @@
 # * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')
 # * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')
 # time-handling sugar is provided by the client library
-time stamp
+#time stamp
 
 # -- Actual Payload
-string sentence # the sentence currently being synthesized
+string audio # the sentence currently being synthesized
 uint8 progress 	# how much of the sentence is spoken so far: 0 < progress < 100
