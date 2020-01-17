@@ -1,21 +1,27 @@
 scene0:
   - event: "utterance"
+    delay: 1
     speaker: "s"
     audio: "scene_0_S_line_0"
   - event: "utterance"
+    delay: 10
     speaker: "b"
     audio: "scene_0_B_line_0"
   - event: "utterance"
+    delay: 1
     speaker: "a"
     audio: "scene_0_A_line_0"
 scene1:
   - event: "utterance"
+    delay: 1
     speaker: "a"
     audio: "scene_1_A_line_0"
   - event: "utterance"
+    delay: 1
     speaker: "b"
     audio: "scene_1_B_line_0"
   - event: "utterance"
+    delay: 1
     speaker: "s"
     audio: "scene_1_S_line_0"
 

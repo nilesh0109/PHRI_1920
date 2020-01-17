@@ -8,11 +8,11 @@ from os.path import dirname, abspath
 
 def handle_synthesis_request(req):
     player = AudioPlayer()
-    filepath = dirname(dirname(abspath(__file__))) + '/generated_sounds/{}.wav'.format(req.sentence)
+    filepath = dirname(dirname(abspath(__file__))) + '/generated_sounds/{}.wav'.format(req.audio)
     if req.delay:
         rospy.sleep(req.delay)
-    player.play(filepath, req.sentence)
-    print 'Sentence {} done.'.format(req.sentence)
+    player.play(filepath, req.audio)
+    print 'Sentence {} done.'.format(req.audio)
     print '<--------------------------------------------->'
     return SpeechSynthesisResponse(True)
 

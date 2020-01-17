@@ -9,7 +9,8 @@ class SayResponses(smach.State):
         smach.State.__init__(
             self,
             outcomes=[
-                "say_robot_line",
+                "say_robot_line_a",
+                "say_robot_line_b",
                 "say_ship_line",
                 "participant_input",
                 "questions_done",

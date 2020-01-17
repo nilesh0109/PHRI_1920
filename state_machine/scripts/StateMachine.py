@@ -5,7 +5,7 @@ import rospy
 import smach
 from smach_ros import ServiceState
 from state_machine.srv import SpeechRecognition
-from states import SceneFlow, SayResponses, Speak
+from states import SceneFlow, SayResponses, Speak, MakeUtterance
 
 # main
 def main():
@@ -28,6 +28,8 @@ def main():
     sm.userdata.scene = "scene1"
     sm.userdata.question = ""
     sm.userdata.qa_once = False
+    sm.userdata.delay = 0
+    sm.userdata.nvc_id = 0
 
     # Open the container
     with sm:
@@ -36,20 +38,26 @@ def main():
             "SCENE",
             SceneFlow.SceneFlow(),
             transitions={
-                "say_robot_line": "SPEAK",
-                "say_ship_line": "SPEAK",
+                "say_robot_line_a": "SPEAKA",
+                "say_robot_line_b": "SPEAKB",
+                "say_ship_line": "SPEAKS",
                 "participant_input": "GET_QUESTION",
                 "ressource_allocation": "SCENE",
                 "scenes_finished": "experiment_ended",
             },
         )
         smach.StateMachine.add(
-            "SPEAK", Speak.Speak(), transitions={"speech_done": "SCENE"}
+            "SPEAKA", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"}
         )
 
         smach.StateMachine.add(
-            "SPEAK2", Speak.Speak(), transitions={"speech_done": "RESOLVE_QUESTION"}
+            "SPEAKB", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"}
         )
+
+        smach.StateMachine.add(
+            "SPEAKS", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"}
+        )
+
 
         smach.StateMachine.add(
             "GET_QUESTION",
@@ -63,11 +71,24 @@ def main():
             "RESOLVE_QUESTION",
             SayResponses.SayResponses(),
             transitions={
-                "say_robot_line": "SPEAK2",
-                "say_ship_line": "SPEAK2",
+                "say_robot_line_a": "ANSWERA",
+                "say_robot_line_b": "ANSWERB",
+                "say_ship_line": "ANSWERS",
                 "participant_input": "GET_QUESTION",
                 "questions_done": "SCENE",
             },
+        )
+
+        smach.StateMachine.add(
+            "ANSWERA", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "RESOLVE_QUESTION", "utterance_failed": "SCENE"}
+        )
+
+        smach.StateMachine.add(
+            "ANSWERB", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "RESOLVE_QUESTION", "utterance_failed": "SCENE"}
+        )
+
+        smach.StateMachine.add(
+            "ANSWERS", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "RESOLVE_QUESTION", "utterance_failed": "SCENE"}
         )
 
         # Callback for service response
