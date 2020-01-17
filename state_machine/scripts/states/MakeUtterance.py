@@ -14,7 +14,7 @@ class MakeUtterance(smach.Concurrence):
 
     def __init__(self, topic_name):
         super(MakeUtterance, self).__init__(
-            input_keys=["speaker", "audio", "delay", "nvc_id"],
+            input_keys=["speaker", "audio", "delay", "pose_name"],
             outcomes=["utterance_done", "utterance_failed"],
             default_outcome="utterance_failed",
             # outcome_map={"utterance_done": {"SPEAK": "speech_done", "NVC": "nvc_done"}},
@@ -22,24 +22,15 @@ class MakeUtterance(smach.Concurrence):
         )
         # Open the container
         with self:
+            smach.Concurrence.add("NVCA",
+                                  ServiceState("/Pose", SpeechSynthesis, request_slots=["pose_name"]),
+                                  )
 
-            # smach.Concurrence.add(
-            #     "NVC",
-            #     ServiceState(
-            #         "/question_recognition", SpeechSynthesis, input_keys=["nvc_id"]
-            #     ),
-            #     transitions={"succeeded": "nvc_done"},
-            # )
-            #
+            smach.Concurrence.add("NVCB",
+                                  ServiceState("/Pose", SpeechSynthesis, request_slots=["pose_name"]),
+                                  )
 
-             smach.Concurrence.add(
-                 "SPEAK",
-                 ServiceState(
-                     topic_name,
-                     SpeechSynthesis,
-                     request_slots=["audio", "delay"],
-                 ),
-             )
-            # smach.Concurrence.add("SPEAK2", Speak())
-            # smach.Concurrence.add("NVC", NVC())
+            smach.Concurrence.add("SPEAK",
+                                  ServiceState(topic_name, SpeechSynthesis, request_slots=["audio", "delay"]),
+                                  )
 

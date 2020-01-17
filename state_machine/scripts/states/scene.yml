@@ -4,7 +4,7 @@ scene0:
     speaker: "s"
     audio: "scene_0_S_line_0"
   - event: "utterance"
-    delay: 10
+    delay: 5
     speaker: "b"
     audio: "scene_0_B_line_0"
   - event: "utterance"
