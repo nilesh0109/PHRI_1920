@@ -5,3 +5,4 @@ pyaml
 rospkg
 sounddevice
 SoundFile
+SpeechRecognition

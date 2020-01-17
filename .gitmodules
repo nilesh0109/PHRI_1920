@@ -1,0 +1,6 @@
+[submodule "speech/scripts/docks2_remote"]
+	path = speech/scripts/docks2_remote
+	url = https://git.informatik.uni-hamburg.de/twiefel/docks2_remote.git
+[submodule "speech/scripts/flaskcom"]
+	path = speech/scripts/flaskcom
+	url = https://git.informatik.uni-hamburg.de/twiefel/flaskcom.git
