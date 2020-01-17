@@ -47,15 +47,15 @@ def main():
             },
         )
         smach.StateMachine.add(
-            "SPEAKA", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"}
+            "SPEAKA", MakeUtterance.MakeUtterance("/speech_synthesis"), transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"}
         )
 
         smach.StateMachine.add(
-            "SPEAKB", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"}
+            "SPEAKB", MakeUtterance.MakeUtterance("/speech_synthesis"), transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"}
         )
 
         smach.StateMachine.add(
-            "SPEAKS", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"}
+            "SPEAKS", MakeUtterance.MakeUtterance("/speech_synthesis"), transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"}
         )
 
 
@@ -80,15 +80,15 @@ def main():
         )
 
         smach.StateMachine.add(
-            "ANSWERA", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "RESOLVE_QUESTION", "utterance_failed": "SCENE"}
+            "ANSWERA", MakeUtterance.MakeUtterance("/speech_synthesis"), transitions={"utterance_done": "RESOLVE_QUESTION", "utterance_failed": "SCENE"}
         )
 
         smach.StateMachine.add(
-            "ANSWERB", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "RESOLVE_QUESTION", "utterance_failed": "SCENE"}
+            "ANSWERB", MakeUtterance.MakeUtterance("/speech_synthesis"), transitions={"utterance_done": "RESOLVE_QUESTION", "utterance_failed": "SCENE"}
         )
 
         smach.StateMachine.add(
-            "ANSWERS", MakeUtterance.MakeUtterance(), transitions={"utterance_done": "RESOLVE_QUESTION", "utterance_failed": "SCENE"}
+            "ANSWERS", MakeUtterance.MakeUtterance("/speech_synthesis"), transitions={"utterance_done": "RESOLVE_QUESTION", "utterance_failed": "SCENE"}
         )
 
         # Callback for service response

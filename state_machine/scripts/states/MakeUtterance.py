@@ -12,7 +12,7 @@ from NVC import NVC
 class MakeUtterance(smach.Concurrence):
     """docstring for MakeUtterance."""
 
-    def __init__(self):
+    def __init__(self, topic_name):
         super(MakeUtterance, self).__init__(
             input_keys=["speaker", "audio", "delay", "nvc_id"],
             outcomes=["utterance_done", "utterance_failed"],
@@ -35,7 +35,7 @@ class MakeUtterance(smach.Concurrence):
              smach.Concurrence.add(
                  "SPEAK",
                  ServiceState(
-                     "/speech_synthesis",
+                     topic_name,
                      SpeechSynthesis,
                      request_slots=["audio", "delay"],
                  ),
