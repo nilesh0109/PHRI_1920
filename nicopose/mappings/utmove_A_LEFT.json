@@ -2,7 +2,7 @@
   "scene_0_A_line_0": {
     "gesture_delay": 0,
     "speech_delay": 0.5,
-    "speed": 0.03,
+    "speed": 0.06,
     "pose_filename": "s0a0.csv"
   },
   "scene_0_B_line_0": {
