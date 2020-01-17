@@ -1,5 +1,4 @@
 import sys
-sys.path.append("../..")
 from docks2_remote import Client
 import docks2_remote.docks2_remote.postprocessor as postprocessor
 import speech_recognition as sr
@@ -42,7 +41,6 @@ if __name__ == "__main__":
 	
 	# setting up the recognizer
 	listener = sr.Recognizer()
-	listener.operation_timeout = 30 # seconds after an internal operation (e.g., an API request) starts before it times out, or ``None`` for no timeout
 
 	listener.phrase_threshold = 2 # minimum seconds of speaking audio before we consider the speaking audio a phrase - values below this are ignored (for filtering out clicks and pops)
 	listener.pause_threshold = 1  # seconds of non-speaking audio before a phrase is considered complete
@@ -68,43 +66,47 @@ if __name__ == "__main__":
             # with sr.AudioFile("./example-wavs/test_sentence.wav") as source:
             with sr.Microphone() as source:
                 print('Say Something!')
-                audio_data = listener.listen(source)
+		try:
+                	audio_data = listener.listen(source, timeout=2)
+		
+		        if not(use_google):
+		            if decode_with == "greedy":
+		                hypotheses, _ = server.recognize(audio_data,['ds', 'greedy'])
+		                print "Docks2 understood: {}".format(hypotheses.lower())
+		            # elif decode_with == "four-gram":
+		                # hypotheses = server.recognize(audio_data,['ds', '4gram'])[0]
+		                # print "Docks2 understood: {}".format(hypotheses.lower())
+		            else:
+		                hypotheses, _ = server.recognize(audio_data,['ds', '3gram'])
+		                print "Docks2 understood: {}".format(hypotheses.lower())
+		        else:
+		            # uses the google recognizer on the server
+		            hypotheses = server.recognize(audio_data, ['google'])
+		            print "Google understood: {}".format(hypotheses)
 
-                if not(use_google):
-                    if decode_with == "greedy":
-                        hypotheses, _ = server.recognize(audio_data,['ds', 'greedy'])
-# Note to self todo Johannes about confidence.
-                        print "Docks2 understood: {}".format(hypotheses.lower())
-                    # elif decode_with == "four-gram":
-                        # hypotheses = server.recognize(audio_data,['ds', '4gram'])[0]
-                        # print "Docks2 understood: {}".format(hypotheses.lower())
-                    else:
-                        hypotheses, _ = server.recognize(audio_data,['ds', '3gram'])
-                        print "Docks2 understood: {}".format(hypotheses.lower())
-                else:
-                    # uses the google recognizer on the server
-                    hypotheses = server.recognize(audio_data, ['google'])
-                    print "Google understood: {}".format(hypotheses)
+		        # postprocess
+		        docks_hypotheses, confidence = server.postprocess('sentencelist_postprocessor',
+		                                              hypotheses)
 
-                # postprocess
-                docks_hypotheses, confidence = server.postprocess('sentencelist_postprocessor',
-                                                      hypotheses)
+		        print "Sentencelist Postprocessor understood: {}".format(docks_hypotheses)
+			if confidence > confidence_threshold:
+				print("This corresponds to answer " + str(sentencelist.index(docks_hypotheses+"\n")) + "With confidence " + str(confidence))
+				sentence_nr = sentencelist.index(docks_hypotheses+"\n")
+				if sentence_nr < context_sentences:
+					if context == "done":
+						sentence_id = "done_confirmation"
+					else: 					
+						sentence_id = context + "_question_" + str(sentence_nr)
+				else:
+					sentence_id = "repetion_request"
 
-                print "Sentencelist Postprocessor understood: {}".format(docks_hypotheses)
-		if confidence > confidence_threshold:
-			print("This corresponds to answer " + str(sentencelist.index(docks_hypotheses+"\n")) + "With confidence " + str(confidence))
-			sentence_nr = sentencelist.index(docks_hypotheses+"\n")
-			if sentence_nr < context_sentences:
-				if context == "done":
-					sentence_id = "done_confirmation"
-				else: 					
-					sentence_id = context + "_question_" + str(sentence_nr)
+				print("To be returned to service: " + sentence_id)
 			else:
-				sentence_id = "repetion_request"
+				sentence_id="timeout"
+				print("To be returned to service: " + sentence_id)
 
-			print("To be returned to service: " + sentence_id)
-		else:
-			sentence_id="repetition_request"
+		except:
+			sentence_id ="timeout"
 			print("To be returned to service: " + sentence_id)
 
 
