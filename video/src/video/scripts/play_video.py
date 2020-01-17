@@ -3,7 +3,7 @@
 from play_video.srv import scene_number, done
 import threading
 import time
-import subprocess
+import os
 import rospy
 from pynput.keyboard import Key, Controller
 
@@ -29,7 +29,7 @@ class myPauseThread (threading.Thread):
       pausevideoafter(self.keyboard,self.length)
 
 def startvideo(filename):
-    subprocess.run(['vlc', '--global-key-play-pause=a', filename])
+    os.system(str("DISPLAY=:0.1 vlc --fullscreen --global-key-play-pause=a" + str(filename)))
     
 def pausevideoafter(keyboard, seconds):
     time.sleep(seconds)
