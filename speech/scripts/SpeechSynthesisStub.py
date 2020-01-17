@@ -6,9 +6,8 @@ import rospy
 from AudioPlayer import AudioPlayer
 from os.path import dirname, abspath
 import sys
-
 def handle_synthesis_request(req):
-    player = AudioPlayer()
+    player = AudioPlayer(req.speaker)
     filepath = dirname(dirname(abspath(__file__))) + '/generated_sounds/{}.wav'.format(req.audio)
     if req.delay:
         rospy.sleep(req.delay)
