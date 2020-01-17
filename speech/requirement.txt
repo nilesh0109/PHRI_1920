@@ -1,0 +1,7 @@
+boto3
+catkin_pkg
+empy
+pyaml
+rospkg
+sounddevice
+SoundFile
