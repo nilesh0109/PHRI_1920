@@ -2,6 +2,7 @@ import sys
 from docks2_remote import Client
 import docks2_remote.docks2_remote.postprocessor as postprocessor
 import speech_recognition as sr
+from os.path import dirname, abspath
 from argparse import ArgumentParser
 
 
@@ -9,13 +10,8 @@ def recognize(context, confidence_threshold=0.5):
 	server = 'sysadmin@wtmitx1'
 	port = 55101
 
-	parser = ArgumentParser()
-	parser.add_argument("context")
-	parser.add_argument("--use-google", action='store_true')
-	parser.add_argument("--decode", default='greedy')
-	arguments = parser.parse_args()
-	use_google = arguments.use_google
-	decode_with = arguments.decode
+	use_google = False
+	decode_with = 'greedy'
 
 	print(context)
 
@@ -23,17 +19,18 @@ def recognize(context, confidence_threshold=0.5):
 	language_code = "en-EN"
 
 	client = Client(server=server, port=port)
+	sentences_dir = dirname(dirname(abspath(__file__))) + '/scripts/'
 
 	if context == "done":
-		sentencelist = open("./wendigo.sentences.txt").readlines()
+		sentencelist = open(sentences_dir + "wendigo.sentences.txt").readlines()
 		context_sentences = 1
 		print("Using wendigo sentences")
 	elif context == "scene_0" or context == "scene_1":
-		sentencelist = open("./mission.sentences.txt").readlines()
+		sentencelist = open(sentences_dir + "mission.sentences.txt").readlines()
 		context_sentences = 4
 		print("Using mission sentences")
 	else:
-		sentencelist = open("./emergency.sentences.txt").readlines()
+		sentencelist = open(sentences_dir + "emergency.sentences.txt").readlines()
 		context_sentences = 3
 		print("Using emergency sentences")
 
@@ -61,7 +58,6 @@ def recognize(context, confidence_threshold=0.5):
 			language_code=language_code)
 
         while True:
-            raw_input("press Enter to start recognizing")
 
             # with sr.AudioFile("./example-wavs/test_sentence.wav") as source:
             with sr.Microphone() as source:
