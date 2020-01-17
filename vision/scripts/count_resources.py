@@ -17,13 +17,13 @@ def handle_resources_request(participant_num):
 def check_table_empty():
     table1 = []
     table2 = []
-    for i in range(10): #while true
+    while True:
         object1, object2 = cube_detect()
         table1.append(object1)
         table2.append(object2)
         time.sleep(0.2)
         
-        if i >= 3:
+        if len(table1) >= 3:
             if np.average(table1[-3:]) == 0 and np.average(table2[-3:]) == 0:
                 break
             return CountResourcesResponse[True]
