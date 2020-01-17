@@ -57,19 +57,19 @@ def main():
         )
         smach.StateMachine.add(
             "SPEAKA",
-            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/a/speech_synthesis"),
             transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"},
         )
 
         smach.StateMachine.add(
             "SPEAKB",
-            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/b/speech_synthesis"),
             transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"},
         )
 
         smach.StateMachine.add(
             "SPEAKS",
-            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/s/speech_synthesis"),
             transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"},
         )
 

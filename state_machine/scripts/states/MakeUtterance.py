@@ -31,6 +31,6 @@ class MakeUtterance(smach.Concurrence):
                                   )
 
             smach.Concurrence.add("SPEAK",
-                                  ServiceState(topic_name, SpeechSynthesis, request_slots=["audio", "delay"]),
+                                  ServiceState(topic_name, SpeechSynthesis, request_slots=["audio", "speaker", "delay"]),
                                   )
 
