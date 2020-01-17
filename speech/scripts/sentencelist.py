@@ -4,13 +4,11 @@ import docks2_remote.docks2_remote.postprocessor as postprocessor
 import speech_recognition as sr
 from argparse import ArgumentParser
 
-server = 'sysadmin@wtmitx1'
-port = 55101
 
-context = "scene_0"
-confidence_threshold = 0.5
+def recognize(context, confidence_threshold=0.5):
+	server = 'sysadmin@wtmitx1'
+	port = 55101
 
-if __name__ == "__main__":
 	parser = ArgumentParser()
 	parser.add_argument("--use-google", action='store_true')
 	parser.add_argument("--decode", default='greedy')
@@ -21,8 +19,7 @@ if __name__ == "__main__":
 	language = "english"
 	language_code = "en-EN"
 
-	client = Client(server=server,
-                    port=port)
+	client = Client(server=server, port=port)
 
 	if context == "done":
 		sentencelist = open("./wendigo.sentences.txt").readlines()
@@ -30,21 +27,21 @@ if __name__ == "__main__":
 		print("Using wendigo sentences")
 	elif context == ("scene_0" or "scene_1"):
 		sentencelist = open("./mission.sentences.txt").readlines()
-		context_sentences = 4 
+		context_sentences = 4
 		print("Using mission sentences")
 	else:
 		sentencelist = open("./emergency.sentences.txt").readlines()
 		context_sentences = 3
 		print("Using mission sentences")
 
-	print(sentencelist)	
-	
+	print(sentencelist)
+
 	# setting up the recognizer
 	listener = sr.Recognizer()
 
 	listener.phrase_threshold = 2 # minimum seconds of speaking audio before we consider the speaking audio a phrase - values below this are ignored (for filtering out clicks and pops)
 	listener.pause_threshold = 1  # seconds of non-speaking audio before a phrase is considered complete
-	
+
 
     # with sr.AudioFile("./example-wavs/test_adjust.wav") as noise:
 	with sr.Microphone() as noise:
@@ -68,7 +65,7 @@ if __name__ == "__main__":
                 print('Say Something!')
 		try:
                 	audio_data = listener.listen(source, timeout=2)
-		
+
 		        if not(use_google):
 		            if decode_with == "greedy":
 		                hypotheses, _ = server.recognize(audio_data,['ds', 'greedy'])
@@ -95,7 +92,7 @@ if __name__ == "__main__":
 				if sentence_nr < context_sentences:
 					if context == "done":
 						sentence_id = "done_confirmation"
-					else: 					
+					else:
 						sentence_id = context + "_question_" + str(sentence_nr)
 				else:
 					sentence_id = "repetion_request"
@@ -104,9 +101,11 @@ if __name__ == "__main__":
 			else:
 				sentence_id="timeout"
 				print("To be returned to service: " + sentence_id)
-
+			return sentence_id
 		except:
 			sentence_id ="timeout"
 			print("To be returned to service: " + sentence_id)
+			return sentence_id
 
-
+if __name__ == "__main__":
+	print(recognize(sys.argv[0]))
