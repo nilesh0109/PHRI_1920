@@ -10,11 +10,14 @@ def recognize(context, confidence_threshold=0.5):
 	port = 55101
 
 	parser = ArgumentParser()
+	parser.add_argument("context")
 	parser.add_argument("--use-google", action='store_true')
 	parser.add_argument("--decode", default='greedy')
 	arguments = parser.parse_args()
 	use_google = arguments.use_google
 	decode_with = arguments.decode
+
+	print(context)
 
 	language = "english"
 	language_code = "en-EN"
@@ -25,14 +28,14 @@ def recognize(context, confidence_threshold=0.5):
 		sentencelist = open("./wendigo.sentences.txt").readlines()
 		context_sentences = 1
 		print("Using wendigo sentences")
-	elif context == ("scene_0" or "scene_1"):
+	elif context == "scene_0" or context == "scene_1":
 		sentencelist = open("./mission.sentences.txt").readlines()
 		context_sentences = 4
 		print("Using mission sentences")
 	else:
 		sentencelist = open("./emergency.sentences.txt").readlines()
 		context_sentences = 3
-		print("Using mission sentences")
+		print("Using emergency sentences")
 
 	print(sentencelist)
 
@@ -64,7 +67,7 @@ def recognize(context, confidence_threshold=0.5):
             with sr.Microphone() as source:
                 print('Say Something!')
 		try:
-                	audio_data = listener.listen(source, timeout=2)
+                	audio_data = listener.listen(source, timeout=10)
 
 		        if not(use_google):
 		            if decode_with == "greedy":
@@ -108,4 +111,4 @@ def recognize(context, confidence_threshold=0.5):
 			return sentence_id
 
 if __name__ == "__main__":
-	print(recognize(sys.argv[0]))
+	print(recognize(sys.argv[1]))
