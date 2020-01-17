@@ -26,7 +26,6 @@ class SceneFlow(smach.State):
 
     def execute(self, userdata):
         rospy.loginfo("Executing state SCENE")
-<<<<<<< HEAD
         if self.dialog == len(self.script[self.scenes[self.scene_index]]):
             if self.scene_index < (len(self.scenes) - 1):
                 self.scene_index += 1
@@ -51,54 +50,22 @@ class SceneFlow(smach.State):
                 userdata.audio = self.script[self.scenes[self.scene_index]][
                     self.dialog
                 ]["audio"]
+                userdata.delay = self.script[self.scenes[self.scene_index]][
+                    self.dialog
+                ]["delay"]
+                self.dialog += 1
                 if speaker == "s":
-                    outcome = "say_ship_line"
+                    return "say_ship_line"
+                elif speaker == "a":
+                    return "say_robot_line_a"
                 else:
-                    outcome = "say_robot_line"
+                    return "say_robot_line_b"
         elif event == "allocation":
             outcome = "ressource_allocation"
         else:  # unknown event
             rospy.loginfo("Encountered unknown event %s", event)
         self.dialog += 1
         return outcome
-=======
-        if self.dialog < len(self.script[self.scenes[self.scene_index]]):
-            if (
-                self.script[self.scenes[self.scene_index]][self.dialog]["event"] == "utterance"
-            ):
-                # print(self.script[self.scenes[self.scene_index]][self.dialog]["parameters"]["speaker"])
-                speaker = self.script[self.scenes[self.scene_index]][self.dialog][
-                    "speaker"
-                ]
-                if speaker == "p":
-                    userdata.qa_once = self.script[self.scenes[self.scene_index]][
-                        self.dialog
-                    ]["once"]
-                    self.dialog += 1
-                    return "participant_input"
-                else:
-                    userdata.speaker = speaker
-                    userdata.audio = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
-                    userdata.delay = self.script[self.scenes[self.scene_index]][self.dialog]["delay"]
-                    self.dialog += 1
-                    if speaker == "s":
-                        return "say_ship_line"
-                    elif speaker == "a":
-                        return "say_robot_line_a"
-                    else:
-                        return "say_robot_line_b"
-            else:  # event != "utterance"
-                pass
-        elif self.scene_index < (len(self.scenes) - 1):
-            self.scene_index += 1
-            self.dialog = 0
-            if self.scene_index < len(self.scenes):
-                userdata.scene = self.scenes[self.scene_index]
-                # self.load_dialog_script()
-            return "ressource_allocation"
-        else:
-            return "scenes_finished"
->>>>>>> 2fb3af6ac3fde514dd1e02cae989d0c3d83efd8d
 
     def load_dialog_script(self, scene_file):
         with open(dirname(abspath(__file__)) + "/" + scene_file, "r") as f:
