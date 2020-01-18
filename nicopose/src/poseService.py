@@ -11,11 +11,11 @@ from std_msgs.msg import String
 class Move():
     robot = None
     mov = None
-    mover_path = "../../../../moves_and_positions/"
+    mover_path = "../moves_and_positions/"
     utmlist = None
     utm_json_format = "../mappings/utmove_{}_{}.json"
     def __init__(self, label, position):
-        self.robot = Motion.Motion('../../../../json/nico_humanoid_upper_rh7d.json', vrep=False)
+        self.robot = Motion.Motion('../joint_specification/nico_humanoid_upper_rh7d.json', vrep=False)
         self.mov = Mover.Mover(self.robot, stiff_off=True)
         self.position = position
         self.label = label
@@ -60,9 +60,9 @@ class Move():
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='NICO ROS nicopose interface')
+    parser = argparse.ArgumentParser(description='NICO ROS nicopose arguments')
     parser.add_argument('--label', dest='robotLabel',
-                        help='A for NVC. B non-NVC', type=str,
+                        help='A for NVC. B for non-NVC', type=str,
                         default='A')
     parser.add_argument('--position', dest='robotPosition',
                         help='LEFT or RIGHT', type=str,
