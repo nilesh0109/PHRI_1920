@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # DO NOT REMOVE THE ABOVE!!!
-
+import argparse
 import json
 import time
 import rospy
@@ -26,6 +26,7 @@ class Fexp():
             delay = self.explist[param.data][i]['expression_delay']
             ex = self.explist[param.data][i]['fe']
             time.sleep(delay)
+            print("ex: {}".format(ex))
             self.fe.sendFaceExpression(ex)
             print(time.time())
         self.relax()
@@ -38,7 +39,15 @@ class Fexp():
 
 
 if __name__ == "__main__":
-    rospy.init_node('nicopose', anonymous=True)
+    parser = argparse.ArgumentParser(description='NICO ROS nicopose interface')
+    parser.add_argument('--label', dest='robotLabel',
+                        help='A for NVC. B non-NVC', type=str,
+                        default='A')
+
+    args = parser.parse_known_args()[0]
+    label = args.robotLabel
+
+    rospy.init_node("nicopose_{}".format(label), anonymous=True)
     f = Fexp()
-    rospy.Subscriber('fex', String, f.play)
+    rospy.Subscriber("{}/fex".format(label), String, f.play)
     rospy.spin()

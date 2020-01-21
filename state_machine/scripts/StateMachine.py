@@ -32,13 +32,13 @@ def main():
 
     sm.userdata.speaker = ""
     sm.userdata.audio = ""
+    sm.userdata.param = ""
     sm.userdata.last_ship_line = ""
     sm.userdata.scene = "scene_0"
     sm.userdata.sentence = ""
     sm.userdata.qa_once = False
     sm.userdata.no_of_objects = 69420
     sm.userdata.delay = 0
-    sm.userdata.nvc_id = 0
 
     # Open the container
     with sm:
@@ -58,19 +58,19 @@ def main():
         )
         smach.StateMachine.add(
             "SPEAKA",
-            MakeUtterance.MakeUtterance("/a/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/A/speech_synthesis"),
             transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"},
         )
 
         smach.StateMachine.add(
             "SPEAKB",
-            MakeUtterance.MakeUtterance("/b/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/B/speech_synthesis"),
             transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"},
         )
 
         smach.StateMachine.add(
             "SPEAKS",
-            MakeUtterance.MakeUtterance("/s/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/S/speech_synthesis"),
             transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"},
         )
 
@@ -119,7 +119,7 @@ def main():
         )
         smach.StateMachine.add(
             "ANSWERA",
-            MakeUtterance.MakeUtterance("/a/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/A/speech_synthesis"),
             transitions={
                 "utterance_done": "RESOLVE_QUESTION",
                 "utterance_failed": "RESOLVE_QUESTION",
@@ -128,7 +128,7 @@ def main():
 
         smach.StateMachine.add(
             "ANSWERB",
-            MakeUtterance.MakeUtterance("/b/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/B/speech_synthesis"),
             transitions={
                 "utterance_done": "RESOLVE_QUESTION",
                 "utterance_failed": "RESOLVE_QUESTION",
@@ -137,7 +137,7 @@ def main():
 
         smach.StateMachine.add(
             "ANSWERS",
-            MakeUtterance.MakeUtterance("/s/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/S/speech_synthesis"),
             transitions={
                 "utterance_done": "RESOLVE_QUESTION",
                 "utterance_failed": "RESOLVE_QUESTION",

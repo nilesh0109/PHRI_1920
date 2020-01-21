@@ -24,6 +24,7 @@ class SceneFlow(smach.State):
                 "qa_once",
                 "delay",
                 "last_ship_line",
+                "param",
             ],
         )
         self.scene_index = scene
@@ -47,6 +48,9 @@ class SceneFlow(smach.State):
             audio = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
             userdata.speaker = speaker
             userdata.audio = audio
+            userdata.param = self.script[self.scenes[self.scene_index]][self.dialog][
+                "audio"
+            ]
             userdata.delay = self.script[self.scenes[self.scene_index]][self.dialog][
                 "delay"
             ]
