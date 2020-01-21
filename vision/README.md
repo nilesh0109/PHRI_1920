@@ -10,7 +10,7 @@ We can call service with any robot name A or B. Both will be called together
 
 Service call
 - rosservice call /robotA/count_objects participant_number
-- participant_number is integer starting from 1
+    - participant_number is integer starting from 1
 
 - rosservice call /robotA/check_empty 0
 - 0 is blocked for service to check if the table in front of the robots is empty or not
