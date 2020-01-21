@@ -11,7 +11,7 @@ from std_msgs.msg import String
 class Move():
     robot = None
     mov = None
-    mover_path = "../../../../moves_and_positions/"
+    mover_path = "../../moves_and_positions/"
     utmlist = None
     utm_json_format = "../mappings/utmove_{}_{}.json"
     def __init__(self, label, position):

@@ -6,10 +6,6 @@ from smach_ros import ServiceState
 from speech.srv import SpeechSynthesis
 from nicopose.srv import Pose
 
-from Speak import Speak
-from NVC import NVC
-
-
 class MakeUtterance(smach.Concurrence):
     """docstring for MakeUtterance."""
 
@@ -24,11 +20,11 @@ class MakeUtterance(smach.Concurrence):
         # Open the container
         with self:
             smach.Concurrence.add("NVCA",
-                                  ServiceState("/Pose", Pose, request_slots=["param"]),
+                                  ServiceState("/A/pose", Pose, request_slots=["param"]),
                                   )
 
             smach.Concurrence.add("NVCB",
-                                  ServiceState("/Pose", Pose, request_slots=["param"]),
+                                  ServiceState("/B/pose", Pose, request_slots=["param"]),
                                   )
 
             smach.Concurrence.add("SPEAK",

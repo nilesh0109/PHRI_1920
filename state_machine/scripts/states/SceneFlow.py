@@ -39,7 +39,7 @@ class SceneFlow(smach.State):
                     self.dialog += 1
                     return "participant_input"
                 else:
-                    userdata.speaker = speakerself.script[self.scenes[self.scene_index]][self.dialog]["audio"]
+                    userdata.speaker = speaker
                     userdata.audio = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
                     userdata.param = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
                     userdata.delay = self.script[self.scenes[self.scene_index]][self.dialog]["delay"]
