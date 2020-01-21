@@ -15,7 +15,7 @@ class SayResponses(smach.State):
                 "participant_input",
                 "questions_done",
             ],
-            input_keys=["question", "scene", "qa_once"],
+            input_keys=["question", "last_ship_line"],
             output_keys=["speaker", "audio"],
         )
         self.repeat_once = False
@@ -26,25 +26,28 @@ class SayResponses(smach.State):
     def execute(self, userdata):
         rospy.loginfo("Executing state RESOLVE_QUESTION")
         answers = self.question_answers[userdata.question]
-        if userdata.scene in answers:
-            answers = answers[userdata.scene]
-        elif userdata.question == "repeat":
+        if userdata.question == "timeout" or userdata.question == "repetition_request":
             self.repeat_once = True
         if self.answer_index < len(answers):
             answer = answers[self.answer_index]
             userdata.speaker = answer["speaker"]
-            userdata.audio = answer["audio"]
+            userdata.audio = (
+                userdata.last_ship_line
+                if userdata.question == "repetition_request"
+                else answer["audio"]
+            )
+            userdata.delay = answer["delay"]
             self.answer_index += 1
             if answer["speaker"] == "s":
                 return "say_ship_line"
+            elif answer["speaker"] == "a":
+                return "say_robot_line_a"
             else:
-                return "say_robot_line"
+                return "say_robot_line_b"
         else:
             self.answer_index = 0
             if self.repeat_once:
                 self.repeat_once = False
-                return "participant_input"
-            elif not userdata.qa_once and userdata.question != "cancel":
                 return "participant_input"
             else:
                 return "questions_done"

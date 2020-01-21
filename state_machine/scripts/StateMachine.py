@@ -32,7 +32,8 @@ def main():
 
     sm.userdata.speaker = ""
     sm.userdata.audio = ""
-    sm.userdata.scene = "scene_0"  # TODO adjust assignment for dynamic scene entry
+    sm.userdata.last_ship_line = ""
+    sm.userdata.scene = "scene_0"
     sm.userdata.sentence = ""
     sm.userdata.qa_once = False
     sm.userdata.no_of_objects = 69420
@@ -76,9 +77,13 @@ def main():
         smach.StateMachine.add(
             "GET_QUESTION",
             ServiceState(
-                "/question_recognition", SpeechRecognition, response_slots=["question"]
+                "/speech_recognition",
+                SpeechRecognition,
+                request_slots=["context"],
+                response_slots=["sentence"],
             ),
             transitions={"succeeded": "RESOLVE_QUESTION"},
+            remapping={"context": "scene"},
         )
 
         smach.StateMachine.add(
@@ -91,6 +96,7 @@ def main():
                 "participant_input": "GET_QUESTION",
                 "questions_done": "SCENE",
             },
+            remapping={"question": "sentence"},
         )
 
         smach.StateMachine.add(
@@ -113,28 +119,28 @@ def main():
         )
         smach.StateMachine.add(
             "ANSWERA",
-            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/a/speech_synthesis"),
             transitions={
                 "utterance_done": "RESOLVE_QUESTION",
-                "utterance_failed": "SCENE",
+                "utterance_failed": "RESOLVE_QUESTION",
             },
         )
 
         smach.StateMachine.add(
             "ANSWERB",
-            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/b/speech_synthesis"),
             transitions={
                 "utterance_done": "RESOLVE_QUESTION",
-                "utterance_failed": "SCENE",
+                "utterance_failed": "RESOLVE_QUESTION",
             },
         )
 
         smach.StateMachine.add(
             "ANSWERS",
-            MakeUtterance.MakeUtterance("/speech_synthesis"),
+            MakeUtterance.MakeUtterance("/s/speech_synthesis"),
             transitions={
                 "utterance_done": "RESOLVE_QUESTION",
-                "utterance_failed": "SCENE",
+                "utterance_failed": "RESOLVE_QUESTION",
             },
         )
         # Callback for service response
