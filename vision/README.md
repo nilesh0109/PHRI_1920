@@ -13,10 +13,10 @@ Service call
 - participant_number is integer starting from 1
 
 - rosservice call /robotA/check_empty 0
-\n 0 is blocked for service to check if the table in front of the robots is empty or not
+- 0 is blocked for service to check if the table in front of the robots is empty or not
 
 * In count_resources.py --> check_empty()
-\n The automatic timeout is set for 30s can be changed accordingly
+- The automatic timeout is set for 30s can be changed accordingly
 
 * if the same participant_number is provided again then the folder will be created with a time stamp prefix with that participant id
 ## Links ##
