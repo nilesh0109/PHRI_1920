@@ -2,9 +2,10 @@
 
 from speech.srv import SpeechRecognition, SpeechRecognitionResponse
 import rospy
+import sentencelist as sl
 
 def handle_recognition_request(req):
-    sentence = "scene_42"
+    sentence = sl.recognize(req.context)
     print 'Recognized: \'{}\''.format(sentence)
     print '<--------------------------------------------->'
     return SpeechRecognitionResponse(sentence)
