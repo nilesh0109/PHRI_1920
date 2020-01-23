@@ -4,10 +4,10 @@ import argparse
 import rospy
 import smach
 from smach_ros import ServiceState
-from speech.srv import SpeechRecognition, SpeechRecognitionRequest
+from speech.srv import SpeechRecognition
 from video.srv import PlayVideo
-from vision.srv import CountResources, CountResourcesRequest
-from states import SceneFlow, SayResponses, Speak, MakeUtterance
+from vision.srv import CountResources
+from states import SceneFlow, SayResponses, MakeUtterance
 
 # main
 def main():
@@ -36,7 +36,7 @@ def main():
     sm.userdata.param = ""
     sm.userdata.last_ship_line = ""
     sm.userdata.scene = "scene_0"
-    sm.userdata.scene_id = 0
+    sm.userdata.scene_number = 0
     sm.userdata.sentence = ""
     sm.userdata.qa_once = False
     sm.userdata.delay = 0
@@ -106,7 +106,7 @@ def main():
         smach.StateMachine.add(
             "CUBE_COUNT",
             ServiceState(
-                "/count_objects", CountResources, request=CountResourcesRequest(1)
+                "/count_objects", CountResources, request_slots=["scene_number"]
             ),
             transitions={"succeeded": "SCENE"},
         )
@@ -114,14 +114,14 @@ def main():
         smach.StateMachine.add(
             "RETURN_CUBES",
             ServiceState(
-                "/check_empty", CountResources, request=CountResourcesRequest(0)
+                "/check_empty", CountResources, request_slots=["scene_number"]
             ),
             transitions={"succeeded": "SCENE"},
         )
 
         smach.StateMachine.add(
             "PLAY_VIDEO",
-            ServiceState("/play_video", PlayVideo, request_slots=["scene_id"]),
+            ServiceState("/play_video", PlayVideo, request_slots=["scene_number"]),
             transitions={"succeeded": "SCENE"},
         )
 
