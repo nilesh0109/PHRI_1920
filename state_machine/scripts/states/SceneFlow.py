@@ -16,6 +16,7 @@ class SceneFlow(smach.State):
                 "ressource_allocation",
                 "return_cubes",
                 "play_video",
+                "pause",
                 "unknown_event",
                 "scenes_finished",
             ],
@@ -76,6 +77,9 @@ class SceneFlow(smach.State):
         elif event == "video":
             userdata.scene_number = self.scene_index
             outcome = "play_video"
+        elif event == "pause":
+            raw_input("\033[92mPress enter to initialize starting sequence.\033[0m")
+            outcome = "pause"
         else:  # unknown event
             rospy.logwarn("Encountered unknown event %s", event)
         self.dialog += 1

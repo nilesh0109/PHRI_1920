@@ -55,6 +55,7 @@ def main():
                 "ressource_allocation": "GET_QUESTION",
                 "return_cubes": "RETURN_CUBES",
                 "play_video": "PLAY_VIDEO",
+                "pause": "SCENE",
                 "unknown_event": "aborted",
                 "scenes_finished": "experiment_ended",
             },
