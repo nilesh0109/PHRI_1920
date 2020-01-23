@@ -5,21 +5,12 @@
 
 This module contains all code related to the recognition and generation of spoken words.
 
-## Setup
+## Speech Recognition Service (STT)
 
-For speech production will you need a valid AWS account. As a university member, you can apply for [AWS Educate](https://www.awseducate.com/registration#APP_TYPE).
+Upon call, this service will activate the microphone and listen for a matching sentence from either `wendigo.sentences.txt`, `mission.sentences.txt` or `emergency.sentences.txt` - depending on the value of the `context` parameter provided.
+When above a certain threshold, it will return with the most plausible sentence. This means every individual recognition requires its own service call.
 
-After that, provide access via [Configuring the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html).
-You should end up with both a `config` and `credentials` file a `.aws` folder in your home directory. They will be read by the `boto3` Python library.
-
-## Speech-To-Text (STT)
-
-### Speech Recognition Service
-
-When called, this service will activate the microphone and listen for a matching sentence provided by the `context` parameter.
-When it recognized a sentence, it will return - this means every recognition requires an individual call.
-
-### HOW TO
+### How to use
 
 **Start the service**
 ```
@@ -28,22 +19,17 @@ rosrun speech SpeechRecognitionStub.py
 
 **Call the service**
 ```
-rosservice call speech_recognition '<context>'
+rosservice call speech_recognition <context>
 ```
 
 where `context` can be either `scene_<number>` or `done`.
 
-## Text-To-Speech (TTS)
-
-We use Amazon Polly to generate .wav sound files from input text provided by the scenario group.
-The generated files are stored in the `generated_sounds` folder and will be called played by the SpeechProduction service.
-
-### Speech Production Service
+## Speech Production Service (TTS)
 
 we have provided a service `speech_synthesis` for playing the soundfile for each scene. The service takes the <scene_ID, delay> as input and plays the audiofile corresponding
 to the provided scene_ID. It also publishes the audio progress on `speech_progress` rostopic.
 
-### HOW TO
+### How to use
 
 **Run the package**
 - pip install -r requirement.txt
@@ -58,7 +44,7 @@ rosrun speech SpeechSynthesisStub.py
 
 **Call the service**
 ```
-rosservice call speech_synthesis '<SCENE ID>' <delay in sec>
+rosservice call speech_synthesis <scene_id> <delay_in_sec>
 ```
 
 **Setup a subscriber to subscribe to rosTopic**
@@ -75,3 +61,19 @@ def callback(data):
 ```
 rostopic echo /speech_progress
 ```
+
+## Initial Setup / Prerequisites
+
+Please make sure that you followed the [General Setup](../README.md) and made sure you have all required dependencies (`ROS`, `NICO-software`) installed.
+
+The speech module makes use of the WTM [docks](https://git.informatik.uni-hamburg.de/twiefel/docks) technology for speech recognition: for an initial setup you will therefore need to have access to the [docks2_remote](https://git.informatik.uni-hamburg.de/twiefel/docks2_remote) and [flaskcom](https://git.informatik.uni-hamburg.de/twiefel/flaskcom) repositories, which are included as [git submodules](https://git.informatik.uni-hamburg.de/wtm-teaching-projects/phri1920_dev/blob/dev/.gitmodules).
+
+For speech production, we make use of Amazon Polly to generate .wav sound files from input text provided by the scenario group, annotated with prosody tags using [SSML](https://de.wikipedia.org/wiki/Speech_Synthesis_Markup_Language).
+These generated sound files are stored within this repository in the `generated_sounds` folder to be used by the SpeechProduction service.
+
+### Regenerating the Sound Files (optional)
+
+If however the `script.yml` changes, they have to be regenerated using the `tts_converter.py`. For this you need a valid AWS account, which as a university member, you can apply for at [AWS Educate](https://www.awseducate.com/registration#APP_TYPE).
+
+After that, provide access via [Configuring the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html).
+You should end up with both a `config` and `credentials` file a `.aws` folder in your home directory.

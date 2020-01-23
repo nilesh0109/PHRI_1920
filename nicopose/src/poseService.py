@@ -8,18 +8,21 @@ from nicopose.srv import Pose, PoseResponse
 from nicomotion import Mover, Motion
 from std_msgs.msg import String
 
-class Move():
+
+class Move:
     robot = None
     mov = None
-    mover_path = "../../moves_and_positions/"
+    mover_path = "../moves_and_positions/"
     utmlist = None
     utm_json_format = "../mappings/utmove_{}_{}.json"
+
     def __init__(self, label, position):
-        self.robot = Motion.Motion('../../../../../json/nico_humanoid_upper_rh7d.json', vrep=False)
+        self.robot = Motion.Motion(
+            "../joint_specification/nico_humanoid_upper_rh7d.json", vrep=False
+        )
         self.mov = Mover.Mover(self.robot, stiff_off=True)
         self.position = position
         self.label = label
-
 
         utm_json = self.utm_json_format.format(label, position)
 
@@ -35,9 +38,9 @@ class Move():
         pub.publish(uid.param)
         try:
             res = PoseResponse()
-            fname = self.mover_path + self.utmlist[uid.param]['pose_filename']
-            sp = self.utmlist[uid.param]['speed']
-            time.sleep(self.utmlist[uid.param]['gesture_delay'])
+            fname = self.mover_path + self.utmlist[uid.param]["pose_filename"]
+            sp = self.utmlist[uid.param]["speed"]
+            time.sleep(self.utmlist[uid.param]["gesture_delay"])
             self.mov.play_movement(fname, move_speed=sp)
             self.relax()
             res.msgback = 1
@@ -48,8 +51,8 @@ class Move():
 
     def relax(self):
         self.disableTorqueBody()
-        self.robot.openHand('RHand')
-        self.robot.openHand('LHand')
+        self.robot.openHand("RHand")
+        self.robot.openHand("LHand")
         return
 
     def disableTorqueBody(self):
@@ -59,15 +62,22 @@ class Move():
             motor.compliant = True
 
 
-
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='NICO ROS nicopose interface')
-    parser.add_argument('--label', dest='robotLabel',
-                        help='A for NVC. B non-NVC', type=str,
-                        default='A')
-    parser.add_argument('--position', dest='robotPosition',
-                        help='LEFT or RIGHT', type=str,
-                        default='LEFT')
+    parser = argparse.ArgumentParser(description="NICO ROS nicopose arguments")
+    parser.add_argument(
+        "--label",
+        dest="robotLabel",
+        help="A for NVC. B for non-NVC",
+        type=str,
+        default="A",
+    )
+    parser.add_argument(
+        "--position",
+        dest="robotPosition",
+        help="LEFT or RIGHT",
+        type=str,
+        default="LEFT",
+    )
 
     args = parser.parse_known_args()[0]
     label = args.robotLabel
@@ -75,5 +85,5 @@ if __name__ == "__main__":
     node_name = "nicopose_{}".format(label)
     rospy.init_node(node_name, anonymous=True)
     m = Move(args.robotLabel, args.robotPosition)
-    s = rospy.Service('{}/pose'.format(label),  Pose, m.response)
+    s = rospy.Service("{}/pose".format(label), Pose, m.response)
     rospy.spin()

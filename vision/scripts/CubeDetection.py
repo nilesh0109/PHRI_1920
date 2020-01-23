@@ -9,42 +9,68 @@ Created on Fri Jan 17 16:17:23 2020
 import cv2
 import os
 import datetime 
+from nicovision.VideoDevice import VideoDevice
+import time
+from cubeCounting import preprocess, count_cubes
+
 
 def cube_detect(participant_num=0):
-    
+
     #take an image
+    full_image = take_image()
+    P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
-    #crop
-    img1[img1 < 225] = 0 #left
-    img2[img2 < 225] = 0 #right
-  
-    params = cv2.SimpleBlobDetector_Params()
-
-    params.filterByArea = True
-    params.minArea = 200
-    params.maxArea = 1000
-    blob_detector = cv2.SimpleBlobDetector_create(params)
-
-    kp1 = blob_detector.detect(img1)
-    kp2 = blob_detector.detect(img2)
+    P_cubes = count_cubes(P_img)
+    left_robot_cubes = count_cubes(left_robot_img)
+    right_robot_cubes = count_cubes(right_robot_img)
+    
     if participant_num != 0:
-        response = save_images(participant_num, img1, img2, len(kp1), len(kp2))
+        response = save_images(participant_num, P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes)
         if response:
             return True
     else:
-        return len(kp1), len(kp2)
+        return left_robot_cubes, right_robot_cubes
 
 
-def save_images(participant_num, img1, img2, objects1, objects2):
-    participant_id = "Participant_"+participant_num
+def save_images(participant_num, P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes):
+    participant_id = "Participant_" + str(participant_num) #+ "_" + datetime.datetime.today().isoformat()
+    
+    if os.path.isdir(participant_id):
+        participant_id = participant_id + "_" + datetime.datetime.today().isoformat()
+        
     os.mkdir(participant_id)
     os.chdir(participant_id)
     os.mkdir("images")
     os.chdir("images") 
-    img_name = participant_id + "robotA_" + objects1 + datetime.datetime.today().isoformat() + '.png'
-    cv2.imwrite(img_name, img1)
-    img_name = participant_id + "robotB_" + objects2 + datetime.datetime.today().isoformat() + '.png'
-    cv2.imwrite(img_name, img2)
+    img_name = participant_id + "_robotA_cubes_" + str(left_robot_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
+    cv2.imwrite(img_name, left_robot_img)
+    img_name = participant_id + "_robotB_cubes_" + str(right_robot_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
+    cv2.imwrite(img_name, right_robot_img)
+    img_name = participant_id + "_cubes_" + str(P_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
+    cv2.imwrite(img_name, P_img)
     
     return True
 
+
+def take_image():
+    cam_path = VideoDevice.get_all_devices()
+#    print cam_path
+    for i in range(len(cam_path)):
+        if cam_path[i][-1:] == "0":
+            cam = cam_path[i]
+#            print cam
+            cam = 0
+        else:
+            cam = 1
+        
+    cam = cv2.VideoCapture(cam)
+    #print cam
+    
+    s, img = cam.read()
+    #print s
+    if s:    # frame captured without any errors
+        #cv2.imshow("cam-test",img)
+        time.sleep(0.1)
+        #cv2.destroyWindow("cam-test")
+        #cv2.imwrite("filename.jpg",img) #save image
+        return img
