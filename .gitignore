@@ -1,7 +1,6 @@
 *.pyc
 **/.idea/
 .idea/
-**.idea/
 .DS_Store
 venv
 NICO.log
