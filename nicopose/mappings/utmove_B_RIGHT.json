@@ -1,6 +1,6 @@
 {
   "scene_0_A_line_0": {
-    "gesture_delay": 0,
+    "gesture_delay": 1,
     "speech_delay": 0.5,
     "speed": 0.06,
     "pose_filename": "look_left.csv"
@@ -20,7 +20,7 @@
   "scene_1_B_line_0": {
     "gesture_delay": 1,
     "speech_delay": 0,
-    "speed": 0.03,
+    "speed": 0.05,
     "pose_filename": "look.csv"
   },
   "scene_2_A_line_0": {
@@ -32,7 +32,7 @@
   "scene_2_B_line_0": {
     "gesture_delay": 1,
     "speech_delay": 0,
-    "speed": 0.03,
+    "speed": 0.06,
     "pose_filename": "look.csv"
   },
   "scene_3_A_line_0": {
@@ -60,7 +60,7 @@
     "pose_filename": "look.csv"
   },
   "scene_2_S_line_0": {
-    "gesture_delay": 1,
+    "gesture_delay": 0,
     "speech_delay": 0,
     "speed": 0.08,
     "pose_filename": "s2s0_right.csv"
@@ -69,31 +69,31 @@
     "gesture_delay": 15,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look_at_cubes.csv"
+    "pose_filename": "look_at_cubes_right.csv"
   },
   "scene_1_S_line_2": {
     "gesture_delay": 7,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look_at_cubes.csv"
+    "pose_filename": "look_at_cubes_right.csv"
   },
   "scene_2_S_line_2": {
     "gesture_delay": 7,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look_at_cubes.csv"
+    "pose_filename": "look_at_cubes_right.csv"
   },
   "scene_3_S_line_2": {
     "gesture_delay": 4,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look_at_cubes.csv"
+    "pose_filename": "look_at_cubes_right.csv"
   },
   "scene_4_S_line_2": {
     "gesture_delay": 7,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look_at_cubes.csv"
+    "pose_filename": "look_at_cubes_right.csv"
   },
   "scene_0_question_0_answer_A": {
     "gesture_delay": 1,
