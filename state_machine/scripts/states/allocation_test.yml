@@ -1,0 +1,9 @@
+scene_0:
+  - event: "utterance"
+    speaker: "s"
+    audio: "scene_1_ship_0"
+  - event: "allocation"
+  - event: "utterance"
+    speaker: "s"
+    audio: "scene_1_ship_0"
+  - event: "unallocation"
