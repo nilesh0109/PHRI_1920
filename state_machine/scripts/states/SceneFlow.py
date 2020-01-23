@@ -54,10 +54,10 @@ class SceneFlow(smach.State):
             userdata.delay = self.script[self.scenes[self.scene_index]][self.dialog][
                 "delay"
             ]
-            if speaker == "s":
+            if speaker == "S":
                 userdata.last_ship_line = audio
                 outcome = "say_ship_line"
-            elif speaker == "a":
+            elif speaker == "A":
                 outcome = "say_robot_line_a"
             else:
                 outcome = "say_robot_line_b"
