@@ -26,9 +26,9 @@ class MakeUtterance(smach.Concurrence):
                                   ServiceState("/A/pose", Pose, request_slots=["param"]),
                                   )
 
-            #smach.Concurrence.add("NVCB",
-             #                     ServiceState("/B/pose", Pose, request_slots=["param"]),
-              #                    )
+            smach.Concurrence.add("NVCB",
+                                  ServiceState("/B/pose", Pose, request_slots=["param"]),
+                                  )
 
             smach.Concurrence.add("SPEAK",
                                   ServiceState(topic_name, SpeechSynthesis, request_slots=["audio", "speaker", "delay"]),
