@@ -5,7 +5,8 @@ import rospy
 import smach
 from smach_ros import ServiceState
 from speech.srv import SpeechRecognition, SpeechRecognitionRequest
-from vision.srv import CountResources
+from video.srv import PlayVideo
+from vision.srv import CountResources, CountResourcesRequest
 from states import SceneFlow, SayResponses, Speak, MakeUtterance
 
 # main
@@ -35,9 +36,9 @@ def main():
     sm.userdata.param = ""
     sm.userdata.last_ship_line = ""
     sm.userdata.scene = "scene_0"
+    sm.userdata.scene_id = 0
     sm.userdata.sentence = ""
     sm.userdata.qa_once = False
-    sm.userdata.no_of_objects = 69420
     sm.userdata.delay = 0
 
     # Open the container
@@ -51,7 +52,9 @@ def main():
                 "say_robot_line_b": "SPEAKB",
                 "say_ship_line": "SPEAKS",
                 "participant_input": "GET_QUESTION",
-                "ressource_allocation": "WAIT_FOR_CUBES",
+                "ressource_allocation": "GET_QUESTION",
+                "return_cubes": "RETURN_CUBES",
+                "play_video": "PLAY_VIDEO",
                 "unknown_event": "aborted",
                 "scenes_finished": "experiment_ended",
             },
@@ -95,28 +98,33 @@ def main():
                 "say_ship_line": "ANSWERS",
                 "participant_input": "GET_QUESTION",
                 "questions_done": "SCENE",
+                "done_confirmation": "CUBE_COUNT",
             },
             remapping={"question": "sentence"},
         )
 
         smach.StateMachine.add(
-            "WAIT_FOR_CUBES",
-            ServiceState(
-                "/speech_recognition",
-                SpeechRecognition,
-                request=SpeechRecognitionRequest("done"),
-                response_slots=["sentence"],
-            ),
-            transitions={"succeeded": "CUBE_COUNT"},
-        )
-
-        smach.StateMachine.add(
             "CUBE_COUNT",
             ServiceState(
-                "/count_objects", CountResources, response_slots=["no_of_objects"]
+                "/count_objects", CountResources, request=CountResourcesRequest(1)
             ),
             transitions={"succeeded": "SCENE"},
         )
+
+        smach.StateMachine.add(
+            "RETURN_CUBES",
+            ServiceState(
+                "/check_empty", CountResources, request=CountResourcesRequest(0)
+            ),
+            transitions={"succeeded": "SCENE"},
+        )
+
+        smach.StateMachine.add(
+            "PLAY_VIDEO",
+            ServiceState("/play_video", PlayVideo, request_slots=["scene_id"]),
+            transitions={"succeeded": "SCENE"},
+        )
+
         smach.StateMachine.add(
             "ANSWERA",
             MakeUtterance.MakeUtterance("/A/speech_synthesis"),
@@ -153,8 +161,6 @@ def main():
     # Execute SMACH plan
     outcome = sm.execute()
 
-    rospy.loginfo("nof_cubes = %i", sm.userdata.no_of_objects)
-    rospy.loginfo("recognized sentence = %s", sm.userdata.sentence)
     rospy.loginfo("StateMachine ended with outcome %s", outcome)
 
 

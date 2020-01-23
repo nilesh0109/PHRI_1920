@@ -27,7 +27,7 @@ scene0:
     delay: 0
     speaker: "S"
     audio: "scene_0_S_line_3"
-  #- event: "video"
+  - event: "video"
 scene1:
   - event: "utterance"
     delay: 0
@@ -86,7 +86,7 @@ scene2:
     speaker: "S"
     audio: "scene_2_S_line_3"
   - event: "unallocation"
-  #- event: "video"
+  - event: "video"
   - event: "utterance"
     delay: 0
     speaker: "S"
@@ -121,7 +121,7 @@ scene3:
     speaker: "S"
     audio: "scene_3_S_line_3"
   - event: "unallocation"
-  #- event: "video"
+  - event: "video"
 scene4:
   #- event: "image"
   - event: "utterance"
@@ -155,7 +155,7 @@ scene4:
     delay: 0
     speaker: "S"
     audio: "scene_4_S_line_4"
-  #- event: "video"
+  - event: "video"
   - event: "utterance"
     delay: 0
     speaker: "S"

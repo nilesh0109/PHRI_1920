@@ -14,6 +14,8 @@ class SceneFlow(smach.State):
                 "say_ship_line",
                 "participant_input",
                 "ressource_allocation",
+                "return_cubes",
+                "play_video",
                 "unknown_event",
                 "scenes_finished",
             ],
@@ -21,6 +23,7 @@ class SceneFlow(smach.State):
                 "speaker",
                 "audio",
                 "scene",
+                "scene_id",
                 "qa_once",
                 "delay",
                 "last_ship_line",
@@ -61,13 +64,19 @@ class SceneFlow(smach.State):
                 outcome = "say_robot_line_a"
             else:
                 outcome = "say_robot_line_b"
-        elif event == "allocation":
-            outcome = "ressource_allocation"
         elif event == "question":
             userdata.scene = self.scenes[self.scene_index]
             outcome = "participant_input"
+        elif event == "allocation":
+            userdata.scene = "done"
+            outcome = "ressource_allocation"
+        elif event == "unallocation":
+            outcome = "return_cubes"
+        elif event == "video":
+            userdata.scene_id = self.scene_index
+            outcome = "play_video"
         else:  # unknown event
-            rospy.loginfo("Encountered unknown event %s", event)
+            rospy.logwarn("Encountered unknown event %s", event)
         self.dialog += 1
         return outcome
 
