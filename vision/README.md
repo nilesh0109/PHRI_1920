@@ -18,7 +18,7 @@ Service call
     - 0 is blocked for service to check if the table in front of the robots is empty or not
 
 
-    In count_resources.py --> check_empty()
+In count_resources.py --> check_empty()
     - The automatic timeout is set for 30s can be changed accordingly
 
 
