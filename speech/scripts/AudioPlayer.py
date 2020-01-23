@@ -51,10 +51,11 @@ class AudioPlayer:
         # special case when on the wtmhri2 lab computer:
         if self.robot_name == 'S':
             for s in range(1, 17):  # play on all 16 channels simultaneously
-                with wave.open(filepath, 'rb') as wav_file:
-                    device = alsaaudio.PCM(device=("mono" + str(s)))
-                    st = threading.Thread(self.play_alsa(device, wav_file))
-                    st.start()
+                wav_file = wave.open(filepath, 'rb')
+                device = alsaaudio.PCM(device=("mono" + str(s)))
+                st = threading.Thread(self.play_alsa(device, wav_file))
+                st.start()
+                wav_file.close()
         else:
             self.audiofile = filename
             data, fs = sf.read(filepath, dtype='float32')
