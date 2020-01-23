@@ -3,16 +3,16 @@
 This repository is for anything that is code and directly tied to development.
 
 Launch Vision service 
-	rosrun vision count_resources.py robotA
-	rosrun vision count_resources.py robotB
+    rosrun vision count_resources.py robotA
+    rosrun vision count_resources.py robotB
 
 We can call service with any robot name A or B. Both will be called together
 
 Service call
-	rosservice call /robotA/count_objects participant_number
+    rosservice call /robotA/count_objects participant_number
     - participant_number is integer starting from 1
 
-	rosservice call /robotA/check_empty 0
+    rosservice call /robotA/check_empty 0
     - 0 is blocked for service to check if the table in front of the robots is empty or not
 
 * In count_resources.py --> check_empty()
