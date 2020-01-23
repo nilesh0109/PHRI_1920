@@ -54,14 +54,14 @@ def save_images(participant_num, P_img, left_robot_img, right_robot_img, P_cubes
 
 def take_image():
     cam_path = VideoDevice.get_all_devices()
-
+#    print cam_path
     for i in range(len(cam_path)):
         if cam_path[i][-1:] == "0":
             cam = cam_path[i]
-            #print cam
-            cam = 1
-        else:
+#            print cam
             cam = 0
+        else:
+            cam = 1
         
     cam = cv2.VideoCapture(cam)
     #print cam
