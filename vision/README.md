@@ -2,13 +2,15 @@
 
 This repository is for anything that is code and directly tied to development.
 
-Launch Vision service 
+Launch Vision service
+ 
     rosrun vision count_resources.py robotA
     rosrun vision count_resources.py robotB
 
 We can call service with any robot name A or B. Both will be called together
 
 Service call
+
     rosservice call /robotA/count_objects participant_number
     - participant_number is integer starting from 1
 
