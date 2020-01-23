@@ -1,13 +1,131 @@
+################Scene0####################
 scene_0_question_0:
-  - speaker: "a"
+  - speaker: "A"
     audio: "scene_0_question_0_answer_A"
-    delay: 0
-  - speaker: "b"
+    delay: 1.5
+  - speaker: "B"
     audio: "scene_0_question_0_answer_B"
-    delay: 0
+    delay: 1.5
+scene_0_question_1:
+  - speaker: "A"
+    audio: "scene_0_question_1_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_0_question_1_answer_B"
+    delay: 1.5
+scene_0_question_2:
+  - speaker: "A"
+    audio: "scene_0_question_2_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_0_question_2_answer_B"
+    delay: 1.5
+scene_0_question_3:
+  - speaker: "A"
+    audio: "scene_0_question_3_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_0_question_3_answer_B"
+    delay: 1.5
+################Scene1####################
+scene_1_question_0:
+  - speaker: "A"
+    audio: "scene_1_question_0_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_1_question_0_answer_B"
+    delay: 1.5
+scene_1_question_1:
+  - speaker: "A"
+    audio: "scene_1_question_1_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_1_question_1_answer_B"
+    delay: 1.5
+scene_1_question_2:
+  - speaker: "A"
+    audio: "scene_1_question_2_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_1_question_2_answer_B"
+    delay: 1.5
+scene_1_question_3:
+  - speaker: "A"
+    audio: "scene_1_question_3_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_1_question_3_answer_B"
+    delay: 1.5
+################Scene2####################
+scene_2_question_0:
+  - speaker: "A"
+    audio: "scene_2_question_0_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_2_question_0_answer_B"
+    delay: 1.5
+scene_2_question_1:
+  - speaker: "A"
+    audio: "scene_2_question_1_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_2_question_1_answer_B"
+    delay: 1.5
+scene_2_question_2:
+  - speaker: "A"
+    audio: "scene_2_question_2_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_2_question_2_answer_B"
+    delay: 1.5
+################Scene3####################
+scene_3_question_0:
+  - speaker: "A"
+    audio: "scene_3_question_0_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_3_question_0_answer_B"
+    delay: 1.5
+scene_3_question_1:
+  - speaker: "A"
+    audio: "scene_3_question_1_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_3_question_1_answer_B"
+    delay: 1.5
+scene_3_question_2:
+  - speaker: "A"
+    audio: "scene_3_question_2_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_3_question_2_answer_B"
+    delay: 1.5
+################Scene4####################
+scene_4_question_0:
+  - speaker: "A"
+    audio: "scene_4_question_0_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_4_question_0_answer_B"
+    delay: 1.5
+scene_4_question_1:
+  - speaker: "A"
+    audio: "scene_4_question_1_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_4_question_1_answer_B"
+    delay: 1.5
+scene_4_question_2:
+  - speaker: "A"
+    audio: "scene_4_question_2_answer_A"
+    delay: 1.5
+  - speaker: "B"
+    audio: "scene_4_question_2_answer_B"
+    delay: 1.5
+##########################################
 timeout:
   - speaker: s
-    audio: repeat
+    audio: "repeat"
     delay: 0
 repetition_request:
   - speaker: s

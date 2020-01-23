@@ -18,7 +18,7 @@ class MakeUtterance(smach.Concurrence):
             outcomes=["utterance_done", "utterance_failed"],
             default_outcome="utterance_failed",
             # outcome_map={"utterance_done": {"SPEAK": "speech_done", "NVC": "nvc_done"}},
-            outcome_map={"utterance_done": {"SPEAK": "succeeded"}},
+            outcome_map={"utterance_done": {"SPEAK": "succeeded", "NVCA": "succeeded", "NVCB": "succeeded"}},
         )
         # Open the container
         with self:
