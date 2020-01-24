@@ -2,5 +2,7 @@
 **/.idea/
 .idea/
 .DS_Store
+*.mp4
+*.swp
 venv
 NICO.log
