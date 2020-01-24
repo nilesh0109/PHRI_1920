@@ -11,7 +11,7 @@ def handle_resources_request(req):
     success = False
     scene_num = req.scene_number
     while success == False:
-        success = cube_detect(scene_num, 1) #when 0 it will check for empty table
+        success = cube_detect(scene_num, 1) 
         
         if success:
             return CountResourcesResponse(success)
@@ -37,7 +37,6 @@ def check_table_empty(req):
         if time.time() - start > 30: #30 seconds timeout
             break
         
-    #return CheckEmptyResponse(True)
     return CountResourcesResponse(True)
     
 

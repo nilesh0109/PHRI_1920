@@ -17,10 +17,9 @@ from cubeCounting import preprocess, count_cubes
 def cube_detect(scene_num, participant_num=0):
 
     #take an image
-#    full_image = take_image()
-    full_image= cv2.imread('/informatik2/students/home/8bhatia/PHRI1920/vision-phri1920/cube_count/test.jpg')
-#    cv2.imwrite("img5.jpg", full_image)
-#    cv2.waitKey(0)
+    full_image = take_image()
+#    full_image= cv2.imread('/informatik2/students/home/8bhatia/PHRI1920/vision-phri1920/cube_count/test.jpg')
+
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
     P_cubes = count_cubes(P_img)
