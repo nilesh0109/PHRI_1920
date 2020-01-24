@@ -17,7 +17,7 @@ class SayResponses(smach.State):
                 "done_confirmation",
             ],
             input_keys=["question", "last_ship_line"],
-            output_keys=["speaker", "audio", "delay"],
+            output_keys=["speaker", "audio", "delay", "param"],
         )
         self.repeat_once = False
         self.answer_index = 0
@@ -36,6 +36,11 @@ class SayResponses(smach.State):
             answer = answers[self.answer_index]
             userdata.speaker = answer["speaker"]
             userdata.audio = (
+                userdata.last_ship_line
+                if userdata.question == "repetition_request"
+                else answer["audio"]
+            )
+            userdata.param = (
                 userdata.last_ship_line
                 if userdata.question == "repetition_request"
                 else answer["audio"]

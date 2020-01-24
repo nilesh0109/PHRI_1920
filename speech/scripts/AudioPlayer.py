@@ -50,9 +50,13 @@ class AudioPlayer:
     def play(self, filepath, filename):
         # special case when on the wtmhri2 lab computer:
         if self.robot_name == 'S':
+            threads = []
             for channel in range(1, 17):  # play on all 16 channels simultaneously
                 st = threading.Thread(target=play_file, args=(filepath, channel))
+                threads.append(st)
                 st.start()
+            for thread in threads:
+                thread.join()
         else:
             self.audiofile = filename
             data, fs = sf.read(filepath, dtype='float32')
