@@ -1,13 +1,8 @@
 *.pyc
 **/.idea/
 .idea/
-**.idea/
 .DS_Store
-<<<<<<< HEAD
-*.pyc
 *.mp4
-
-=======
+*.swp
 venv
 NICO.log
->>>>>>> motion

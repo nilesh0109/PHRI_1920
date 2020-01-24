@@ -34,13 +34,20 @@ def recognize(context, confidence_threshold=0.5):
 		context_sentences = 3
 		print("Using emergency sentences")
 
-	print(sentencelist)
+	#print(sentencelist)
 
-	# setting up the recognizer
 	listener = sr.Recognizer()
-
-	listener.phrase_threshold = 2 # minimum seconds of speaking audio before we consider the speaking audio a phrase - values below this are ignored (for filtering out clicks and pops)
-	listener.pause_threshold = 1  # seconds of non-speaking audio before a phrase is considered complete
+	
+	# Setting the parameters.
+	if not(context == "done"):
+	# setting up the recognizer
+		listener.phrase_threshold = 2 # minimum seconds of speaking audio before we consider the speaking audio a phrase - values below this are ignored (for filtering out clicks and pops)
+		listener.pause_threshold = 1.5  # seconds of non-speaking audio before a phrase is considered complete
+	else:
+		listener.phrase_threshold = 1
+		listener.pause_threshold = 1
+		silence_timeout = 60 # timeout in seconds if it does not get any speech signal
+		confidence_threshold = 0.3
 
 
     # with sr.AudioFile("./example-wavs/test_adjust.wav") as noise:
@@ -61,9 +68,9 @@ def recognize(context, confidence_threshold=0.5):
 
             # with sr.AudioFile("./example-wavs/test_sentence.wav") as source:
             with sr.Microphone() as source:
-                print('Say Something!')
+                print('-------------- Listening ----------------')
 		try:
-                	audio_data = listener.listen(source, timeout=10)
+                	audio_data = listener.listen(source, timeout=silence_timeout)
 
 		        if not(use_google):
 		            if decode_with == "greedy":
@@ -85,24 +92,33 @@ def recognize(context, confidence_threshold=0.5):
 		                                              hypotheses)
 
 		        print "Sentencelist Postprocessor understood: {}".format(docks_hypotheses)
-			if confidence > confidence_threshold:
-				print("This corresponds to answer " + str(sentencelist.index(docks_hypotheses+"\n")) + "With confidence " + str(confidence))
-				sentence_nr = sentencelist.index(docks_hypotheses+"\n")
-				if sentence_nr < context_sentences:
-					if context == "done":
-						sentence_id = "done_confirmation"
-					else:
-						sentence_id = context + "_question_" + str(sentence_nr)
+			if context == "done":
+				if confidence > confidence_threshold and sentencelist.index(docks_hypotheses+"\n") == 0:
+					print("This corresponds to answer " + str(sentencelist.index(docks_hypotheses+"\n")) + " with confidence " + str(confidence))
+					sentence_id = "done_confirmation"
 				else:
-					sentence_id = "repetion_request"
+					print("This corresponds to answer " + str(sentencelist.index(docks_hypotheses+"\n")) + " with confidence " + str(confidence))
+					sentence_id = "repetition_request"
+			else: 
+				if confidence > confidence_threshold:
+					print("This corresponds to answer " + str(sentencelist.index(docks_hypotheses+"\n")) + " with confidence " + str(confidence))
+					sentence_nr = sentencelist.index(docks_hypotheses+"\n")
+					if sentence_nr < context_sentences:
+						sentence_id = context + "_question_" + str(sentence_nr)
+					else:
+						sentence_id = "repetion_request"
 
-				print("To be returned to service: " + sentence_id)
-			else:
-				sentence_id="timeout"
-				print("To be returned to service: " + sentence_id)
+					print("To be returned to service: " + sentence_id)
+				else:
+					print("This corresponds to answer " + str(sentencelist.index(docks_hypotheses+"\n")) + " with confidence " + str(confidence))
+					sentence_id="timeout"
+					print("To be returned to service: " + sentence_id)
 			return sentence_id
 		except:
-			sentence_id ="timeout"
+			if context=="done":
+				sentence_id = "repetition_request"
+			else:
+				sentence_id ="timeout"
 			print("To be returned to service: " + sentence_id)
 			return sentence_id
 

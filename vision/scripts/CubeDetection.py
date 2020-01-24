@@ -25,20 +25,29 @@ def cube_detect(participant_num=0):
     right_robot_cubes = count_cubes(right_robot_img)
     
     if participant_num != 0:
-        response = save_images(participant_num, P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes)
+        response = save_images(P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes)
         if response:
             return True
     else:
         return left_robot_cubes, right_robot_cubes
 
 
-def save_images(participant_num, P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes):
-    participant_id = "Participant_" + str(participant_num) #+ "_" + datetime.datetime.today().isoformat()
+def save_images(P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes):
+    #participant_id = "Participant_" + str(participant_num) #+ "_" + datetime.datetime.today().isoformat()
     
-    if os.path.isdir(participant_id):
-        participant_id = participant_id + "_" + datetime.datetime.today().isoformat()
+    directory = "./"
+    p_nr = len(os.listdir(directory))
+    if p_nr:
+        participant_id = directory + "participant_%s" % str(p_nr)
+        os.makedirs(participant_id)
+    else:
+        participant_id = directory + "participant_/%s" % str(1)
+        os.makedirs(participant_id)
+    
+    #if os.path.isdir(participant_id):
+     #   participant_id = participant_id + "_" + datetime.datetime.today().isoformat()
         
-    os.mkdir(participant_id)
+    #os.mkdir(participant_id)
     os.chdir(participant_id)
     os.mkdir("images")
     os.chdir("images") 

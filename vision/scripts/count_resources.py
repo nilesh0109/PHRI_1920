@@ -10,7 +10,7 @@ import numpy as np
 def handle_resources_request(req):
     success = False
     while success == False:
-        success = cube_detect(req.participant_num)
+        success = cube_detect(1) #when 0 it will check for empty table
         
         if success:
             return CountResourcesResponse(success)
@@ -21,9 +21,9 @@ def check_table_empty(req):
     table1 = []
     table2 = []
     start = time.time()
-    print req.participant_num
+    #print req.participant_num
     while True:
-        object1, object2 = cube_detect(req.participant_num)
+        object1, object2 = cube_detect(0) #checks empty table
         table1.append(object1)
         table2.append(object2)
         time.sleep(0.2)
@@ -42,8 +42,14 @@ def check_table_empty(req):
 def count_resources_server(robot_name=''):
     rospy.init_node('count_resources_allocated')
     s = rospy.Service(robot_name+'/count_objects', CountResources, handle_resources_request)
+    print s
+    if s:
+        print "Count objects service launced"
     #e = rospy.Service(robot_name+'/check_empty', CheckEmpty, check_table_empty)
     e = rospy.Service(robot_name+'/check_empty', CountResources, check_table_empty)
+    if e:
+        print "Check empty table service launced"
+    
 
     rospy.spin()
 
