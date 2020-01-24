@@ -17,7 +17,7 @@ class SayResponses(smach.State):
                 "done_confirmation",
             ],
             input_keys=["question", "last_ship_line"],
-            output_keys=["speaker", "audio"],
+            output_keys=["speaker", "audio", "delay"],
         )
         self.repeat_once = False
         self.answer_index = 0
@@ -27,6 +27,7 @@ class SayResponses(smach.State):
     def execute(self, userdata):
         rospy.loginfo("Executing state RESOLVE_QUESTION")
         if userdata.question == "done_confirmation":
+            self.answer_index = 0
             return "done_confirmation"
         answers = self.question_answers[userdata.question]
         if userdata.question == "timeout" or userdata.question == "repetition_request":
