@@ -29,7 +29,7 @@ def check_table_empty(req):
         table1.append(object1)
         table2.append(object2)
         time.sleep(0.2)
-        
+#        print table1, table2
         if len(table1) > 3:
             if np.average(table1[-3:]) == 0 and np.average(table2[-3:]) == 0:
                 break
