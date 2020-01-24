@@ -9,8 +9,9 @@ import numpy as np
 
 def handle_resources_request(req):
     success = False
+    scene_num = req.scene_number
     while success == False:
-        success = cube_detect(1) #when 0 it will check for empty table
+        success = cube_detect(scene_num, 1) #when 0 it will check for empty table
         
         if success:
             return CountResourcesResponse(success)
@@ -21,9 +22,10 @@ def check_table_empty(req):
     table1 = []
     table2 = []
     start = time.time()
-    #print req.participant_num
+    
+    scene_num = req.scene_number
     while True:
-        object1, object2 = cube_detect(0) #checks empty table
+        object1, object2 = cube_detect(scene_num, 0) #checks empty table
         table1.append(object1)
         table2.append(object2)
         time.sleep(0.2)

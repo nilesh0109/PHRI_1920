@@ -48,7 +48,7 @@ def blob_detect(img):
     #plt.imshow(im_with_keypoints, cmap="gray")
     
 def thre1(img):
-    ret,thresh = cv2.threshold(img,50,255,cv2.THRESH_BINARY)  #127, 255
+    ret,thresh = cv2.threshold(img,127,255,cv2.THRESH_BINARY)
     #plt.figure(figsize=(15,15))
     #plt.imshow(thresh, cmap="gray")
     return thresh
@@ -115,7 +115,7 @@ def hf(img):
     cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
 
     circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,20,
-                                param1=25,param2=10,minRadius=0,maxRadius=0)   #param2 25
+                                param1=25,param2=25,minRadius=0,maxRadius=0)   #param2 30 1, 20
     if circles is None:
         return cimg, 0
     circles = np.uint16(np.around(circles))
@@ -151,7 +151,6 @@ def preprocess(img):
 def count_cubes(img):
     
     thr = thre1(img)
-    '''
     clos = closing(thr)
 
     layer = clos.copy()
@@ -170,10 +169,8 @@ def count_cubes(img):
         laplacian_pyramid.append(laplacian)
         
     lay = laplacian_pyramid[-1]
-    '''
 
     #blob_detect(lay)
-    
-    _, nr = hf(thr)
+    _, nr = hf(lay)
     
     return nr
