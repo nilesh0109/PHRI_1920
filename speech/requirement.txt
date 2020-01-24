@@ -7,5 +7,5 @@ sounddevice
 SoundFile
 SpeechRecognition
 urllib3==1.23
+pyalsaaudio
 PyAudio
-
