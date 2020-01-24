@@ -35,11 +35,11 @@ scene_1:
     speaker: "S"
     audio: "scene_1_S_line_0"
   - event: "utterance"
-    delay: 1.5
+    delay: 3
     speaker: "A"
     audio: "scene_1_A_line_0"
   - event: "utterance"
-    delay: 1.5
+    delay: 3
     speaker: "B"
     audio: "scene_1_B_line_0"
   - event: "utterance"
@@ -65,7 +65,7 @@ scene_2:
     speaker: "S"
     audio: "scene_2_S_line_0"
   - event: "utterance"
-    delay: 1.5
+    delay: 4.5
     speaker: "A"
     audio: "scene_2_A_line_0"
   - event: "utterance"
@@ -102,7 +102,7 @@ scene_3:
     speaker: "B"
     audio: "scene_3_B_line_0"
   - event: "utterance"
-    delay: 1.5
+    delay: 2.5
     speaker: "A"
     audio: "scene_3_A_line_0"
   - event: "utterance"
