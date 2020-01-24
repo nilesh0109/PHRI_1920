@@ -135,14 +135,15 @@ def hf(img):
 #return cropped surfaces in following order: participant, left robo, right robo
 def preprocess(img):
     gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    left_robot_img = rotateImage(gray, 55).copy()
-    left_robot_img = left_robot_img[310:375, 300:390]
+    left_robot_img = rotateImage(gray, 48).copy()
+    left_robot_img = left_robot_img[329:388, 287:371]
     
-    right_robot_img = rotateImage(gray, 116).copy()
-    right_robot_img = right_robot_img[80:145, 285:375]
+    right_robot_img = rotateImage(gray, 113).copy()
+    right_robot_img = right_robot_img[96:157, 292:380]
     
-    participant = gray[110:185, 280:377].copy()
-    return participant, left_robot_img, right_robot_img
+    participant = rotateImage(gray, -10).copy()
+    participant = participant[122:190, 270:365].copy()
+    return participant , left_robot_img , right_robot_img
 
 
 #Place the cubes in distance of each other

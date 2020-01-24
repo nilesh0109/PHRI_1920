@@ -98,13 +98,13 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
 
 def take_image():
     cam_path = VideoDevice.get_all_devices()
-    print cam_path
+#    print cam_path
     for i in range(len(cam_path)):
         if cam_path[i][-1:] == "0":
             cam = cam_path[i]
-            print cam
+#            print cam
             cam = 0
-            print cam
+#            print cam
             break
         else:
             cam = 1
