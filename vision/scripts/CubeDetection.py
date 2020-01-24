@@ -12,15 +12,14 @@ import datetime
 from nicovision.VideoDevice import VideoDevice
 import time
 from cubeCounting import preprocess, count_cubes
-
+from os.path import dirname, abspath
 
 def cube_detect(scene_num, participant_num=0):
 
     #take an image
-#    full_image = take_image()
-    full_image= cv2.imread('/informatik2/students/home/8bhatia/PHRI1920/vision-phri1920/cube_count/test.jpg')
-#    cv2.imwrite("img5.jpg", full_image)
-#    cv2.waitKey(0)
+    full_image = take_image()
+#    full_image= cv2.imread('/informatik2/students/home/8bhatia/PHRI1920/vision-phri1920/cube_count/test.jpg')
+
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
     P_cubes = count_cubes(P_img)
@@ -37,7 +36,10 @@ def cube_detect(scene_num, participant_num=0):
 
 def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes, full_image):
     
-    directory = "/informatik2/students/home/8bhatia/catkin_ws/test"
+    directory = dirname(abspath(__file__)) + "/../../../data"
+    
+    if not os.path.exists(directory):
+        os.mkdir(directory)
 
     scene_ = "scene_" + str(scene_num)
     if scene_num == 0:
@@ -89,28 +91,7 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
     img_name = participant_id + "_FullImage_" + datetime.datetime.today().isoformat() + '.png'
     cv2.imwrite(img_name, full_image)
     
-        
-#    p_nr = len(os.walk(directory).next()[1])
-#    if p_nr:
-#        participant_id = directory + "participant_%s" % str(p_nr)
-#        os.makedirs(participant_id)
-#    else:
-#        participant_id = directory + "participant_/%s" % str(1)
-#        os.makedirs(participant_id)
-#    
-#    #if os.path.isdir(participant_id):
-#     #   participant_id = participant_id + "_" + datetime.datetime.today().isoformat()
-#        
-#    #os.mkdir(participant_id)
-#    os.chdir(participant_id)
-#    os.mkdir("images")
-#    os.chdir("images") 
-#    img_name = participant_id + "_robotA_cubes_" + str(left_robot_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
-#    cv2.imwrite(img_name, left_robot_img)
-#    img_name = participant_id + "_robotB_cubes_" + str(right_robot_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
-#    cv2.imwrite(img_name, right_robot_img)
-#    img_name = participant_id + "_cubes_" + str(P_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
-#    cv2.imwrite(img_name, P_img)
+ 
     
     return True
 
