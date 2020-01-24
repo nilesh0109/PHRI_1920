@@ -1,5 +1,6 @@
 boto3
 catkin_pkg
+cffi
 empy
 pyaml
 rospkg
