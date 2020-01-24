@@ -11,11 +11,12 @@ We can call service with any robot name A or B. Both will be called together
 
 Service call
 
-    rosservice call /robotA/count_objects participant_number
-    - participant_number is integer starting from 1
+    rosservice call /robotA/count_objects scene_number
+    
 
-    rosservice call /robotA/check_empty 0
-    - 0 is blocked for service to check if the table in front of the robots is empty or not
+    rosservice call /robotA/check_empty scene_number
+	- scene_number is integer starting from 0 passed by state machine
+    
 
 
 * In count_resources.py --> check_empty()
