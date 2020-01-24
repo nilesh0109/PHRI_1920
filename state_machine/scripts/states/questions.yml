@@ -124,10 +124,10 @@ scene_4_question_2:
     delay: 1.5
 ##########################################
 timeout:
-  - speaker: s
+  - speaker: "S"
     audio: "repeat"
     delay: 0
 repetition_request:
-  - speaker: s
+  - speaker: "S"
     audio: "" # not needed here since it uses last ship line
     delay: 0
