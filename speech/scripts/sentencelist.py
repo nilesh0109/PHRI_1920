@@ -4,6 +4,7 @@ import docks2_remote.docks2_remote.postprocessor as postprocessor
 import speech_recognition as sr
 from os.path import dirname, abspath
 from argparse import ArgumentParser
+import timeit
 
 
 def recognize(context):
@@ -14,13 +15,16 @@ def recognize(context):
 
     # Server settings taken from Johannes Twiefel's recognition system.
     # This server is accessible only from computers connected to the informatikum network.
+    time_0 = timeit.default_timer()
     server = 'sysadmin@wtmitx1'
     port = 55101
     client = Client(server=server, port=port)
     sentences_dir = dirname(dirname(abspath(__file__))) + '/scripts/'
 
     print("Received context: " + context)
-
+    init_time = timeit.default_timer()
+    print("Connection to server time: " + str(init_time-time_0))
+	
     # Language to be recognized
     language = "english"
     language_code = "en-EN"
@@ -29,15 +33,22 @@ def recognize(context):
     if context == "done":
         sentence_list = open(sentences_dir + "wendigo.sentences.txt").readlines()
         context_sentences = 1
+        postprocessor= 'done_sentencelist_postprocessor'
         print("Using wendigo sentences")
     elif context == "scene_0" or context == "scene_1":
         sentence_list = open(sentences_dir + "mission.sentences.txt").readlines()
         context_sentences = 4
+        postprocessor = "mission_sentencelist_postprocessor"
         print("Using mission sentences")
     else:
         sentence_list = open(sentences_dir + "emergency.sentences.txt").readlines()
         context_sentences = 3
+        postprocessor = "emergency_sentencelist_postprocessor"
         print("Using emergency sentences")
+
+    done_sentence_list = open(sentences_dir + "wendigo.sentences.txt").readlines()
+    mission_sentence_list = open(sentences_dir + "mission.sentences.txt").readlines()
+    emergency_sentence_list = open(sentences_dir + "emergency.sentences.txt").readlines()
 
     # The main recognizing unit.
     listener = sr.Recognizer()
@@ -65,24 +76,41 @@ def recognize(context):
     # with sr.AudioFile("./example-wavs/test_adjust.wav") as noise:
     with sr.Microphone() as noise:
         listener.adjust_for_ambient_noise(noise)
+	pre_post_time = timeit.default_timer()
+    def create_postprocessors():
+        with client.connect() as server:
+            # creates a sentencelist postprocessor on the server with a given sentence-list
+            server.create_postprocessor(
+               postprocessor.SentencelistPostprocessor,
+                'done_sentencelist_postprocessor',
+                sentencelist=done_sentence_list,
+                language=language,
+                language_code=language_code)
 
-    with client.connect() as server:
-        # creates a sentencelist postprocessor on the server with a given sentence-list
-        server.create_postprocessor(
-            postprocessor.SentencelistPostprocessor,
-            'sentencelist_postprocessor',
-            sentencelist=sentence_list,
-            language=language,
-            language_code=language_code)
-
+            server.create_postprocessor(
+                postprocessor.SentencelistPostprocessor,
+                'mission_sentencelist_postprocessor',
+                sentencelist=mission_sentence_list,
+                language=language,
+                language_code=language_code)
+            server.create_postprocessor(
+                postprocessor.SentencelistPostprocessor,
+                'emergency_sentencelist_postprocessor',
+                sentencelist=emergency_sentence_list,
+                language=language,
+                language_code=language_code)
+		
+    print("Context time: " + str(timeit.default_timer()-pre_post_time))
     while True:
 
         # If recognition should be based on a file than use:
         # with sr.AudioFile("./example-wavs/test_sentence.wav") as source:
 
         # Recognizes directly from microphone stream
+        print("Context time: " + str(timeit.default_timer()-init_time))
         with sr.Microphone() as source:
             print('--------------------- Listening -------------------')
+            print("Total elapsed time: " + str(timeit.default_timer() - time_0))
             try:
                 # Collecting raw audio from microphone.
                 audio_data = listener.listen(source, timeout=silence_timeout)
@@ -93,7 +121,7 @@ def recognize(context):
                 "Docks2 understood: {}".format(hypotheses.lower())
 
                 # Match the sentence to a sentence in the list given, with certain confidence.
-                docks_hypotheses, confidence = server.postprocess('sentencelist_postprocessor',
+                docks_hypotheses, confidence = server.postprocess(postprocessor,
                                                                   hypotheses)
 
                 sentence_list_index = sentence_list.index(docks_hypotheses + "\n")
