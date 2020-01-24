@@ -6,6 +6,39 @@ from os.path import dirname, abspath
 from argparse import ArgumentParser
 import timeit
 
+def initialize():
+    server = 'sysadmin@wtmitx1'
+    port = 55101
+    client = Client(server=server, port=port)
+
+    # Language to be recognized
+    language = "english"
+    language_code = "en-EN"
+
+    sentences_dir = dirname(dirname(abspath(__file__))) + '/scripts/'
+    done_sentence_list = open(sentences_dir + "wendigo.sentences.txt").readlines()
+    mission_sentence_list = open(sentences_dir + "mission.sentences.txt").readlines()
+    emergency_sentence_list = open(sentences_dir + "emergency.sentences.txt").readlines()
+    with client.connect() as server:
+        server.create_postprocessor(
+            postprocessor.SentencelistPostprocessor,
+            'done_sentencelist_postprocessor',
+            sentencelist=done_sentence_list,
+            language=language,
+            language_code=language_code)
+
+        server.create_postprocessor(
+            postprocessor.SentencelistPostprocessor,
+            'mission_sentencelist_postprocessor',
+            sentencelist=mission_sentence_list,
+            language=language,
+            language_code=language_code)
+        server.create_postprocessor(
+            postprocessor.SentencelistPostprocessor,
+            'emergency_sentencelist_postprocessor',
+            sentencelist=emergency_sentence_list,
+            language=language,
+            language_code=language_code)
 
 def recognize(context):
     '''
@@ -46,10 +79,6 @@ def recognize(context):
         postprocessor = "emergency_sentencelist_postprocessor"
         print("Using emergency sentences")
 
-    done_sentence_list = open(sentences_dir + "wendigo.sentences.txt").readlines()
-    mission_sentence_list = open(sentences_dir + "mission.sentences.txt").readlines()
-    emergency_sentence_list = open(sentences_dir + "emergency.sentences.txt").readlines()
-
     # The main recognizing unit.
     listener = sr.Recognizer()
 
@@ -76,83 +105,61 @@ def recognize(context):
     # with sr.AudioFile("./example-wavs/test_adjust.wav") as noise:
     with sr.Microphone() as noise:
         listener.adjust_for_ambient_noise(noise)
-	pre_post_time = timeit.default_timer()
-    def create_postprocessors():
-        with client.connect() as server:
-            # creates a sentencelist postprocessor on the server with a given sentence-list
-            server.create_postprocessor(
-               postprocessor.SentencelistPostprocessor,
-                'done_sentencelist_postprocessor',
-                sentencelist=done_sentence_list,
-                language=language,
-                language_code=language_code)
-
-            server.create_postprocessor(
-                postprocessor.SentencelistPostprocessor,
-                'mission_sentencelist_postprocessor',
-                sentencelist=mission_sentence_list,
-                language=language,
-                language_code=language_code)
-            server.create_postprocessor(
-                postprocessor.SentencelistPostprocessor,
-                'emergency_sentencelist_postprocessor',
-                sentencelist=emergency_sentence_list,
-                language=language,
-                language_code=language_code)
+    pre_post_time = timeit.default_timer()
+    with client.connect() as server:
 		
-    print("Context time: " + str(timeit.default_timer()-pre_post_time))
-    while True:
+        #print("Context time: " + str(timeit.default_timer()-pre_post_time))
+        while True:
 
-        # If recognition should be based on a file than use:
-        # with sr.AudioFile("./example-wavs/test_sentence.wav") as source:
+            # If recognition should be based on a file than use:
+            # with sr.AudioFile("./example-wavs/test_sentence.wav") as source:
 
-        # Recognizes directly from microphone stream
-        print("Context time: " + str(timeit.default_timer()-init_time))
-        with sr.Microphone() as source:
-            print('--------------------- Listening -------------------')
-            print("Total elapsed time: " + str(timeit.default_timer() - time_0))
-            try:
-                # Collecting raw audio from microphone.
-                audio_data = listener.listen(source, timeout=silence_timeout)
+            # Recognizes directly from microphone stream
+            #print("Context time: " + str(timeit.default_timer()-init_time))
+            with sr.Microphone() as source:
+                print('--------------------- Listening -------------------')
+                print("Total elapsed time: " + str(timeit.default_timer() - time_0))
+                try:
+                    # Collecting raw audio from microphone.
+                    audio_data = listener.listen(source, timeout=silence_timeout)
 
-                # Transforms the audio in a string based on the language
-                hypotheses, _ = server.recognize(audio_data, ['ds', 'greedy'])
-                print
-                "Docks2 understood: {}".format(hypotheses.lower())
+                    # Transforms the audio in a string based on the language
+                    hypotheses, _ = server.recognize(audio_data, ['ds', 'greedy'])
+                    print("Docks2 understood: {}".format(hypotheses.lower()))
 
-                # Match the sentence to a sentence in the list given, with certain confidence.
-                docks_hypotheses, confidence = server.postprocess(postprocessor,
-                                                                  hypotheses)
+                    # Match the sentence to a sentence in the list given, with certain confidence.
+                    docks_hypotheses, confidence = server.postprocess(postprocessor,
+                                                                      hypotheses)
 
-                sentence_list_index = sentence_list.index(docks_hypotheses + "\n")
-                print("This corresponds to answer " + str(sentence_list_index)
-                      + " with confidence " + str(confidence))
+                    sentence_list_index = sentence_list.index(docks_hypotheses + "\n")
+                    print("This corresponds to answer " + str(sentence_list_index)
+                          + " with confidence " + str(confidence))
 
-                # Extracting sentence_id from recognition data.
-                if context == "done":
-                    if confidence > confidence_threshold and sentence_list_index == 0:
-                        sentence_id = "done_confirmation"
-                    else:
-                        sentence_id = "repetition_request"
-                else:
-                    if confidence > confidence_threshold:
-                        if sentence_list_index < context_sentences:
-                            sentence_id = context + "_question_" + str(sentence_list_index)
+                    # Extracting sentence_id from recognition data.
+                    if context == "done":
+                        if confidence > confidence_threshold and sentence_list_index == 0:
+                            sentence_id = "done_confirmation"
                         else:
-                            sentence_id = "repetion_request"
+                            sentence_id = "repetition_request"
+                    else:
+                        if confidence > confidence_threshold:
+                            if sentence_list_index < context_sentences:
+                                sentence_id = context + "_question_" + str(sentence_list_index)
+                            else:
+                                sentence_id = "repetion_request"
+                        else:
+                            sentence_id = "timeout"
+                    print("To be returned to service: " + sentence_id)
+                    return sentence_id
+
+
+                except: # This mainly catches a time out exception based on "silence_timeout".
+                    if context == "done":
+                        sentence_id = "repetition_request"
                     else:
                         sentence_id = "timeout"
-                print("To be returned to service: " + sentence_id)
-                return sentence_id
-
-
-            except: # This mainly catches a time out exception based on "silence_timeout".
-                if context == "done":
-                    sentence_id = "repetition_request"
-                else:
-                    sentence_id = "timeout"
-                print("To be returned to service: " + sentence_id)
-                return sentence_id
+                    print("To be returned to service: " + sentence_id)
+                    return sentence_id
 
 
 if __name__ == "__main__":
