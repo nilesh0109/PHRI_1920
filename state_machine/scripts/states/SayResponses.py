@@ -42,9 +42,9 @@ class SayResponses(smach.State):
             )
             userdata.delay = answer["delay"]
             self.answer_index += 1
-            if answer["speaker"] == "s":
+            if answer["speaker"] == "S":
                 return "say_ship_line"
-            elif answer["speaker"] == "a":
+            elif answer["speaker"] == "A":
                 return "say_robot_line_a"
             else:
                 return "say_robot_line_b"
