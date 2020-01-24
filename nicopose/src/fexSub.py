@@ -11,11 +11,12 @@ import serial.tools.list_ports
 
 class Fexp():
     fe = None
-    fex_json = "../mappings/fex.json"
+    fex_json_format = "../mappings/fex_{}.json"
     explist = None
 
-    def __init__(self, position):
+    def __init__(self, position, label):
         self.position = position
+        self.label = label
         try:
             if self.position == "LEFT":
                 ports = serial.tools.list_ports.comports()
@@ -27,7 +28,10 @@ class Fexp():
                 self.fe = faceExpression()
         except Exception as e:
             print(e)
-        with open(self.fex_json) as json_file:
+
+        fex_json = self.fex_json_format.format(label)
+
+        with open(fex_json) as json_file:
             self.explist = json.load(json_file)
 
         print("Fex Subscriber ready...")
@@ -64,6 +68,6 @@ if __name__ == "__main__":
     label = args.robotLabel
     position = args.robotPosition
     rospy.init_node("nicopose_{}".format(label), anonymous=True)
-    f = Fexp(position)
+    f = Fexp(position, label)
     rospy.Subscriber("{}/fex".format(label), String, f.play)
     rospy.spin()

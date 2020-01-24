@@ -63,7 +63,7 @@
     "gesture_delay": 1,
     "speech_delay": 3,
     "speed": 0.06,
-    "pose_filename": "s2s0_left.csv"
+    "pose_filename": "s2s0_nvc_left.csv"
   },
   "scene_0_S_line_0": {
     "gesture_delay": 15,
