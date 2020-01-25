@@ -48,10 +48,12 @@ class AudioPlayer:
             self.rate.sleep()
 
     def play(self, filepath, filename):
+        threads = []
         # special case when on the wtmhri2 lab computer:
         if self.robot_name == 'S':
             for channel in range(1, 17):  # play on all 16 channels simultaneously
                 st = threading.Thread(target=play_file, args=(filepath, channel))
+                threads.append(st)
                 st.start()
         else:
             self.audiofile = filename
@@ -65,8 +67,8 @@ class AudioPlayer:
             play_thread.start()
             progress_thread.start()
 
-            for thread in threads:
-                thread.join()
+        for thread in threads:
+            thread.join()
 
 def play_file(filepath, channel):
     wav_file = wave.open(filepath, 'rb')
