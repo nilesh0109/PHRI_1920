@@ -2,8 +2,8 @@
 1. We have two NICO robots: `A` and `B`
 2. Each robot can have `LEFT` or `RIGHT` position. We use the robot's perspective,
 not a human. `LEFT` position means that a robot on the right side of a commander
-3. See marking on the floor for placing robots and a table correctly
-4. Each robot robot runs on its own computer. You need `sudo` access
+3. See markings on the floor for placing robots and a table correctly
+4. Each robot runs on its own computer. You need `sudo` access
 5. `LEFT` robot runs on `LEFT` computer (operator's perspective)
 
 ### Pre-check
