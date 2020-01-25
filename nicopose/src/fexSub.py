@@ -4,17 +4,19 @@ import argparse
 import json
 import time
 import rospy
-from nicoface.FaceExpression import faceExpression
-from std_msgs.msg import String
+import os
+import constants
+from unipath import Path
 import serial.tools.list_ports
 
+from nicoface.FaceExpression import faceExpression
+from std_msgs.msg import String
 
-class Fexp():
-    fe = None
-    fex_json_format = "../mappings/fex_{}.json"
-    explist = None
+
+class Fexp:
 
     def __init__(self, position, label):
+        fex_json = self.create_paths(label)
         self.position = position
         self.label = label
         try:
@@ -29,30 +31,45 @@ class Fexp():
         except Exception as e:
             print(e)
 
-        fex_json = self.fex_json_format.format(label)
-
         with open(fex_json) as json_file:
             self.explist = json.load(json_file)
 
-        print("Fex Subscriber ready...")
-        return
+        print("Fex Subscriber is ready.")
+
+    @staticmethod
+    def create_paths(label):
+        """
+        Create paths for mappings, moves and joints specification.
+        """
+
+        # Find the path to the file
+        file_directory = Path(os.path.abspath(__file__))
+        print("The path to the file is: %s ", file_directory)
+
+        # Create a path to the mappings file
+        mappings = os.path.join(file_directory.parent.parent, constants.MAPPINGS_FORMAT_FEX)
+        fex_json = mappings.format(label)
+        print("The fex json file is: %s ", fex_json)
+
+        return fex_json
 
     def play(self, param):
-        print(param.data)
+        print("Input data: {}", param.data)
+        start = time.time()
         for i in range(0, len(self.explist[param.data])):
-            delay = self.explist[param.data][i]['expression_delay']
-            ex = self.explist[param.data][i]['fe']
+            delay = self.explist[param.data][i][constants.KEY_EXPRESSION_DELAY]
+            ex = self.explist[param.data][i][constants.KEY_FACE_EXPRESSION]
             time.sleep(delay)
-            print("ex: {}".format(ex))
+            print("Expression to execute is: {}".format(ex))
             self.fe.sendFaceExpression(ex)
-            print(time.time())
+        end = time.time()
+        elapsed_time = end - start
+        print("Playing an expression took %s seconds", elapsed_time)
         self.relax()
-        print("done")
-        return
+        print("Relaxing is done")
 
     def relax(self):
         self.fe.sendFaceExpression("neutral")
-        return
 
 
 if __name__ == "__main__":
@@ -65,9 +82,8 @@ if __name__ == "__main__":
                         default='A')
 
     args = parser.parse_known_args()[0]
-    label = args.robotLabel
     position = args.robotPosition
-    rospy.init_node("nicopose_{}".format(label), anonymous=True)
-    f = Fexp(position, label)
-    rospy.Subscriber("{}/fex".format(label), String, f.play)
+    rospy.init_node(constants.NODENAME_NAME_FORMAT.format(args.robotLabel), anonymous=True)
+    f = Fexp(position, args.robotLabel)
+    rospy.Subscriber(constants.TOPIC_NAME_FORMAT.format(args.robotLabel), String, f.play)
     rospy.spin()
