@@ -49,6 +49,14 @@ each terminal:
     4. `rosrun speech SpeechRecognitionStub.py`
     5. `rosrun vision count_resources.py`
 
+#### A set-up for `RIGHT` computer
+1. On this computer run 3 services and one subscriber
+    1. pose service
+    2. face expression subscriber
+    3. speech synthesis service
+    4. state machine service
+2. TODO:
+    
 #### Links
 
 [PHRI1920 Wiki](https://www2.informatik.uni-hamburg.de/WTM/wtm/wtmwiki/index.php/Category:Project_Human_Robot_Interaction_2019-20)
