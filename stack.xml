@@ -1,0 +1,10 @@
+<stack>
+  <description brief="PHRI_19/20: Human-Robot Trust">
+    The effect of Non-Verbal Cues on Human-Robot Trust. Includes all the packages (Vision, Motion, Speech, Lab Control) plus setup for the Experiment Run.
+  </description>
+  <author>Maintained by UniHH WTM</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>https://www.inf.uni-hamburg.de/en/inst/ab/wtm/teaching/teaching-2019-wise-human-robot-interaction-project.html</url>
+  <depend stack="ros"/>
+</stack>
