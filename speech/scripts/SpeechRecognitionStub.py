@@ -10,7 +10,8 @@ processor = sl.SentenceList()
 def handle_recognition_request(req):
     rospy.loginfo("Received context: %s", req.context)
     processor.configure(req.context)
-    sentence = processor.recognize(req.context)
+    docks_hypotheses, confidence = processor.recognize(req.context)
+    sentence = processor.match_sentence(req.context, docks_hypotheses, confidence)
     rospy.loginfo("Recognized: %s", sentence)
     return SpeechRecognitionResponse(sentence)
 
@@ -18,6 +19,7 @@ def speech_recognition_server():
     rospy.init_node('speech_recognition_server')
     rospy.Service('speech_recognition', SpeechRecognition, handle_recognition_request)
     rospy.loginfo("Speech recognition service launched.")
+    processor.initialize()
     rospy.spin()
 
 if __name__ == "__main__":
