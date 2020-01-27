@@ -8,6 +8,7 @@ import sentencelist as sl
 processor = sl.SentenceList()
 
 def handle_recognition_request(req):
+    rospy.loginfo("Received context: %s", req.context)
     processor.configure(req.context)
     sentence = processor.recognize(req.context)
     rospy.loginfo("Recognized: %s", sentence)

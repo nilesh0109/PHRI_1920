@@ -40,8 +40,6 @@ class SentenceList:
         """
         sentences_dir = dirname(dirname(abspath(__file__))) + '/scripts/'
 
-        rospy.loginfo("Received context: %s", context)
-
         # Translation from the context id to values of parameters that define the context.
         if context == "done":
             sentence_list = open(sentences_dir + "done.sentences.txt").readlines()
@@ -74,42 +72,41 @@ class SentenceList:
             confidence_threshold = 0.5
             silence_timeout = 10
 
-        with self.client.connect() as server:
-            with sr.Microphone() as source:
-                rospy.loginfo("\n--------------------- Listening for Microphone Input-------------------")
-                try:
-                    # Collecting raw audio from microphone.
-                    audio_data = self.listener.listen(source, timeout=silence_timeout)
+        with sr.Microphone() as source:
+            rospy.loginfo("\n--------------------- Listening for Microphone Input-------------------")
+            try:
+                # Collecting raw audio from microphone.
+                audio_data = self.listener.listen(source, timeout=silence_timeout)
+            except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
+                rospy.loginfo("Timeout: %s", e)
+                return "repetition_request" if context == "done" else "timeout"
 
-                    # Transforms the audio in a string based on the language
-                    hypotheses, _ = server.recognize(audio_data, ['ds', 'greedy'])
-                    rospy.loginfo("Docks2 understood: %s", hypotheses.lower())
+        with self.client.connect() as connection:
+            # Transforms the audio in a string based on the language
+            hypotheses, _ = connection.recognize(audio_data, ['ds', 'greedy'])
+            rospy.loginfo("Docks2 understood: %s", hypotheses.lower())
 
-                    # Match the sentence to a sentence in the list given, with certain confidence.
-                    docks_hypotheses, confidence = server.postprocess(postprocessor, hypotheses)
+            # Match the sentence to a sentence in the list given, with certain confidence.
+            docks_hypotheses, confidence = connection.postprocess(postprocessor, hypotheses)
 
-                    sentence_list_index = sentence_list.index(docks_hypotheses + "\n")
-                    rospy.loginfo("Recognized answer %s with %s confidence", sentence_list_index, confidence)
+        sentence_list_index = sentence_list.index(docks_hypotheses + "\n")
+        rospy.loginfo("Recognized answer %s with %s confidence", sentence_list_index, confidence)
 
-                    # Extracting sentence_id from recognition data.
-                    if context == "done":
-                        if confidence > confidence_threshold and sentence_list_index == 0:
-                            sentence_id = "done_confirmation"
-                        else:
-                            sentence_id = "repetition_request"
-                    else:
-                        if confidence > confidence_threshold:
-                            if sentence_list_index < context_sentences:
-                                sentence_id = context + "_question_" + str(sentence_list_index)
-                            else:
-                                sentence_id = "repetion_request"
-                        else:
-                            sentence_id = "timeout"
-                    return sentence_id
-
-                except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
-                    rospy.loginfo("Timeout: %s", e)
-                    return "repetition_request" if context == "done" else "timeout"
+        # Extracting sentence_id from recognition data.
+        if context == "done":
+            if confidence > confidence_threshold and sentence_list_index == 0:
+                sentence_id = "done_confirmation"
+            else:
+                sentence_id = "repetition_request"
+        else:
+            if confidence > confidence_threshold:
+                if sentence_list_index < context_sentences:
+                    sentence_id = context + "_question_" + str(sentence_list_index)
+                else:
+                    sentence_id = "repetion_request"
+            else:
+                sentence_id = "timeout"
+        return sentence_id
 
 
 if __name__ == "__main__":
