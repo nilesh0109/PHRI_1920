@@ -1,20 +1,20 @@
 <launch>
-    <machine name="left" address="wtmpc29" env-loader="/opt/ros/melodic/env.sh" user="icub"/>
-    <machine name="right" address="wtmpc23" env-loader="/opt/ros/melodic/env.sh" user="icub"/>
-    <machine name="machineS" address="wtmhri2" env-loader="/opt/ros/indigo/env.sh" user="icub"/>
+    <machine name="left" address="wtmpc29" env-loader="~/catkin_ws/devel/env.sh" user="8zoerner"/>
+    <machine name="right" address="wtmpc23" env-loader="~/catkin_ws/devel/env.sh" user="8zoerner"/>
+    <machine name="machineS" address="wtmhri2" env-loader="~/phri1920/catkinws/devel/env.sh" user="icub"/>
 
     <!-- Left Robot -->
     <group ns="A">
-        <node name="speech_synthesis" args="A" pkg="speech" type="SpeechSynthesisStub.py" machine="left" respawn="false"/>
+        <node name="speech_synthesis" args="A" pkg="speech" type="SpeechSynthesisStub.py"    machine="left" respawn="false"/>
     </group>
     <!-- Right Robot -->
     <group ns="B">
-        <node name="speech_synthesis" args="B" pkg="speech" type="SpeechSynthesisStub.py" respawn="false"/>
+        <node name="speech_synthesis" args="B" pkg="speech" type="SpeechSynthesisStub.py"    machine="right" respawn="false"/>
     </group>
     <!-- Ship / Lab Computer -->
     <group ns="S">
-        <node name="speech_synthesis" args="S" pkg="speech" type="SpeechSynthesisStub.py" respawn="false"/> -->
-        <node name="speech_recognition" pkg="speech" type="SpeechRecognitionStub.py" respawn="false"/>
+        <node name="speech_synthesis" args="S" pkg="speech" type="SpeechSynthesisStub.py"    machine="left" respawn="false"/> -->
+        <node name="speech_recognition"        pkg="speech" type="SpeechRecognitionStub.py"  machine="left" respawn="false"/>
     </group>
 
 </launch>
