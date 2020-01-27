@@ -32,7 +32,7 @@ class AudioPlayer:
             rospy.logfatal("Error when playing speech:\n %s", e)
 
     def __share_progress(self):
-        rospy.logdebug("Publishing progress")
+        rospy.loginfo("Publishing progress")
         start = rospy.Time.now()
         while self.isPlaying:
             t = rospy.Time.now()
