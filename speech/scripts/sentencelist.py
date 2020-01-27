@@ -16,7 +16,7 @@ class SentenceList:
                         "scene_0": "mission", "scene_1": "mission",
                         "scene_2": "emergency", "scene_3": "emergency", "scene_4": "emergency"}
 
-    def initialize(self):
+    def __init__(self):
         # server settings from Johannes Twiefel: accessible only from the Informatikum network
         self.client = Client(server='sysadmin@wtmitx1', port=55101)
         # The main recognizing unit.
@@ -24,20 +24,28 @@ class SentenceList:
         # filter ambient lab noise using a previously recorded sound file
         with sr.AudioFile(self.base_dir + "/generated_sounds/lab_noise.wav") as noise:
             self.listener.adjust_for_ambient_noise(noise, duration=3)
+
+    def initialize(self):
         # Create the sentencelist postprocessors on the Docks server
         with self.client.connect() as connection:
             for postproc in set(self.context2sentence.viewvalues()):
-                rospy.loginfo("Creating postprocessor: %s", postproc)
+                rospy.loginfo("Creating postprocessor for \'%s\'", postproc)
                 sentence_list = open(self.sentences_dir + "{}.sentences.txt".format(postproc)).readlines()
                 connection.create_postprocessor(postprocessor.SentencelistPostprocessor,
                                                 '{}_sentencelist_postprocessor'.format(postproc),
                                                 sentencelist=sentence_list, language="english", language_code="en-EN")
 
-    def configure(self, context):
-        return
-
     def recognize(self, context):
-        # Translation from the context id to values of parameters that define the context.
+        # Setting the recognition specific parameters that have to be distinguished:
+        # - phrase_threshold: minimum secs of speaking before we consider it a phrase (values before are discarded)
+        # - pause_threshold: seconds of non-speaking audio before a phrase is considered complete
+        if context == "done":
+            self.listener.phrase_threshold = 1
+            self.listener.pause_threshold = 1
+        else:
+            self.listener.phrase_threshold = 2
+            self.listener.pause_threshold = 1.5
+        # seconds before an error is raised when no speech is recorded.
         silence_timeout = 60 if context == "done" else 10
         postproc_id = self.context2sentence[context] + "_sentencelist_postprocessor"
 
@@ -62,7 +70,7 @@ class SentenceList:
         :param context: The specific scene number or "done" if listening for "Wendigo, I'm done".
         :return: sentence_id: The id of the sentence that was recognized.
         """
-
+        # how good the understood sentence matches the sentence from the list (range: [0, 1])
         confidence_threshold = 0.3 if context == "done" else 0.5
 
         # Exit when low confidence
@@ -82,19 +90,7 @@ class SentenceList:
             sentence_list = open(sentences_dir + "emergency.sentences.txt").readlines()
             context_sentences = 3
 
-        # Setting the recognition specific parameters that have to be distinguished:
 
-        # - phase_threshold: minimum seconds of speaking audio before we consider the speaking audio a phrase (values below this are ignored)
-        # - pause_threshold: seconds of non-speaking audio before a phrase is considered complete
-        # - confidence_threshold: how good the understood sentence matches the sentence from the list (range: [0, 1])
-        # - silence_timeout: seconds before an error is raised when no speech is recorded.
-
-        if context == "done":
-            self.listener.phrase_threshold = 1
-            self.listener.pause_threshold = 1
-        else:
-            self.listener.phrase_threshold = 2
-            self.listener.pause_threshold = 1.5
 
         sentence_list_index = sentence_list.index(docks_hypotheses + "\n")
         rospy.loginfo("Recognized answer %s with %s confidence", sentence_list_index, confidence)
