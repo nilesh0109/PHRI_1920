@@ -5,13 +5,14 @@ from speech.srv import SpeechRecognition, SpeechRecognitionResponse
 
 import sentencelist as sl
 
+processor = sl.SentenceList()
+
 def handle_recognition_request(req):
-    sentence = sl.recognize(req.context)
+    sentence = processor.recognize(req.context)
     rospy.loginfo("Recognized: %s", sentence)
     return SpeechRecognitionResponse(sentence)
 
 def speech_recognition_server():
-    sl.initialize()
     rospy.init_node('speech_recognition_server')
     rospy.Service('speech_recognition', SpeechRecognition, handle_recognition_request)
     rospy.loginfo("Speech recognition service launched.")
