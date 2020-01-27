@@ -1,3 +1,4 @@
+import rospy
 import sys
 import timeit
 from os.path import dirname, abspath
@@ -102,10 +103,11 @@ def recognize(context):
         confidence_threshold = 0.5
         silence_timeout = 10
 
-    # with sr.AudioFile("./example-wavs/test_adjust.wav") as noise:
-    with sr.Microphone() as noise:
-        listener.adjust_for_ambient_noise(noise)
     pre_post_time = timeit.default_timer()
+    with sr.AudioFile(dirname(dirname(abspath(__file__))) + "/generated_sounds/lab_noise.wav") as noise:
+    # with sr.Microphone() as noise:
+        listener.adjust_for_ambient_noise(noise, duration=3)
+    print("Adjustment time: " + str(timeit.default_timer()-pre_post_time))
     with client.connect() as server:
 
         # print("Context time: " + str(timeit.default_timer()-pre_post_time))
