@@ -23,12 +23,15 @@ class SentenceList:
         with sr.AudioFile(self.base_dir + "/generated_sounds/lab_noise.wav") as noise:
             self.listener.adjust_for_ambient_noise(noise, duration=3)
         # Create postprocessors on the server
-        with self.client.connect() as server:
+        with self.client.connect() as connection:
             for context in self.sentences:
                 sentence_list = open(self.sentences_dir + "{}.sentences.txt".format(context)).readlines()
-                server.create_postprocessor(postprocessor.SentencelistPostprocessor,
-                                            '{}_sentencelist_postprocessor'.format(context),
-                                            sentencelist=sentence_list, language="english", language_code="en-EN")
+                connection.create_postprocessor(postprocessor.SentencelistPostprocessor,
+                                                '{}_sentencelist_postprocessor'.format(context),
+                                                sentencelist=sentence_list, language="english", language_code="en-EN")
+
+    def configure(self, context):
+        return
 
     def recognize(self, context):
         """
@@ -44,18 +47,14 @@ class SentenceList:
             sentence_list = open(sentences_dir + "done.sentences.txt").readlines()
             context_sentences = 1
             postprocessor = 'done_sentencelist_postprocessor'
-            print("Using wendigo sentences")
         elif context == "scene_0" or context == "scene_1":
             sentence_list = open(sentences_dir + "mission.sentences.txt").readlines()
             context_sentences = 4
             postprocessor = "mission_sentencelist_postprocessor"
-            print("Using mission sentences")
         else:
             sentence_list = open(sentences_dir + "emergency.sentences.txt").readlines()
             context_sentences = 3
             postprocessor = "emergency_sentencelist_postprocessor"
-            print("Using emergency sentences")
-
 
         # Setting the recognition specific parameters that have to be distinguished:
 
@@ -76,58 +75,41 @@ class SentenceList:
             silence_timeout = 10
 
         with self.client.connect() as server:
+            with sr.Microphone() as source:
+                rospy.loginfo("\n--------------------- Listening for Microphone Input-------------------")
+                try:
+                    # Collecting raw audio from microphone.
+                    audio_data = self.listener.listen(source, timeout=silence_timeout)
 
-            # print("Context time: " + str(timeit.default_timer()-pre_post_time))
-            while True:
+                    # Transforms the audio in a string based on the language
+                    hypotheses, _ = server.recognize(audio_data, ['ds', 'greedy'])
+                    rospy.loginfo("Docks2 understood: %s", hypotheses.lower())
 
-                # If recognition should be based on a file than use:
-                # with sr.AudioFile("./example-wavs/test_sentence.wav") as source:
+                    # Match the sentence to a sentence in the list given, with certain confidence.
+                    docks_hypotheses, confidence = server.postprocess(postprocessor, hypotheses)
 
-                # Recognizes directly from microphone stream
-                # print("Context time: " + str(timeit.default_timer()-init_time))
-                with sr.Microphone() as source:
-                    print('--------------------- Listening -------------------')
-                    try:
-                        # Collecting raw audio from microphone.
-                        audio_data = self.listener.listen(source, timeout=silence_timeout)
+                    sentence_list_index = sentence_list.index(docks_hypotheses + "\n")
+                    rospy.loginfo("Recognized answer %s with %s confidence", sentence_list_index, confidence)
 
-                        # Transforms the audio in a string based on the language
-                        hypotheses, _ = server.recognize(audio_data, ['ds', 'greedy'])
-                        rospy.loginfo("Docks2 understood: %s", hypotheses.lower())
-
-                        # Match the sentence to a sentence in the list given, with certain confidence.
-                        docks_hypotheses, confidence = server.postprocess(postprocessor,
-                                                                          hypotheses)
-
-                        sentence_list_index = sentence_list.index(docks_hypotheses + "\n")
-                        print("This corresponds to answer " + str(sentence_list_index)
-                              + " with confidence " + str(confidence))
-
-                        # Extracting sentence_id from recognition data.
-                        if context == "done":
-                            if confidence > confidence_threshold and sentence_list_index == 0:
-                                sentence_id = "done_confirmation"
-                            else:
-                                sentence_id = "repetition_request"
+                    # Extracting sentence_id from recognition data.
+                    if context == "done":
+                        if confidence > confidence_threshold and sentence_list_index == 0:
+                            sentence_id = "done_confirmation"
                         else:
-                            if confidence > confidence_threshold:
-                                if sentence_list_index < context_sentences:
-                                    sentence_id = context + "_question_" + str(sentence_list_index)
-                                else:
-                                    sentence_id = "repetion_request"
-                            else:
-                                sentence_id = "timeout"
-                        print("To be returned to service: " + sentence_id)
-                        return sentence_id
-
-                    except Exception as e:  # This mainly catches a time out exception based on "silence_timeout".
-                        rospy.logfatal("Error recognizing speech:\n %s", e)
-                        if context == "done":
                             sentence_id = "repetition_request"
+                    else:
+                        if confidence > confidence_threshold:
+                            if sentence_list_index < context_sentences:
+                                sentence_id = context + "_question_" + str(sentence_list_index)
+                            else:
+                                sentence_id = "repetion_request"
                         else:
                             sentence_id = "timeout"
-                        print("To be returned to service: " + sentence_id)
-                        return sentence_id
+                    return sentence_id
+
+                except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
+                    rospy.loginfo("Timeout: %s", e)
+                    return "repetition_request" if context == "done" else "timeout"
 
 
 if __name__ == "__main__":
