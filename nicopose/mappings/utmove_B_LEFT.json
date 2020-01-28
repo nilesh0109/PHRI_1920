@@ -161,6 +161,18 @@
     "speed": 0.05,
     "pose_filename": "look.csv"
   },
+  "scene_4_S_line_0": {
+    "gesture_delay": 0.5,
+    "speech_delay": 0,
+    "speed": 0.03,
+    "pose_filename": "look_right.csv"
+  },
+  "scene_4_S_line_1": {
+    "gesture_delay": 0,
+    "speech_delay": 0,
+    "speed": 0.05,
+    "pose_filename": "look.csv"
+  },
   "scene_4_S_line_2": {
     "gesture_delay": 7,
     "speech_delay": 0,
@@ -172,6 +184,18 @@
     "speech_delay": 0,
     "speed": 0.05,
     "pose_filename": "look.csv"
+  },
+  "scene_4_S_line_4": {
+    "gesture_delay": 7,
+    "speech_delay": 0,
+    "speed": 0.03,
+    "pose_filename": "look.csv"
+  },
+  "scene_4_S_line_5": {
+    "gesture_delay": 0,
+    "speech_delay": 0,
+    "speed": 0.05,
+    "pose_filename": "arrived_b.csv"
   },
   "scene_0_question_0_answer_A": {
     "gesture_delay": 1,
