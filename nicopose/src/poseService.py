@@ -6,7 +6,6 @@ import json
 import rospy
 import os
 import constants
-
 from nicopose.srv import Pose, PoseResponse
 from nicomotion import Mover, Motion
 from std_msgs.msg import String
@@ -24,8 +23,8 @@ class Move:
         :param label: A or B.
         :param position: LEFT or RIGHT
         """
-
-        utm_json, joints_json, moves_path = self.create_paths(label, position)
+        exe_path = os.path.dirname(os.path.abspath( __file__ ))
+        utm_json, joints_json, moves_path = self.create_paths(label, position,exe_path)
 
         self.position = position
         self.label = label
@@ -37,35 +36,42 @@ class Move:
             with open(utm_json) as json_file:
                 self.utmlist = json.load(json_file)
         except IOError as e:
-            print("The file is not found: %s ", utm_json)
-            print(e)
+            self.lprint("The file is not found: %s ", utm_json)
+            self.lprint(e)
         except ValueError as e:
-            print("Couldn't parse a json file: %s ", utm_json)
-            print(e)
+            self.lprint("Couldn't parse a json file: %s ", utm_json)
+            self.lprint(e)
 
-        print("Pos service is ready.")
+        self.lprint("Pos service is ready.")
 
     @staticmethod
-    def create_paths(label, position):
+    def lprint(args):
+        #rospy.logdebug(">>> motion <<<")
+        #rospy.logdebug(args)
+        #rospy.logdebug("<<< motion >>>")
+        print(args)
+
+    @staticmethod
+    def create_paths(label, position, exep):
         """
         Create paths for mappings, moves and joints specification.
         """
 
         # Find the path to the file
-        file_directory = Path(os.path.abspath(__file__))
-        print("The path to the file is: %s ", file_directory)
+        #file_directory = Path(os.path.abspath(__file__))
+        Move.lprint("The path to the file is: %s ", exep)
 
         # Create a path to the mappings file
-        mappings = os.path.join(file_directory.parent.parent, constants.MAPPINGS_FORMAT_UTMOVE)
+        mappings = os.path.join(exep.parent, constants.MAPPINGS_FORMAT_UTMOVE)
         utm_json = mappings.format(label, position)
-        print("The utm json file is: %s ", utm_json)
+        Move.lprint("The utm json file is: %s ", utm_json)
 
         # Create a path to the joints specification file
-        joints_json = os.path.join(file_directory.parent.parent, constants.JOINTS_SPECIFICATION_FILE)
-        print("The utm json file is: %s ", joints_json)
+        joints_json = os.path.join(exep.parent, constants.JOINTS_SPECIFICATION_FILE)
+        Move.lprint("The utm json file is: %s ", joints_json)
 
         # Create a path to the moves file
-        moves_path= os.path.join(file_directory.parent.parent, constants.MOVES_FOLDER_NAME)
+        moves_path= os.path.join(exep.parent, constants.MOVES_FOLDER_NAME)
 
         return utm_json, joints_json, moves_path
 
@@ -75,7 +81,7 @@ class Move:
         :param uid: utterance Id.
         :return: 1 (successful) or 0 (failure)
         """
-        print(uid.param)
+        self.lprint(uid.param)
         topic_name = constants.TOPIC_NAME_FORMAT.format(self.label)
         pub = rospy.Publisher(topic_name, String, queue_size=10)
         pub.publish(uid.param)
@@ -83,19 +89,19 @@ class Move:
         try:
             filename = self.moves_path + self.utmlist[uid.param][constants.KEY_POSE_FILENAME]
             sp = self.utmlist[uid.param][constants.KEY_SPEED]
-            print("Gesture delay is ", constants.KEY_GESTURE_DELAY)
+            self.lprint("Gesture delay is ", constants.KEY_GESTURE_DELAY)
             time.sleep(self.utmlist[uid.param][constants.KEY_GESTURE_DELAY])
 
             start = time.time()
             self.mov.play_movement(filename, move_speed=sp)
             end = time.time()
             elapsed_time = end - start
-            print("Playing a movement took %s seconds", elapsed_time)
+            self.lprint("Playing a movement took %s seconds", elapsed_time)
 
             self.relax()
             res.msgback = 1
         except Exception as e:
-            print(e)
+            self.lprint(e)
             res.msgback = 0
         return res
 
@@ -109,7 +115,7 @@ class Move:
         self.robot.openHand("LHand")
         end = time.time()
         elapsed_time = end - start
-        print("Relaxing took %s seconds", elapsed_time)
+        self.lprint("Relaxing took %s seconds", elapsed_time)
 
     def disable_torque_body(self):
         """
@@ -119,6 +125,9 @@ class Move:
             if motor.name == "head_z" or motor.name == "head_y":
                 continue
             motor.compliant = True
+
+
+        
 
 
 if __name__ == "__main__":
@@ -139,7 +148,7 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_known_args()[0]
-    print("Position is %s; label is %s", args.robotPosition, args.robotLabel)
+    Move.lprint("Position is %s; label is %s", args.robotPosition, args.robotLabel)
     node_name = constants.NODENAME_NAME_FORMAT.format(args.robotLabel)
     rospy.init_node(node_name, anonymous=True)
     m = Move(args.robotLabel, args.robotPosition)
