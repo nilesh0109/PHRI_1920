@@ -15,8 +15,8 @@ the other only one.
 2. Connect all USBs and audio cables to PCs.
     1. Check if faces are lighted up
     2. Check if speakers on. Check the sound settings on a PC.
-
-### Set-up
+    
+### Initial Set-up
 #### A general set-up process for two computers
 1. `git clone https://git.informatik.uni-hamburg.de/wtm-robots-and-equipment/NICO-software.git`
 2. `cd NICO-software/api`
@@ -66,6 +66,12 @@ each terminal:
     2. `rosrun nicopose fexSub.py --label B --position RIGHT`
     3. `rosrun speech SpeechSynthesisStub.py B`
     5. `rosrun state_machine StateMachine.py --scene 0 --entry 0`
+
+### Ros launch scripts
+You can use launch scripts to avoid a lot of typing, which is described in the previous section.
+1. Launch nicopose `roslaunch nicopose pose.launch llable:=A lposition:=LEFT`
+2. Launch logging: `rostopic echo /rosout | grep msg`
+
 
 #### Links
 
