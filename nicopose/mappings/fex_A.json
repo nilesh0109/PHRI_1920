@@ -1,13 +1,181 @@
 {
-  "scene_0_A_line_0":
-  [
+  "scene_0_A_line_0": [
     {
       "expression_delay": 7,
       "fe": "happiness"
+    },
+    {
+      "expression_delay": 1,
+      "fe": "neutral"
     }
   ],
-  "scene_2_A_line_0":
-  [
+  "scene_0_B_line_0": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_question_0_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_question_1_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_question_2_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_question_3_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_question_0_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_question_1_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_question_2_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_question_3_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_S_line_0": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_S_line_1": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_S_line_2": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_0_S_line_3": [
+    {
+      "expression_delay": 0,
+      "fe": "happiness"
+    }
+  ],
+  "scene_1_A_line_0": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_B_line_0": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_question_0_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_question_1_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_question_2_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_question_3_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_question_0_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_question_1_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_question_2_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_question_3_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_S_line_0": [
+    {
+      "expression_delay": 1.6,
+      "fe": "fear"
+    },
+    {
+      "expression_delay": 2,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_S_line_1": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_S_line_2": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_1_S_line_3": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_2_A_line_0": [
     {
       "expression_delay": 0,
       "fe": "surprise"
@@ -17,8 +185,53 @@
       "fe": "neutral"
     }
   ],
-  "scene_2_S_line_0":
-  [
+  "scene_2_B_line_0": [
+    {
+      "expression_delay": 3,
+      "fe": "disgust"
+    },
+    {
+      "expression_delay": 2,
+      "fe": "neutral"
+    }
+  ],
+  "scene_2_question_0_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_2_question_1_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_2_question_2_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_2_question_0_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_2_question_1_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_2_question_2_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_2_S_line_0": [
     {
       "expression_delay": 0,
       "fe": "neutral"
@@ -40,8 +253,25 @@
       "fe": "neutral"
     }
   ],
-    "scene_2_S_line_4":
-  [
+  "scene_2_S_line_1": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_2_S_line_2": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_2_S_line_3": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_2_S_line_4": [
     {
       "expression_delay": 1,
       "fe": "sadness"
@@ -49,12 +279,25 @@
     {
       "expression_delay": 2,
       "fe": "neutral"
-    }
-  ],
-    "scene_3_B_line_0":
-  [
+    },
+    {
+      "expression_delay": 11,
+      "fe": "sadness"
+    },
     {
       "expression_delay": 2,
+      "fe": "neutral"
+    }
+  ],
+  "scene_3_A_line_0": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_3_B_line_0": [
+    {
+      "expression_delay": 3,
       "fe": "disgust"
     },
     {
@@ -62,18 +305,183 @@
       "fe": "neutral"
     }
   ],
-  "scene_4_S_line_0":
-  [
+  "scene_3_question_0_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_3_question_1_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_3_question_2_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_3_question_0_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_3_question_1_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_3_question_2_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_3_S_line_0": [
     {
       "expression_delay": 0,
       "fe": "neutral"
     },
     {
-      "expression_delay": 1.5,
+      "expression_delay": 9,
+      "fe": "fear"
+    },
+    {
+      "expression_delay": 0.5,
+      "fe": "neutral"
+    }
+  ],
+  "scene_3_S_line_1": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_3_S_line_2": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_3_S_line_3": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_A_line_0": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_B_line_0": [
+    {
+      "expression_delay": 2,
+      "fe": "disgust"
+    },
+    {
+      "expression_delay": 1,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_question_0_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_question_1_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_question_2_answer_A": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_question_0_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_question_1_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_question_2_answer_B": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_S_line_0": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    },
+    {
+      "expression_delay": 1.1,
+      "fe": "happiness"
+    },
+    {
+      "expression_delay": 0.5,
       "fe": "sadness"
     },
     {
-      "expression_delay": 1.5,
+      "expression_delay": 1,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_S_line_1": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_S_line_2": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_S_line_3": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_S_line_4": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    },
+    {
+      "expression_delay": 2,
+      "fe": "happiness"
+    },
+    {
+      "expression_delay": 2,
+      "fe": "neutral"
+    }
+  ],
+  "scene_4_S_line_5": [
+    {
+      "expression_delay": 0,
+      "fe": "happiness"
+    },
+    {
+      "expression_delay": 2,
       "fe": "neutral"
     }
   ]

@@ -1,0 +1,7 @@
+<launch>
+    <arg  name="llabel"    />
+    <arg  name="lposition" />
+    <node name="pose" pkg="nicopose" ns="$(arg llabel)" type="poseService.py" args="--label $(arg llabel) --position $(arg lposition)" />
+    <node name="fex"  pkg="nicopose" ns="$(arg llabel)" type="fexSub.py"      args="--label $(arg llabel) --position $(arg lposition)" />
+</launch>
+
