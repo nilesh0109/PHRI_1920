@@ -48,6 +48,24 @@ each terminal:
     3. `rosrun speech SpeechSynthesisStub.py A`
     4. `rosrun speech SpeechRecognitionStub.py`
     5. `rosrun vision count_resources.py`
+    
+#### A set-up for `RIGHT` computer
+1. On this computer run 4 services and one subscriber
+    1. pose service
+    2. face expression subscriber
+    3. speech synthesis service
+    r. state machine
+2.  For each service/subscriber a new terminal is needed. The set-up process for 
+each terminal:
+    1. `export ROS_MASTER_URI=http://wtmpc23:11311/`
+    2. `source ~/.NICO/bin/activate`
+    3. `cd NICO-software/api`
+    4. `source devel/setup.bash`
+3. Start services:
+    1. `rosrun nicopose poseService.py --label B --position RIGHT`
+    2. `rosrun nicopose fexSub.py --label B --position RIGHT`
+    3. `rosrun speech SpeechSynthesisStub.py B`
+    5. `rosrun state_machine StateMachine.py --scene 0 --entry 0`
 
 #### Links
 
