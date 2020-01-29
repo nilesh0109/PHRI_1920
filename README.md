@@ -54,7 +54,7 @@ each terminal:
     1. pose service
     2. face expression subscriber
     3. speech synthesis service
-    r. state machine
+    4. state machine
 2.  For each service/subscriber a new terminal is needed. The set-up process for 
 each terminal:
     1. `export ROS_MASTER_URI=http://wtmpc23:11311/`
