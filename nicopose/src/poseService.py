@@ -45,9 +45,8 @@ class Move:
 
     @staticmethod
     def lprint(*args):
-        #rospy.logdebug(">>> motion <<<")
-        #rospy.logdebug(args)
-        #rospy.logdebug("<<< motion >>>")
+        rospy.loginfo("============================")
+        rospy.loginfo(args)
         print(args)
 
     @staticmethod

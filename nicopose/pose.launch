@@ -1,6 +1,14 @@
 <launch>
-    <!--arg name="hoge" /-->
-    <!-- in the definitions    value="$(arg hoge)" -->
-    <node name="pose" pkg="nicopose" ns="nicopose" type="poseService.py" args="--label A --position RIGHT" respawn="true" />
-    <node name="fex" pkg="nicopose" ns="nicopose" type="fexSub.py" output="screen" args="--label A --position RIGHT" respawn="true"/>
+    <arg  name="llable"    />
+    <arg  name="lposition" />
+    <node name="pose" pkg="nicopose" ns="nicopose" type="poseService.py" args="--label A --position LEFT"  />
+    <node name="fex"  pkg="nicopose" ns="nicopose" type="fexSub.py"      args="--label A --position LEFT" />
 </launch>
+
+<!--
+useful elements for node:
+
+respawn="true"
+
+"$(arg llable)"
+-->
