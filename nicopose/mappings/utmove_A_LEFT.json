@@ -195,7 +195,7 @@
     "gesture_delay": 0,
     "speech_delay": 0,
     "speed": 0.05,
-    "pose_filename": "arrived_a.csv"
+    "pose_filename": "arrived_A_v4.csv"
   },
   "scene_0_question_0_answer_A": {
     "gesture_delay": 1,
