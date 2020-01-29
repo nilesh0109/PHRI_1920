@@ -1,14 +1,7 @@
 <launch>
-    <arg  name="llable"    />
+    <arg  name="llabel"    />
     <arg  name="lposition" />
-    <node name="pose" pkg="nicopose" ns="nicopose" type="poseService.py" args="--label A --position LEFT"  />
-    <node name="fex"  pkg="nicopose" ns="nicopose" type="fexSub.py"      args="--label A --position LEFT" />
+    <node name="pose" pkg="nicopose" ns="$(arg llable)" type="poseService.py" args="--label $(arg llable) --position $(arg lposition)" />
+    <node name="fex"  pkg="nicopose" ns="$(arg llable)" type="fexSub.py"      args="--label $(arg llable) --position $(arg lposition)" />
 </launch>
 
-<!--
-useful elements for node:
-
-respawn="true"
-
-"$(arg llable)"
--->

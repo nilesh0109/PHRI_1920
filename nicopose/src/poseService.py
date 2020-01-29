@@ -35,10 +35,10 @@ class Move:
             with open(utm_json) as json_file:
                 self.utmlist = json.load(json_file)
         except IOError as e:
-            self.lprint("The file is not found: %s ", utm_json)
+            self.lprint("The file is not found: ", utm_json)
             self.lprint(e)
         except ValueError as e:
-            self.lprint("Couldn't parse a json file: %s ", utm_json)
+            self.lprint("Couldn't parse a json file: ", utm_json)
             self.lprint(e)
 
         self.lprint("Pos service is ready.")
@@ -57,16 +57,16 @@ class Move:
 
         # Find the path to the file
         file_directory = Path(os.path.dirname(os.path.abspath(__file__)))
-        Move.lprint("The path to the file is: %s ", file_directory)
+        Move.lprint("The path to the file is: ", file_directory)
 
         # Create a path to the mappings file
         mappings = os.path.join(file_directory.parent, constants.MAPPINGS_FORMAT_UTMOVE)
         utm_json = mappings.format(label, position)
-        Move.lprint("The utm json file is: %s ", utm_json)
+        Move.lprint("The utm json file is: ", utm_json)
 
         # Create a path to the joints specification file
         joints_json = os.path.join(file_directory.parent, constants.JOINTS_SPECIFICATION_FILE)
-        Move.lprint("The utm json file is: %s ", joints_json)
+        Move.lprint("The utm json file is: ", joints_json)
 
         # Create a path to the moves file
         moves_path= os.path.join(file_directory.parent, constants.MOVES_FOLDER_NAME)
@@ -94,7 +94,7 @@ class Move:
             self.mov.play_movement(filename, move_speed=sp)
             end = time.time()
             elapsed_time = end - start
-            self.lprint("Playing a movement took %s seconds", elapsed_time)
+            self.lprint("Playing a movement took ", elapsed_time, " seconds")
 
             self.relax()
             res.msgback = 1
@@ -150,5 +150,5 @@ if __name__ == "__main__":
     node_name = constants.NODENAME_NAME_FORMAT.format(args.robotLabel)
     rospy.init_node(node_name, anonymous=True)
     m = Move(args.robotLabel, args.robotPosition)
-    s = rospy.Service(constants.SERVICE_NAME_FORMAT.format(args.robotLabel), Pose, m.response)
+    s = rospy.Service(constants.SERVICE_NODE_NAME, Pose, m.response)
     rospy.spin()

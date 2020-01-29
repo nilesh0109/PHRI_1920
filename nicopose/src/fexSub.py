@@ -45,12 +45,12 @@ class Fexp:
 
         # Find the path to the file
         file_directory = Path(os.path.dirname(os.path.abspath(__file__)))
-        Move.lprint("The path to the file is: %s ", file_directory)
+        Move.lprint("The path to the file is: ", file_directory)
 
         # Create a path to the mappings file
         mappings = os.path.join(file_directory.parent, constants.MAPPINGS_FORMAT_FEX)
         fex_json = mappings.format(label)
-        Move.lprint("The fex json file is: %s ", fex_json)
+        Move.lprint("The fex json file is: ", fex_json)
 
         return fex_json
 
@@ -65,7 +65,7 @@ class Fexp:
             self.fe.sendFaceExpression(ex)
         end = time.time()
         elapsed_time = end - start
-        Move.lprint("Playing an expression took %s seconds", elapsed_time)
+        Move.lprint("Playing an expression took ", elapsed_time, "seconds")
         self.relax()
         Move.lprint("Relaxing is done")
 
@@ -86,5 +86,5 @@ if __name__ == "__main__":
     position = args.robotPosition
     rospy.init_node(constants.NODENAME_NAME_FORMAT.format(args.robotLabel), anonymous=True)
     f = Fexp(position, args.robotLabel)
-    rospy.Subscriber(constants.TOPIC_NAME_FORMAT.format(args.robotLabel), String, f.play)
+    rospy.Subscriber(constants.TOPIC_NODE_NAME, String, f.play)
     rospy.spin()
