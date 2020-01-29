@@ -26,6 +26,6 @@ the other only one.
 9. `sudo chmod 777 /dev/ttyACM*`
 10. `sudo chmod 777 /dev/ttyUSB*`
 
-### Start services (example):
-1. `rosrun nicopose poseService.py --label A --position LEFT`
-2. `rosrun nicopose fexSub.py --label B --position RIGHT`
+### Launch script:
+1. `roslaunch nicopose pose.launch llabel:=A lposition:=LEFT`
+2. `rostopic echo /rosout | grep msg`
