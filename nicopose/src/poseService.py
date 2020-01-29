@@ -6,10 +6,10 @@ import json
 import rospy
 import os
 import constants
+from unipath import Path
 from nicopose.srv import Pose, PoseResponse
 from nicomotion import Mover, Motion
 from std_msgs.msg import String
-from unipath import Path
 
 
 class Move:
@@ -23,8 +23,7 @@ class Move:
         :param label: A or B.
         :param position: LEFT or RIGHT
         """
-        exe_path = os.path.dirname(os.path.abspath( __file__ ))
-        utm_json, joints_json, moves_path = self.create_paths(label, position,exe_path)
+        utm_json, joints_json, moves_path = self.create_paths(label, position)
 
         self.position = position
         self.label = label
@@ -45,33 +44,33 @@ class Move:
         self.lprint("Pos service is ready.")
 
     @staticmethod
-    def lprint(args):
+    def lprint(*args):
         #rospy.logdebug(">>> motion <<<")
         #rospy.logdebug(args)
         #rospy.logdebug("<<< motion >>>")
         print(args)
 
     @staticmethod
-    def create_paths(label, position, exep):
+    def create_paths(label, position):
         """
         Create paths for mappings, moves and joints specification.
         """
 
         # Find the path to the file
-        #file_directory = Path(os.path.abspath(__file__))
-        Move.lprint("The path to the file is: %s ", exep)
+        file_directory = Path(os.path.dirname(os.path.abspath(__file__)))
+        Move.lprint("The path to the file is: %s ", file_directory)
 
         # Create a path to the mappings file
-        mappings = os.path.join(exep.parent, constants.MAPPINGS_FORMAT_UTMOVE)
+        mappings = os.path.join(file_directory.parent, constants.MAPPINGS_FORMAT_UTMOVE)
         utm_json = mappings.format(label, position)
         Move.lprint("The utm json file is: %s ", utm_json)
 
         # Create a path to the joints specification file
-        joints_json = os.path.join(exep.parent, constants.JOINTS_SPECIFICATION_FILE)
+        joints_json = os.path.join(file_directory.parent, constants.JOINTS_SPECIFICATION_FILE)
         Move.lprint("The utm json file is: %s ", joints_json)
 
         # Create a path to the moves file
-        moves_path= os.path.join(exep.parent, constants.MOVES_FOLDER_NAME)
+        moves_path= os.path.join(file_directory.parent, constants.MOVES_FOLDER_NAME)
 
         return utm_json, joints_json, moves_path
 

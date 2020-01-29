@@ -6,6 +6,7 @@ import time
 import rospy
 import os
 import constants
+from poseService import Move
 from unipath import Path
 import serial.tools.list_ports
 
@@ -29,12 +30,12 @@ class Fexp:
             else:
                 self.fe = faceExpression()
         except Exception as e:
-            print(e)
+            Move.lprint(e)
 
         with open(fex_json) as json_file:
             self.explist = json.load(json_file)
 
-        print("Fex Subscriber is ready.")
+        Move.lprint("Fex Subscriber is ready.")
 
     @staticmethod
     def create_paths(label):
@@ -43,30 +44,30 @@ class Fexp:
         """
 
         # Find the path to the file
-        file_directory = Path(os.path.abspath(__file__))
-        print("The path to the file is: %s ", file_directory)
+        file_directory = Path(os.path.dirname(os.path.abspath(__file__)))
+        Move.lprint("The path to the file is: %s ", file_directory)
 
         # Create a path to the mappings file
-        mappings = os.path.join(file_directory.parent.parent, constants.MAPPINGS_FORMAT_FEX)
+        mappings = os.path.join(file_directory.parent, constants.MAPPINGS_FORMAT_FEX)
         fex_json = mappings.format(label)
-        print("The fex json file is: %s ", fex_json)
+        Move.lprint("The fex json file is: %s ", fex_json)
 
         return fex_json
 
     def play(self, param):
-        print("Input data: {}", param.data)
+        Move.lprint("Input data: {}", param.data)
         start = time.time()
         for i in range(0, len(self.explist[param.data])):
             delay = self.explist[param.data][i][constants.KEY_EXPRESSION_DELAY]
             ex = self.explist[param.data][i][constants.KEY_FACE_EXPRESSION]
             time.sleep(delay)
-            print("Expression to execute is: {}".format(ex))
+            Move.lprint("Expression to execute is: {}".format(ex))
             self.fe.sendFaceExpression(ex)
         end = time.time()
         elapsed_time = end - start
-        print("Playing an expression took %s seconds", elapsed_time)
+        Move.lprint("Playing an expression took %s seconds", elapsed_time)
         self.relax()
-        print("Relaxing is done")
+        Move.lprint("Relaxing is done")
 
     def relax(self):
         self.fe.sendFaceExpression("neutral")
