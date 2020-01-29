@@ -69,7 +69,7 @@ each terminal:
 
 ### Ros launch scripts
 You can use launch scripts to avoid a lot of typing, which is described in the previous section.
-1. Launch nicopose `roslaunch nicopose pose.launch llable:=A lposition:=LEFT`
+1. Launch nicopose `roslaunch nicopose pose.launch llabel:=A lposition:=LEFT`
 2. Launch logging: `rostopic echo /rosout | grep msg`
 
 
