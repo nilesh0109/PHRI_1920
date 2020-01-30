@@ -49,17 +49,24 @@ class SentenceList:
         self.context = context
         self.post_processor = "{}_sentencelist_postprocessor".format(self.protocols[context])
         if context == "done":
-            self.confidence_threshold = 0.3
-            self.context_sentences = 1
-            self.silence_timeout = 60
             self.listener.phrase_threshold = 1
             self.listener.pause_threshold = 1
+
+            self.context_sentences = 1
+            self.confidence_threshold = 0.3
+            self.silence_timeout = 60
         else:
-            self.confidence_threshold = 0.5
-            self.context_sentences = 3
-            self.silence_timeout = 10
             self.listener.phrase_threshold = 2
             self.listener.pause_threshold = 1.5
+
+            if context == "scene_0" or context == "scene_1":
+                self.context_sentences = 4
+            else:
+                self.context_sentences = 3
+
+            self.confidence_threshold = 0.5
+            self.silence_timeout = 10
+
 
         if context == "scene_0" or context == "scene_1":
             self.context_sentences = 4
@@ -79,6 +86,9 @@ class SentenceList:
             except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
                 rospy.loginfo("Timeout: %s", e)
                 return None, 0  # => will be turned into 'repetition_request' / 'timeout'
+            except BaseException as e:
+                 rospy.loginfo("Error occured in recognition: %s", e)
+                 return "fallback", 0 # => need for fallback.
 
     def match_sentence(self, docks_hypotheses, confidence):
         """
@@ -86,6 +96,10 @@ class SentenceList:
         :param confidence: how sure the postprocessor is about the hypothesis (range: [0, 1])
         :return: sentence_id: The id of the sentence that was recognized.
         """
+        # Unpredicted error occured, fallback needed.
+        if docks_hypotheses == "fallback":
+            return "fallback"
+
         # No need to match when below confidence threshold
         if confidence <= self.confidence_threshold:
             return "repetition_request" if self.context == "done" else "timeout"
