@@ -134,15 +134,15 @@ def hf(img):
 #crop the read img into 3 fronts: left robot, right one and the participant.
 #return cropped surfaces in following order: participant, left robo, right robo
 def preprocess(img):
-    gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    left_robot_img = rotateImage(gray, 48).copy()
-    left_robot_img = left_robot_img[329:388, 287:371]
+    gray= cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
+    left_robot_img = rotateImage(gray, 40).copy()
+    left_robot_img = left_robot_img[850:1130, 860:1200]    
     
-    right_robot_img = rotateImage(gray, 113).copy()
-    right_robot_img = right_robot_img[96:157, 292:380]
+    right_robot_img = rotateImage(gray, 125).copy()
+    right_robot_img = right_robot_img[400:620, 950:1250]    
     
-    participant = rotateImage(gray, -10).copy()
-    participant = participant[122:190, 270:365].copy()
+    participant = rotateImage(gray, -5).copy()
+    participant = participant[330:650, 980:1340].copy()
     return participant , left_robot_img , right_robot_img
 
 
