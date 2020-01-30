@@ -107,6 +107,8 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
 def take_image():
     cam_path = VideoDevice.get_all_devices()
 #    print cam_path
+    cam_resolution = [2304,1536]
+    
     for i in range(len(cam_path)):
         if cam_path[i][-1:] == "0":
             cam = cam_path[i]
@@ -120,13 +122,13 @@ def take_image():
         
     cam = cv2.VideoCapture(0)
     #print cam
+    cam.set(3, cam_resolution[0])
+    cam.set(4, cam_resolution[1])
     
     s, img = cam.read()
-    #print s
+
     if s:    # frame captured without any errors
         #cv2.imshow("cam-test",img)
         time.sleep(0.1)
-        #cv2.destroyWindow("cam-test")
-        #cv2.imwrite("filename.jpg",img) #save image
         rospy.loginfo("Created directory captured image")
         return img
