@@ -18,7 +18,7 @@ def handle_synthesis_request(req):
 
 def speech_synthesis_server(robot_name=''):
     rospy.init_node('speech_synthesis_server')
-    rospy.Service(robot_name + '/speech_synthesis', SpeechSynthesis, handle_synthesis_request)
+    rospy.Service('/speech_synthesis', SpeechSynthesis, handle_synthesis_request)
     rospy.loginfo("Speech synthesis for %s launched.", robot_name)
     rospy.spin()
 
