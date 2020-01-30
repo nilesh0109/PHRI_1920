@@ -1,159 +1,108 @@
+import rospy
 import sys
-from docks2_remote import Client
-import docks2_remote.docks2_remote.postprocessor as postprocessor
-import speech_recognition as sr
 from os.path import dirname, abspath
-from argparse import ArgumentParser
-import timeit
+
+import speech_recognition as sr
+
+import docks2_remote.docks2_remote.postprocessor as postprocessor
+from docks2_remote import Client
 
 
-def recognize(context):
-    '''
-    :param context: The specific scene number or "done" if listening for "Wendigo, I'm done".
-    :return: sentence_id: The id of the sentence that was recognized.
-    '''
+class SentenceList:
+    # Class Constants:
+    base_dir = dirname(dirname(abspath(__file__)))
+    protocols = {"done": "done",  # maps the context to the corresponding mission/emergency protocol
+                 "scene_0": "mission", "scene_1": "mission",
+                 "scene_2": "emergency", "scene_3": "emergency", "scene_4": "emergency"}
+    sentences = {}  # the possible sentences of the mission/emergency protocol
 
-    # Server settings taken from Johannes Twiefel's recognition system.
-    # This server is accessible only from computers connected to the informatikum network.
-    time_0 = timeit.default_timer()
-    server = 'sysadmin@wtmitx1'
-    port = 55101
-    client = Client(server=server, port=port)
-    sentences_dir = dirname(dirname(abspath(__file__))) + '/scripts/'
+    def __init__(self):
+        # Server settings from Johannes Twiefel: accessible only from the Informatikum network
+        self.client = Client(server='sysadmin@wtmitx1', port=55101)
+        # Filter ambient lab noise using a previously recorded sound file
+        self.listener = sr.Recognizer()
+        with sr.AudioFile(self.base_dir + "/generated_sounds/lab_noise.wav") as noise:
+            self.listener.adjust_for_ambient_noise(noise, duration=3)
 
-    print("Received context: " + context)
-    init_time = timeit.default_timer()
-    print("Connection to server time: " + str(init_time-time_0))
-	
-    # Language to be recognized
-    language = "english"
-    language_code = "en-EN"
+    def initialize(self):
+        # Create the sentencelist postprocessors on the Docks server
+        with self.client.connect() as connection:
+            for protocol in set(self.protocols.viewvalues()):
+                rospy.loginfo("Creating postprocessor for \'%s\'", protocol)
+                sentence_list = open(self.base_dir + "/scripts/{}.sentences.txt".format(protocol)).readlines()
+                connection.create_postprocessor(postprocessor.SentencelistPostprocessor,
+                                                '{}_sentencelist_postprocessor'.format(protocol),
+                                                sentencelist=sentence_list, language="english", language_code="en-EN")
+                # Store content of the sentence_list to fetch the index later
+                self.sentences[protocol] = sentence_list
 
-    # Translation from the context id to values of parameters that define the context.
-    if context == "done":
-        sentence_list = open(sentences_dir + "wendigo.sentences.txt").readlines()
-        context_sentences = 1
-        postprocessor= 'done_sentencelist_postprocessor'
-        print("Using wendigo sentences")
-    elif context == "scene_0" or context == "scene_1":
-        sentence_list = open(sentences_dir + "mission.sentences.txt").readlines()
-        context_sentences = 4
-        postprocessor = "mission_sentencelist_postprocessor"
-        print("Using mission sentences")
-    else:
-        sentence_list = open(sentences_dir + "emergency.sentences.txt").readlines()
-        context_sentences = 3
-        postprocessor = "emergency_sentencelist_postprocessor"
-        print("Using emergency sentences")
+    def configure(self, context):
+        """
+        :param context: The specific scene number or "done" if listening for "Wendigo, I'm done".
+        :return: none; only updates the internal state
+        """
+        # Setting the context specific parameters:
+        # - confidence_threshold: how good the understood sentence matches the sentence from the list (range: [0, 1])
+        # - phrase_threshold: minimum secs of speaking before we consider it a phrase (values before are discarded)
+        # - pause_threshold: seconds of non-speaking audio before a phrase is considered complete
+        # - silence_timeout: seconds before an error is raised when no speech is recorded.
+        self.context = context
+        self.post_processor = "{}_sentencelist_postprocessor".format(self.protocols[context])
+        if context == "done":
+            self.confidence_threshold = 0.3
+            self.context_sentences = 1
+            self.silence_timeout = 60
+            self.listener.phrase_threshold = 1
+            self.listener.pause_threshold = 1
+        else:
+            self.confidence_threshold = 0.5
+            self.context_sentences = 3
+            self.silence_timeout = 10
+            self.listener.phrase_threshold = 2
+            self.listener.pause_threshold = 1.5
 
-    done_sentence_list = open(sentences_dir + "wendigo.sentences.txt").readlines()
-    mission_sentence_list = open(sentences_dir + "mission.sentences.txt").readlines()
-    emergency_sentence_list = open(sentences_dir + "emergency.sentences.txt").readlines()
+        if context == "scene_0" or context == "scene_1":
+            self.context_sentences = 4
 
-    # The main recognizing unit.
-    listener = sr.Recognizer()
-
-
-    # Setting the recognition specific parameters that have to be distinguished:
-
-    # - phase_threshold: minimum seconds of speaking audio before we consider the speaking audio a phrase (values below this are ignored)
-    # - pause_threshold: seconds of non-speaking audio before a phrase is considered complete
-    # - confidence_threshold: how good the understood sentence matches the sentence from the list (range: [0, 1])
-    # - silence_timeout: seconds before an error is raised when no speech is recorded.
-
-    if context == "done":
-        listener.phrase_threshold = 1
-        listener.pause_threshold = 1
-        confidence_threshold = 0.3
-        silence_timeout = 60
-    else:
-        listener.phrase_threshold = 2
-        listener.pause_threshold = 1.5
-        confidence_threshold = 0.5
-        silence_timeout = 10
-
-
-    # with sr.AudioFile("./example-wavs/test_adjust.wav") as noise:
-    with sr.Microphone() as noise:
-        listener.adjust_for_ambient_noise(noise)
-	pre_post_time = timeit.default_timer()
-    def create_postprocessors():
-        with client.connect() as server:
-            # creates a sentencelist postprocessor on the server with a given sentence-list
-            server.create_postprocessor(
-               postprocessor.SentencelistPostprocessor,
-                'done_sentencelist_postprocessor',
-                sentencelist=done_sentence_list,
-                language=language,
-                language_code=language_code)
-
-            server.create_postprocessor(
-                postprocessor.SentencelistPostprocessor,
-                'mission_sentencelist_postprocessor',
-                sentencelist=mission_sentence_list,
-                language=language,
-                language_code=language_code)
-            server.create_postprocessor(
-                postprocessor.SentencelistPostprocessor,
-                'emergency_sentencelist_postprocessor',
-                sentencelist=emergency_sentence_list,
-                language=language,
-                language_code=language_code)
-		
-    print("Context time: " + str(timeit.default_timer()-pre_post_time))
-    while True:
-
-        # If recognition should be based on a file than use:
-        # with sr.AudioFile("./example-wavs/test_sentence.wav") as source:
-
-        # Recognizes directly from microphone stream
-        print("Context time: " + str(timeit.default_timer()-init_time))
+    def recognize(self):
         with sr.Microphone() as source:
-            print('--------------------- Listening -------------------')
-            print("Total elapsed time: " + str(timeit.default_timer() - time_0))
+            rospy.loginfo("\n--------------------- Listening for Microphone Input-------------------")
             try:
-                # Collecting raw audio from microphone.
-                audio_data = listener.listen(source, timeout=silence_timeout)
+                # Collect raw audio from microphone.
+                audio_data = self.listener.listen(source, timeout=self.silence_timeout)
+                with self.client.connect() as connection:
+                    # Transform the audio into a string
+                    hypotheses, _ = connection.recognize(audio_data, ['ds', 'greedy'])
+                    rospy.loginfo("Docks2 understood: %s", hypotheses.lower())
+                    # Match the understood sentence to the best candidate from the sentence list
+                    return connection.postprocess(self.post_processor, hypotheses)
+            except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
+                rospy.loginfo("Timeout: %s", e)
+                return None, 0  # => will be turned into 'repetition_request' / 'timeout'
 
-                # Transforms the audio in a string based on the language
-                hypotheses, _ = server.recognize(audio_data, ['ds', 'greedy'])
-                print
-                "Docks2 understood: {}".format(hypotheses.lower())
+    def match_sentence(self, docks_hypotheses, confidence):
+        """
+        :param docks_hypotheses: sentence the docks postprocessor suggested.
+        :param confidence: how sure the postprocessor is about the hypothesis (range: [0, 1])
+        :return: sentence_id: The id of the sentence that was recognized.
+        """
+        # No need to match when below confidence threshold
+        if confidence <= self.confidence_threshold:
+            return "repetition_request" if self.context == "done" else "timeout"
 
-                # Match the sentence to a sentence in the list given, with certain confidence.
-                docks_hypotheses, confidence = server.postprocess(postprocessor,
-                                                                  hypotheses)
-
-                sentence_list_index = sentence_list.index(docks_hypotheses + "\n")
-                print("This corresponds to answer " + str(sentence_list_index)
-                      + " with confidence " + str(confidence))
-
-                # Extracting sentence_id from recognition data.
-                if context == "done":
-                    if confidence > confidence_threshold and sentence_list_index == 0:
-                        sentence_id = "done_confirmation"
-                    else:
-                        sentence_id = "repetition_request"
-                else:
-                    if confidence > confidence_threshold:
-                        if sentence_list_index < context_sentences:
-                            sentence_id = context + "_question_" + str(sentence_list_index)
-                        else:
-                            sentence_id = "repetion_request"
-                    else:
-                        sentence_id = "timeout"
-                print("To be returned to service: " + sentence_id)
-                return sentence_id
-
-
-            except: # This mainly catches a time out exception based on "silence_timeout".
-                if context == "done":
-                    sentence_id = "repetition_request"
-                else:
-                    sentence_id = "timeout"
-                print("To be returned to service: " + sentence_id)
-                return sentence_id
-
+        # Extracting sentence_id from recognition data.
+        matched_line = self.sentences[self.protocols[self.context]].index(docks_hypotheses + "\n")
+        rospy.loginfo("Recognized line %s with confidence %s:\n \'%s\'", matched_line, confidence, docks_hypotheses)
+        if self.context == "done" and matched_line == 0:
+            return "done_confirmation"
+        elif matched_line < self.context_sentences:
+            return self.context + "_question_" + str(matched_line)
+        else:
+            return "repetition_request"
 
 if __name__ == "__main__":
-    print(recognize(sys.argv[1]))
+    processor = SentenceList()
+    processor.initialize()
+    processor.configure(sys.argv[1])
+    sentence = processor.match_sentence(processor.recognize())
+    print(sentence)

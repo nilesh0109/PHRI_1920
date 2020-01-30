@@ -1,29 +1,29 @@
 #!/usr/bin/env python
-
-from speech.srv import SpeechSynthesis, SpeechSynthesisResponse
-import random
-import rospy
-from AudioPlayer import AudioPlayer
-from os.path import dirname, abspath
 import sys
+from os.path import dirname, abspath
+
+import rospy
+from speech.srv import SpeechSynthesis, SpeechSynthesisResponse
+from AudioPlayer import AudioPlayer
+
 def handle_synthesis_request(req):
     player = AudioPlayer(req.speaker)
     filepath = dirname(dirname(abspath(__file__))) + '/generated_sounds/{}.wav'.format(req.audio)
     if req.delay:
         rospy.sleep(req.delay)
+    rospy.loginfo("Playing speech %s", req.audio)
     player.play(filepath, req.audio)
-    print 'Sentence {} done.'.format(req.audio)
-    print '<--------------------------------------------->'
+    rospy.loginfo("Finished speech")
     return SpeechSynthesisResponse(True)
 
 def speech_synthesis_server(robot_name=''):
-    rospy.init_node(robot_name+'_speech_synthesis_server')
-    s = rospy.Service(robot_name+'/speech_synthesis', SpeechSynthesis, handle_synthesis_request)
-    print "Speech synthesis service launched."
+    rospy.init_node('speech_synthesis_server')
+    rospy.Service(robot_name + '/speech_synthesis', SpeechSynthesis, handle_synthesis_request)
+    rospy.loginfo("Speech synthesis for %s launched.", robot_name)
     rospy.spin()
 
 if __name__ == "__main__":
-    if len(sys.argv)>1:
+    if len(sys.argv) > 1:
         speech_synthesis_server(sys.argv[1])
     else:
         speech_synthesis_server()
