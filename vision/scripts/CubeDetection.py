@@ -56,8 +56,7 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
             os.mkdir(scene_)
             rospy.loginfo("Created directory %s" %(scene_))
             os.chdir(scene_)
-#            print os.getcwd()
-#            print"------------------------------------------"
+
         else:
             participant_id = "participant_" + "1"
             os.mkdir(participant_id)
@@ -66,9 +65,7 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
             os.mkdir(scene_)
             rospy.loginfo("Created directory %s" %(scene_))
             os.chdir(scene_)
-#            print os.getcwd()
-#            print"------------------------------------------"
-   
+  
     else:
 #        print os.getcwd()
         os.chdir("../../..")
@@ -118,7 +115,6 @@ def take_image():
             break
         else:
             cam = 1
-            print cam
         
     cam = cv2.VideoCapture(0)
     #print cam
@@ -130,5 +126,4 @@ def take_image():
     if s:    # frame captured without any errors
         #cv2.imshow("cam-test",img)
         time.sleep(0.1)
-        rospy.loginfo("Created directory captured image")
         return img
