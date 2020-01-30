@@ -48,7 +48,7 @@ def blob_detect(img):
     #plt.imshow(im_with_keypoints, cmap="gray")
     
 def thre1(img):
-    ret,thresh = cv2.threshold(img,127,255,cv2.THRESH_BINARY)
+    ret,thresh = cv2.threshold(img,50,255,cv2.THRESH_BINARY)
     #plt.figure(figsize=(15,15))
     #plt.imshow(thresh, cmap="gray")
     return thresh
@@ -115,7 +115,7 @@ def hf(img):
     cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
 
     circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,20,
-                                param1=25,param2=25,minRadius=0,maxRadius=0)   #param2 30 1, 20
+                                param1=25,param2=10,minRadius=0,maxRadius=0)   #param2 30 1, 20
     if circles is None:
         return cimg, 0
     circles = np.uint16(np.around(circles))
@@ -135,14 +135,15 @@ def hf(img):
 #return cropped surfaces in following order: participant, left robo, right robo
 def preprocess(img):
     gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    left_robot_img = rotateImage(gray, 55).copy()
-    left_robot_img = left_robot_img[470:580, 420:560]
+    left_robot_img = rotateImage(gray, 48).copy()
+    left_robot_img = left_robot_img[329:388, 287:371]
     
-    right_robot_img = rotateImage(gray, 116).copy()
-    right_robot_img = right_robot_img[130:230, 425:570]
+    right_robot_img = rotateImage(gray, 113).copy()
+    right_robot_img = right_robot_img[96:157, 292:380]
     
-    participant = gray[160:260, 420:555].copy()
-    return participant, left_robot_img, right_robot_img
+    participant = rotateImage(gray, -10).copy()
+    participant = participant[122:190, 270:365].copy()
+    return participant , left_robot_img , right_robot_img
 
 
 #Place the cubes in distance of each other
@@ -151,26 +152,6 @@ def preprocess(img):
 def count_cubes(img):
     
     thr = thre1(img)
-    clos = closing(thr)
-
-    layer = clos.copy()
-    gaussian_pyramid = [layer]
-    for i in range(6):
-        layer = cv2.pyrDown(layer)
-        gaussian_pyramid.append(layer)
-    # Laplacian Pyramid
-    layer = gaussian_pyramid[5]
-    #cv2.imshow("6", layer)
-    laplacian_pyramid = [layer]
-    for i in range(5, 0, -1):
-        size = (gaussian_pyramid[i - 1].shape[1], gaussian_pyramid[i - 1].shape[0])
-        gaussian_expanded = cv2.pyrUp(gaussian_pyramid[i], dstsize=size)
-        laplacian = cv2.subtract(gaussian_pyramid[i - 1], gaussian_expanded)
-        laplacian_pyramid.append(laplacian)
-        
-    lay = laplacian_pyramid[-1]
-
-    #blob_detect(lay)
-    _, nr = hf(lay)
+    _, nr = hf(thr)
     
     return nr

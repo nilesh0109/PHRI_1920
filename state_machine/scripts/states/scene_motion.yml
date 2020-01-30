@@ -1,0 +1,162 @@
+scene0:
+  #- event: "image"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "A"
+    audio: "scene_0_A_line_0"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "B"
+    audio: "scene_0_B_line_0"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_0_S_line_0"
+  # - event: "allocation"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_0_S_line_1"
+  # - event: "unallocation"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_0_S_line_2"
+  # - event: "question"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_0_S_line_3"
+  # - event: "video"
+scene1:
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_1_S_line_0"
+  - event: "utterance"
+    delay: 3
+    speaker: "A"
+    audio: "scene_1_A_line_0"
+  - event: "utterance"
+    delay: 3
+    speaker: "B"
+    audio: "scene_1_B_line_0"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_1_S_line_1"
+  # - event: "question"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_1_S_line_2"
+  # - event: "allocation"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_1_S_line_3"
+  # - event: "unallocation"
+scene2:
+  #- event: "image"
+  #- event: "alarm"
+  - event: "utterance"
+    delay: 1
+    speaker: "S"
+    audio: "scene_2_S_line_0"
+  - event: "utterance"
+    delay: 4.5
+    speaker: "A"
+    audio: "scene_2_A_line_0"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "B"
+    audio: "scene_2_B_line_0"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_2_S_line_1"
+  # - event: "question"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_2_S_line_2"
+  # - event: "allocation"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_2_S_line_3"
+  # - event: "unallocation"
+  # - event: "video"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_2_S_line_4"
+scene3:
+  #- event: "image"
+  #- event: "alarm"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_3_S_line_0"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "B"
+    audio: "scene_3_B_line_0"
+  - event: "utterance"
+    delay: 2.5
+    speaker: "A"
+    audio: "scene_3_A_line_0"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_3_S_line_1"
+  #- event: "question"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_3_S_line_2"
+  #- event: "allocation"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_3_S_line_3"
+  #- event: "unallocation"
+  #- event: "video"
+scene4:
+  #- event: "image"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_4_S_line_0"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "A"
+    audio: "scene_4_A_line_0"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "B"
+    audio: "scene_4_B_line_0"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_4_S_line_1"
+  # - event: "question"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_4_S_line_2"
+  # - event: "allocation"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_4_S_line_3"
+  # - event: "unallocation"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_4_S_line_4"
+  # - event: "video"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_4_S_line_5"
