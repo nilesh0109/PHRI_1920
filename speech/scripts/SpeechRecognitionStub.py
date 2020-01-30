@@ -11,7 +11,7 @@ def handle_recognition_request(req):
     rospy.loginfo("Received context: %s", req.context)
     processor.configure(req.context)
     docks_hypotheses, confidence = processor.recognize()
-    sentence = processor.match_sentence(req.context, docks_hypotheses, confidence)
+    sentence = processor.match_sentence(docks_hypotheses, confidence)
     rospy.loginfo("Recognized: %s", sentence)
     return SpeechRecognitionResponse(sentence)
 
