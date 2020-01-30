@@ -111,11 +111,13 @@ def rotateImage(image, angle):
     return result
 
 def hf(img):
+    #img = cv2.GaussianBlur(img,(5,5),0)
+    #cimg = img.copy()
     img = cv2.medianBlur(img,5)
-    cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
-
+    cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
+    
     circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,20,
-                                param1=25,param2=10,minRadius=0,maxRadius=0)   #param2 30 1, 20
+                                param1=25,param2=15,minRadius=0,maxRadius=0)   #param2 25
     if circles is None:
         return cimg, 0
     circles = np.uint16(np.around(circles))
@@ -134,15 +136,15 @@ def hf(img):
 #crop the read img into 3 fronts: left robot, right one and the participant.
 #return cropped surfaces in following order: participant, left robo, right robo
 def preprocess(img):
-    gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    left_robot_img = rotateImage(gray, 48).copy()
-    left_robot_img = left_robot_img[329:388, 287:371]
+    gray= cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
+    left_robot_img = rotateImage(gray, 40).copy()
+    left_robot_img = left_robot_img[850:1130, 860:1200]
     
-    right_robot_img = rotateImage(gray, 113).copy()
-    right_robot_img = right_robot_img[96:157, 292:380]
+    right_robot_img = rotateImage(gray, 125).copy()
+    right_robot_img = right_robot_img[400:620, 950:1250]
     
-    participant = rotateImage(gray, -10).copy()
-    participant = participant[122:190, 270:365].copy()
+    participant = rotateImage(gray, -5).copy()
+    participant = participant[330:650, 980:1340].copy()
     return participant , left_robot_img , right_robot_img
 
 
