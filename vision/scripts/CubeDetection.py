@@ -13,12 +13,13 @@ from nicovision.VideoDevice import VideoDevice
 import time
 from cubeCounting import preprocess, count_cubes
 from os.path import dirname, abspath
+import rospy
 
 def cube_detect(scene_num, participant_num=0):
 
     #take an image
     full_image = take_image()
-#    full_image= cv2.imread('/informatik2/students/home/8bhatia/PHRI1920/vision-phri1920/cube_count/test.jpg')
+#    full_image= cv2.imread('/informatik2/students/home/8bhatia/PHRI1920/vision-phri1920/cube_count/test2.jpg')
 
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
@@ -40,6 +41,7 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
     
     if not os.path.exists(directory):
         os.mkdir(directory)
+        rospy.loginfo("Created directory Data")
 
     scene_ = "scene_" + str(scene_num)
     if scene_num == 0:
@@ -49,16 +51,20 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
         if p_nr:
             participant_id = "participant_" + str(p_nr+1)
             os.mkdir(participant_id)
+            rospy.loginfo("Created directory %s" %(participant_id))
             os.chdir(participant_id)
             os.mkdir(scene_)
+            rospy.loginfo("Created directory %s" %(scene_))
             os.chdir(scene_)
 #            print os.getcwd()
 #            print"------------------------------------------"
         else:
             participant_id = "participant_" + "1"
             os.mkdir(participant_id)
+            rospy.loginfo("Created directory %s" %(participant_id))
             os.chdir(participant_id)
             os.mkdir(scene_)
+            rospy.loginfo("Created directory %s" %(scene_))
             os.chdir(scene_)
 #            print os.getcwd()
 #            print"------------------------------------------"
@@ -75,11 +81,13 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
         participant_id = participant_id[-1]
         os.chdir(participant_id)
         os.mkdir(scene_)
+        rospy.loginfo("Created directory %s" %(scene_))
         os.chdir(scene_)
         
     
 
     os.mkdir("images")
+    rospy.loginfo("Created directory images")
     os.chdir("images")
     
     img_name = participant_id + "_robotA_cubes_" + str(left_robot_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
@@ -91,7 +99,7 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
     img_name = participant_id + "_FullImage_" + datetime.datetime.today().isoformat() + '.png'
     cv2.imwrite(img_name, full_image)
     
- 
+    rospy.loginfo("saved images")
     
     return True
 
@@ -120,4 +128,5 @@ def take_image():
         time.sleep(0.1)
         #cv2.destroyWindow("cam-test")
         #cv2.imwrite("filename.jpg",img) #save image
+        rospy.loginfo("Created directory captured image")
         return img
