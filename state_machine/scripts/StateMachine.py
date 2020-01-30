@@ -7,7 +7,7 @@ from smach_ros import ServiceState
 from speech.srv import SpeechRecognition
 from video.srv import PlayVideo
 from vision.srv import CountResources
-from states import SceneFlow, SayResponses, MakeUtterance
+from states import SceneFlow, SayResponses, MakeUtterance, RecognitionFallback
 
 # main
 def main():
@@ -91,6 +91,12 @@ def main():
         )
 
         smach.StateMachine.add(
+            "GET_QUESTION_FALLBACK",
+            RecognitionFallback.RecognitionFallback(),
+            transitions={"manual_answer": "RESOLVE_QUESTION"},
+        )
+
+        smach.StateMachine.add(
             "RESOLVE_QUESTION",
             SayResponses.SayResponses(),
             transitions={
@@ -100,6 +106,7 @@ def main():
                 "participant_input": "GET_QUESTION",
                 "questions_done": "SCENE",
                 "done_confirmation": "CUBE_COUNT",
+                "recognition_fallback": "GET_QUESTION_FALLBACK",
             },
             remapping={"question": "sentence"},
         )

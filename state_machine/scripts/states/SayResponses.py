@@ -15,6 +15,7 @@ class SayResponses(smach.State):
                 "participant_input",
                 "questions_done",
                 "done_confirmation",
+                "recognition_fallback"
             ],
             input_keys=["question", "last_ship_line"],
             output_keys=["speaker", "audio", "delay", "param"],
@@ -29,6 +30,8 @@ class SayResponses(smach.State):
         if userdata.question == "done_confirmation":
             self.answer_index = 0
             return "done_confirmation"
+        elif userdata.question == "fallback":
+            return "recognition_fallback"
         answers = self.question_answers[userdata.question]
         if userdata.question == "timeout" or userdata.question == "repetition_request":
             self.repeat_once = True

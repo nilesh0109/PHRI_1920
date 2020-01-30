@@ -1,7 +1,5 @@
-scene0:
-  - event: "utterance"
-    delay: 0
-    speaker: "s"
-    audio: "scene_0_S_line_2"
+scene_0:
   - event: "question"
-    context: "mission"
+scene_2:
+  - event: "question"
+  - event: "allocation"
