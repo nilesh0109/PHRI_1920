@@ -41,7 +41,7 @@ class Fexp:
         with open(fex_json) as json_file:
             self.explist = json.load(json_file)
 
-        Move.lprint("Fex Subscriber is ready.")
+        Move.lprint("Fex Subscriber is ready for " + self.label)
 
     @staticmethod
     def create_paths(label):
@@ -56,7 +56,7 @@ class Fexp:
         # Create a path to the mappings file
         mappings = os.path.join(file_directory.parent, constants.MAPPINGS_FORMAT_FEX)
         fex_json = mappings.format(label)
-        Move.lprint("The fex json file is: %s", fex_json)
+        Move.lprint("The fex json file is: "+ fex_json)
 
         return fex_json
 
@@ -67,11 +67,11 @@ class Fexp:
             delay = self.explist[param.data][i][constants.KEY_EXPRESSION_DELAY]
             ex = self.explist[param.data][i][constants.KEY_FACE_EXPRESSION]
             time.sleep(delay)
-            Move.lprint("Expression to execute is: %s", ex)
+            Move.lprint("Robot "+ self.label+", Expression to execute is: " + ex)
             self.fe.sendFaceExpression(ex)
         end = time.time()
         elapsed_time = end - start
-        Move.lprint("Playing an expression took %s seconds", elapsed_time)
+        Move.lprint("Playing an expression for " + self.label+" took %s seconds", elapsed_time)
         self.relax()
         Move.lprint("Relaxing is done")
 

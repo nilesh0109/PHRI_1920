@@ -46,7 +46,7 @@ class Move:
             self.lprint("Couldn't parse a json file: %s", utm_json)
             self.lprint(e)
 
-        self.lprint("Pos service is ready.")
+        self.lprint("Pos service is ready for "+self.label)
 
     @staticmethod
     def lprint(*args):
@@ -102,7 +102,7 @@ class Move:
             self.mov.play_movement(filename, move_speed=sp)
             end = time.time()
             elapsed_time = end - start
-            self.lprint("Playing a movement took %s seconds", elapsed_time)
+            self.lprint("Playing a movement for " + self.label +" took %s seconds" , elapsed_time)
 
             self.relax()
             res.msgback = 1
@@ -121,7 +121,7 @@ class Move:
         self.robot.openHand("LHand")
         end = time.time()
         elapsed_time = end - start
-        self.lprint("Relaxing took %s seconds", elapsed_time)
+        self.lprint("Relaxing for " + self.label+" took %s seconds", elapsed_time)
 
     def disable_torque_body(self):
         """
