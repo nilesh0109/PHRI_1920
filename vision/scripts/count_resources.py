@@ -22,9 +22,12 @@ def check_table_empty(req):
     table1 = []
     table2 = []
     start = time.time()
-    
+    timeout = 30
     scene_num = req.scene_number
     while True:
+        
+        rospy.loginfo("Automatic timeout of %d seconds started" % (timeout))
+        
         object1, object2 = cube_detect(scene_num, 0) #checks empty table
         table1.append(object1)
         table2.append(object2)
@@ -34,23 +37,19 @@ def check_table_empty(req):
             if np.average(table1[-3:]) == 0 and np.average(table2[-3:]) == 0:
                 break
             
-        if time.time() - start > 30: #30 seconds timeout
+        if time.time() - start > timeout: #30 seconds timeout
             break
-        
+    rospy.loginfo("Table is now empty")    
     return CountResourcesResponse(True)
     
 
 def count_resources_server(robot_name=''):
     rospy.init_node('count_resources_allocated')
     s = rospy.Service(robot_name+'/count_objects', CountResources, handle_resources_request)
-    print s
-    if s:
-        print "Count objects service launced"
-    #e = rospy.Service(robot_name+'/check_empty', CheckEmpty, check_table_empty)
-    e = rospy.Service(robot_name+'/check_empty', CountResources, check_table_empty)
-    if e:
-        print "Check empty table service launced"
     
+    e = rospy.Service(robot_name+'/check_empty', CountResources, check_table_empty)
+
+    rospy.loginfo("launched service")
 
     rospy.spin()
 
