@@ -8,6 +8,7 @@ import sentencelist as sl
 processor = sl.SentenceList()
 
 def handle_recognition_request(req):
+
    try:
         rospy.loginfo("Received context: %s", req.context)
         processor.configure(req.context)
@@ -18,6 +19,7 @@ def handle_recognition_request(req):
    except Exception as e:
         rospy.loginfo("Error: %s", e)
         return SpeechRecognitionResponse("fallback")
+
 
 def speech_recognition_server():
     rospy.init_node('speech_recognition_server')

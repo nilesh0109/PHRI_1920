@@ -1,0 +1,18 @@
+scene_0:
+  - event: "video"
+  - event: "pause"
+scene_1:
+  - event: "video"
+  - event: "pause"
+scene_2:
+  - event: "video"
+  - event: "pause"
+scene_3:
+  - event: "video"
+  - event: "pause"
+scene_4:
+  - event: "video"
+  - event: "pause"
+scene_5:
+  - event: "video"
+  - event: "pause"

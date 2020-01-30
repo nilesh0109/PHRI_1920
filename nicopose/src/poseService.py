@@ -4,75 +4,151 @@ import argparse
 import time
 import json
 import rospy
+import os
+import constants
+from unipath import Path
 from nicopose.srv import Pose, PoseResponse
 from nicomotion import Mover, Motion
 from std_msgs.msg import String
 
-class Move():
-    robot = None
-    mov = None
-    mover_path = "../../../../moves_and_positions/"
-    utmlist = None
-    utm_json_format = "../mappings/utmove_{}_{}.json"
+
+class Move:
+    """
+    A class for executing robot's movements.
+    """
+
     def __init__(self, label, position):
-        self.robot = Motion.Motion('../../../../json/nico_humanoid_upper_rh7d.json', vrep=False)
-        self.mov = Mover.Mover(self.robot, stiff_off=True)
+        """
+        Initialize a Move class.
+        :param label: A or B.
+        :param position: LEFT or RIGHT
+        """
+        utm_json, joints_json, moves_path = self.create_paths(label, position)
+
         self.position = position
         self.label = label
+        self.robot = Motion.Motion(joints_json, vrep=False)
+        self.mov = Mover.Mover(self.robot, stiff_off=True)
+        self.moves_path = moves_path
 
-        utm_json = self.utm_json_format.format(label, position)
+        try:
+            with open(utm_json) as json_file:
+                self.utmlist = json.load(json_file)
+        except IOError as e:
+            self.lprint("The file is not found: ", utm_json)
+            self.lprint(e)
+        except ValueError as e:
+            self.lprint("Couldn't parse a json file: ", utm_json)
+            self.lprint(e)
 
-        with open(utm_json) as json_file:
-            self.utmlist = json.load(json_file)
-        print("Pos service ready...")
-        return
+        self.lprint("Pos service is ready.")
+
+    @staticmethod
+    def lprint(*args):
+        rospy.loginfo("============================")
+        rospy.loginfo(args)
+        print(args)
+
+    @staticmethod
+    def create_paths(label, position):
+        """
+        Create paths for mappings, moves and joints specification.
+        """
+
+        # Find the path to the file
+        file_directory = Path(os.path.dirname(os.path.abspath(__file__)))
+        Move.lprint("The path to the file is: ", file_directory)
+
+        # Create a path to the mappings file
+        mappings = os.path.join(file_directory.parent, constants.MAPPINGS_FORMAT_UTMOVE)
+        utm_json = mappings.format(label, position)
+        Move.lprint("The utm json file is: ", utm_json)
+
+        # Create a path to the joints specification file
+        joints_json = os.path.join(file_directory.parent, constants.JOINTS_SPECIFICATION_FILE)
+        Move.lprint("The utm json file is: ", joints_json)
+
+        # Create a path to the moves file
+        moves_path= os.path.join(file_directory.parent, constants.MOVES_FOLDER_NAME)
+
+        return utm_json, joints_json, moves_path
 
     def response(self, uid):
-        print(uid.param)
-        topic_name = "{}/fex".format(self.label)
+        """
+        For the given uid returns the message if a movement was successful or not.
+        :param uid: utterance Id.
+        :return: 1 (successful) or 0 (failure)
+        """
+        self.lprint(uid.param)
+        topic_name = constants.TOPIC_NAME_FORMAT.format(self.label)
         pub = rospy.Publisher(topic_name, String, queue_size=10)
         pub.publish(uid.param)
+        res = PoseResponse()
         try:
-            res = PoseResponse()
-            fname = self.mover_path + self.utmlist[uid.param]['pose_filename']
-            sp = self.utmlist[uid.param]['speed']
-            time.sleep(self.utmlist[uid.param]['gesture_delay'])
-            self.mov.play_movement(fname, move_speed=sp)
+            filename = self.moves_path + self.utmlist[uid.param][constants.KEY_POSE_FILENAME]
+            sp = self.utmlist[uid.param][constants.KEY_SPEED]
+            self.lprint("Gesture delay is ", constants.KEY_GESTURE_DELAY)
+            time.sleep(self.utmlist[uid.param][constants.KEY_GESTURE_DELAY])
+
+            start = time.time()
+            self.mov.play_movement(filename, move_speed=sp)
+            end = time.time()
+            elapsed_time = end - start
+            self.lprint("Playing a movement took ", elapsed_time, " seconds")
+
             self.relax()
             res.msgback = 1
         except Exception as e:
-            print(e)
+            self.lprint(e)
             res.msgback = 0
         return res
 
     def relax(self):
-        self.disableTorqueBody()
-        self.robot.openHand('RHand')
-        self.robot.openHand('LHand')
-        return
+        """
+        Relax a robot.
+        """
+        start = time.time()
+        self.disable_torque_body()
+        self.robot.openHand("RHand")
+        self.robot.openHand("LHand")
+        end = time.time()
+        elapsed_time = end - start
+        self.lprint("Relaxing took %s seconds", elapsed_time)
 
-    def disableTorqueBody(self):
+    def disable_torque_body(self):
+        """
+        Disable torque in all motors except the head.
+        """
         for motor in self.robot._robot.motors:
             if motor.name == "head_z" or motor.name == "head_y":
                 continue
             motor.compliant = True
 
 
+        
+
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='NICO ROS nicopose interface')
-    parser.add_argument('--label', dest='robotLabel',
-                        help='A for NVC. B non-NVC', type=str,
-                        default='A')
-    parser.add_argument('--position', dest='robotPosition',
-                        help='LEFT or RIGHT', type=str,
-                        default='LEFT')
+    parser = argparse.ArgumentParser(description="NICO ROS nicopose arguments")
+    parser.add_argument(
+        "--label",
+        dest="robotLabel",
+        help="A for NVC. B for non-NVC",
+        type=str,
+        default="A",
+    )
+    parser.add_argument(
+        "--position",
+        dest="robotPosition",
+        help="LEFT or RIGHT",
+        type=str,
+        default="LEFT",
+    )
 
     args = parser.parse_known_args()[0]
-    label = args.robotLabel
-    print(args.robotPosition)
-    node_name = "nicopose_{}".format(label)
+    Move.lprint("Position is %s; label is %s", args.robotPosition, args.robotLabel)
+    node_name = constants.NODENAME_NAME_FORMAT.format(args.robotLabel)
     rospy.init_node(node_name, anonymous=True)
     m = Move(args.robotLabel, args.robotPosition)
-    s = rospy.Service('{}/pose'.format(label),  Pose, m.response)
+    s = rospy.Service(constants.SERVICE_NODE_NAME, Pose, m.response)
     rospy.spin()
