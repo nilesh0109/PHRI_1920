@@ -51,6 +51,7 @@ class SentenceList:
         if context == "done":
             self.listener.phrase_threshold = 1
             self.listener.pause_threshold = 1
+            self.phrase_time_limit = 5
 
             self.context_sentences = 1
             self.confidence_threshold = 0.3
@@ -58,6 +59,7 @@ class SentenceList:
         else:
             self.listener.phrase_threshold = 2
             self.listener.pause_threshold = 1.5
+            self.phrase_time_limit = 7
 
             if context == "scene_0" or context == "scene_1":
                 self.context_sentences = 4
@@ -76,7 +78,7 @@ class SentenceList:
             rospy.loginfo("\n--------------------- Listening for Microphone Input-------------------")
             try:
                 # Collect raw audio from microphone.
-                audio_data = self.listener.listen(source, timeout=self.silence_timeout)
+                audio_data = self.listener.listen(source, timeout=self.silence_timeout, phrase_time_limit=self.phrase_time_limit)
                 with self.client.connect() as connection:
                     # Transform the audio into a string
                     hypotheses, _ = connection.recognize(audio_data, ['ds', 'greedy'])
