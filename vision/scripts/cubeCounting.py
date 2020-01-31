@@ -46,25 +46,26 @@ def blob_detect(img):
     # Show keypoints
     #plt.figure(figsize=(15,15))
     #plt.imshow(im_with_keypoints, cmap="gray")
+    return len(keypoints)
     
 def thre1(img):
-    ret,thresh = cv2.threshold(img,50,255,cv2.THRESH_BINARY)
-    #plt.figure(figsize=(15,15))
-    #plt.imshow(thresh, cmap="gray")
+    ret,thresh = cv2.threshold(img,130,255,cv2.THRESH_BINARY)
+#    plt.figure(figsize=(15,15))
+#    plt.imshow(thresh, cmap="gray")
     return thresh
 
 def thre2(img):
     thr = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,cv2.THRESH_BINARY,11,2)
-    #plt.figure(figsize=(15,15))
-    #plt.imshow(thr, cmap="gray")
+#    plt.figure(figsize=(15,15))
+#    plt.imshow(thr, cmap="gray")
     return thr
     
-def thre3(img):
-    thr = cv2.adaptiveThreshold(gray, 255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
-            cv2.THRESH_BINARY,11,2)
-    #plt.figure(figsize=(15,15))
-    #plt.imshow(thr, cmap="gray")
-    return thr    
+#def thre3(img):
+#    thr = cv2.adaptiveThreshold(gray, 255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
+#            cv2.THRESH_BINARY,11,2)
+#    plt.figure(figsize=(15,15))
+#    plt.imshow(thr, cmap="gray")
+#    return thr    
 
 def erosion(img):
     kernel = np.ones((5,5),np.uint8)
@@ -91,8 +92,8 @@ def opening(img):
 def closing(img):
     kernel = np.ones((5,5),np.uint8)
     closing = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
-    #plt.figure(figsize=(15,15))
-    #plt.imshow(closing, cmap="gray")
+#    plt.figure(figsize=(15,15))
+#    plt.imshow(closing, cmap="gray")
     return closing
 
 def gradient(img):
@@ -115,7 +116,7 @@ def hf(img):
     cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
 
     circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,20,
-                                param1=25,param2=10,minRadius=0,maxRadius=0)   #param2 30 1, 20
+                                param1=25,param2=28,minRadius=0,maxRadius=0)   #param2 30 1, 20
     if circles is None:
         return cimg, 0
     circles = np.uint16(np.around(circles))
@@ -134,7 +135,7 @@ def hf(img):
 #crop the read img into 3 fronts: left robot, right one and the participant.
 #return cropped surfaces in following order: participant, left robo, right robo
 def preprocess(img):
-    gray= cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
+    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     left_robot_img = rotateImage(gray, 40).copy()
     left_robot_img = left_robot_img[850:1130, 860:1200]    
     
@@ -142,8 +143,9 @@ def preprocess(img):
     right_robot_img = right_robot_img[400:620, 950:1250]    
     
     participant = rotateImage(gray, -5).copy()
-    participant = participant[330:650, 980:1340].copy()
+    participant = participant[330:650, 980:1340]
     return participant , left_robot_img , right_robot_img
+
 
 
 #Place the cubes in distance of each other
