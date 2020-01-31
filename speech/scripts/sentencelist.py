@@ -19,10 +19,7 @@ class SentenceList:
     def __init__(self):
         # Server settings from Johannes Twiefel: accessible only from the Informatikum network
         self.client = Client(server='sysadmin@wtmitx1', port=55101)
-        # Filter ambient lab noise using a previously recorded sound file
         self.listener = sr.Recognizer()
-        with sr.AudioFile(self.base_dir + "/generated_sounds/lab_noise.wav") as noise:
-            self.listener.adjust_for_ambient_noise(noise, duration=3)
 
     def initialize(self):
         # Create the sentencelist postprocessors on the Docks server
@@ -35,6 +32,11 @@ class SentenceList:
                                                 sentencelist=sentence_list, language="english", language_code="en-EN")
                 # Store content of the sentence_list to fetch the index later
                 self.sentences[protocol] = sentence_list
+
+    def calibrate(self):
+        # Filter ambient lab noise
+        with sr.Microphone() as noise:
+            self.listener.adjust_for_ambient_noise(noise, duration=3)
 
     def configure(self, context):
         """
@@ -51,7 +53,6 @@ class SentenceList:
         if context == "done":
             self.listener.phrase_threshold = 1
             self.listener.pause_threshold = 1
-            self.phrase_time_limit = 5
 
             self.context_sentences = 1
             self.confidence_threshold = 0.3
@@ -59,7 +60,6 @@ class SentenceList:
         else:
             self.listener.phrase_threshold = 2
             self.listener.pause_threshold = 1.5
-            self.phrase_time_limit = 7
 
             if context == "scene_0" or context == "scene_1":
                 self.context_sentences = 4
@@ -78,7 +78,7 @@ class SentenceList:
             rospy.loginfo("\n--------------------- Listening for Microphone Input-------------------")
             try:
                 # Collect raw audio from microphone.
-                audio_data = self.listener.listen(source, timeout=self.silence_timeout, phrase_time_limit=self.phrase_time_limit)
+                audio_data = self.listener.listen(source, timeout=self.silence_timeout)
                 with self.client.connect() as connection:
                     # Transform the audio into a string
                     hypotheses, _ = connection.recognize(audio_data, ['ds', 'greedy'])
@@ -88,6 +88,9 @@ class SentenceList:
             except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
                 rospy.loginfo("Timeout: %s", e)
                 return None, 0  # => will be turned into 'repetition_request' / 'timeout'
+            except BaseException as e:
+                 rospy.loginfo("Error occured in recognition: %s", e)
+                 return "fallback", 0 # => need for fallback.
 
     def match_sentence(self, docks_hypotheses, confidence):
         """
@@ -101,11 +104,12 @@ class SentenceList:
 
         # No need to match when below confidence threshold
         if confidence <= self.confidence_threshold:
+            rospy.loginfo("Recognized with confidence %s:\n \'%s\'", confidence, docks_hypotheses)
             return "repetition_request" if self.context == "done" else "timeout"
 
         # Extracting sentence_id from recognition data.
         matched_line = self.sentences[self.protocols[self.context]].index(docks_hypotheses + "\n")
-        rospy.loginfo("Recognized line %s with confidence %s:\n \'%s\'", matched_line, confidence, docks_hypotheses)
+        rospy.loginfo("Recognized line number %s, %s with confidence %s.", matched_line, docks_hypotheses, confidence)
         if self.context == "done" and matched_line == 0:
             return "done_confirmation"
         elif matched_line < self.context_sentences:

@@ -8,7 +8,9 @@ import sentencelist as sl
 processor = sl.SentenceList()
 
 def handle_recognition_request(req):
-
+    # Calibrate the microphone
+    if req.context == "calibrate":
+        return processor.calibrate()
     try:
         rospy.loginfo("Received context: %s", req.context)
         processor.configure(req.context)
