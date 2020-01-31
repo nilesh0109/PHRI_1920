@@ -19,10 +19,7 @@ class SentenceList:
     def __init__(self):
         # Server settings from Johannes Twiefel: accessible only from the Informatikum network
         self.client = Client(server='sysadmin@wtmitx1', port=55101)
-        # Filter ambient lab noise using a previously recorded sound file
         self.listener = sr.Recognizer()
-        with sr.AudioFile(self.base_dir + "/generated_sounds/lab_noise.wav") as noise:
-            self.listener.adjust_for_ambient_noise(noise, duration=3)
 
     def initialize(self):
         # Create the sentencelist postprocessors on the Docks server
@@ -35,6 +32,11 @@ class SentenceList:
                                                 sentencelist=sentence_list, language="english", language_code="en-EN")
                 # Store content of the sentence_list to fetch the index later
                 self.sentences[protocol] = sentence_list
+
+    def calibrate(self):
+        # Filter ambient lab noise
+        with sr.Microphone() as noise:
+            self.listener.adjust_for_ambient_noise(noise, duration=3)
 
     def configure(self, context):
         """
