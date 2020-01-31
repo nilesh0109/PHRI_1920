@@ -137,13 +137,13 @@ def hf(img):
 def preprocess(img):
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     left_robot_img = rotateImage(gray, 40).copy()
-    left_robot_img = left_robot_img[850:1130, 860:1200]    
+    left_robot_img = left_robot_img[920:1190, 1010:1300]    
     
-    right_robot_img = rotateImage(gray, 125).copy()
-    right_robot_img = right_robot_img[400:620, 950:1250]    
+    right_robot_img = rotateImage(gray, 120).copy()
+    right_robot_img = right_robot_img[290:570, 1040:1330]    
     
-    participant = rotateImage(gray, -5).copy()
-    participant = participant[330:650, 980:1340]
+    participant = rotateImage(gray, -10).copy()
+    participant = participant[480:760, 1020:1320]
     return participant , left_robot_img , right_robot_img
 
 
