@@ -9,14 +9,14 @@ processor = sl.SentenceList()
 
 def handle_recognition_request(req):
 
-   try:
+    try:
         rospy.loginfo("Received context: %s", req.context)
         processor.configure(req.context)
         docks_hypotheses, confidence = processor.recognize()
         sentence = processor.match_sentence(docks_hypotheses, confidence)
         rospy.loginfo("Recognized: %s", sentence)
         return SpeechRecognitionResponse(sentence)
-   except Exception as e:
+    except BaseException as e:
         rospy.loginfo("Error: %s", e)
         return SpeechRecognitionResponse("fallback")
 

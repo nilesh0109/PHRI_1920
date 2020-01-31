@@ -88,9 +88,6 @@ class SentenceList:
             except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
                 rospy.loginfo("Timeout: %s", e)
                 return None, 0  # => will be turned into 'repetition_request' / 'timeout'
-            except BaseException as e:
-                 rospy.loginfo("Error occured in recognition: %s", e)
-                 return "fallback", 0 # => need for fallback.
 
     def match_sentence(self, docks_hypotheses, confidence):
         """
