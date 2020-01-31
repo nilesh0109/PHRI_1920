@@ -29,3 +29,7 @@ the other only one.
 ### Launch script:
 1. `roslaunch nicopose pose.launch llabel:=A lposition:=LEFT`
 2. `rostopic echo /rosout | grep msg`
+
+### Hints uncomment delays in Mover.py:
+1. line 227
+2. line 240

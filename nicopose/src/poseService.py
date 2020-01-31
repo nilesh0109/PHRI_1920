@@ -23,7 +23,12 @@ class Move:
         :param label: A or B.
         :param position: LEFT or RIGHT
         """
-        utm_json, joints_json, moves_path = self.create_paths(label, position)
+        try:
+            utm_json, joints_json, moves_path = self.create_paths(label, position)
+        except Exception as e:
+            Move.lprint("Could not create paths!!")
+            Move.lprint(e)
+            return
 
         self.position = position
         self.label = label
@@ -35,13 +40,13 @@ class Move:
             with open(utm_json) as json_file:
                 self.utmlist = json.load(json_file)
         except IOError as e:
-            self.lprint("The file is not found: ", utm_json)
+            self.lprint("The file is not found: %s", utm_json)
             self.lprint(e)
         except ValueError as e:
-            self.lprint("Couldn't parse a json file: ", utm_json)
+            self.lprint("Couldn't parse a json file: %s", utm_json)
             self.lprint(e)
 
-        self.lprint("Pos service is ready.")
+        self.lprint("Pos service is ready for "+self.label)
 
     @staticmethod
     def lprint(*args):
@@ -54,19 +59,19 @@ class Move:
         """
         Create paths for mappings, moves and joints specification.
         """
-
+        rospy.loginfo(os.path.abspath(__file__))
         # Find the path to the file
         file_directory = Path(os.path.dirname(os.path.abspath(__file__)))
-        Move.lprint("The path to the file is: ", file_directory)
+        Move.lprint("The path to the file is: %s", file_directory)
 
         # Create a path to the mappings file
         mappings = os.path.join(file_directory.parent, constants.MAPPINGS_FORMAT_UTMOVE)
         utm_json = mappings.format(label, position)
-        Move.lprint("The utm json file is: ", utm_json)
+        Move.lprint("The utm json file is: %s", utm_json)
 
         # Create a path to the joints specification file
         joints_json = os.path.join(file_directory.parent, constants.JOINTS_SPECIFICATION_FILE)
-        Move.lprint("The utm json file is: ", joints_json)
+        Move.lprint("The joints json file is: %s", joints_json)
 
         # Create a path to the moves file
         moves_path= os.path.join(file_directory.parent, constants.MOVES_FOLDER_NAME)
@@ -85,16 +90,19 @@ class Move:
         pub.publish(uid.param)
         res = PoseResponse()
         try:
-            filename = self.moves_path + self.utmlist[uid.param][constants.KEY_POSE_FILENAME]
+            filename = self.moves_path + "/" +self.utmlist[uid.param][constants.KEY_POSE_FILENAME]
+
             sp = self.utmlist[uid.param][constants.KEY_SPEED]
-            self.lprint("Gesture delay is ", constants.KEY_GESTURE_DELAY)
-            time.sleep(self.utmlist[uid.param][constants.KEY_GESTURE_DELAY])
+            gesture_delay = self.utmlist[uid.param][constants.KEY_GESTURE_DELAY]
+            self.lprint("Gesture delay is %s", gesture_delay)
+            time.sleep(gesture_delay)
 
             start = time.time()
+            Move.lprint("PLAYING MOVEMENT: %s", filename)
             self.mov.play_movement(filename, move_speed=sp)
             end = time.time()
             elapsed_time = end - start
-            self.lprint("Playing a movement took ", elapsed_time, " seconds")
+            self.lprint("Playing a movement for " + self.label +" took %s seconds" , elapsed_time)
 
             self.relax()
             res.msgback = 1
@@ -113,7 +121,7 @@ class Move:
         self.robot.openHand("LHand")
         end = time.time()
         elapsed_time = end - start
-        self.lprint("Relaxing took %s seconds", elapsed_time)
+        self.lprint("Relaxing for " + self.label+" took %s seconds", elapsed_time)
 
     def disable_torque_body(self):
         """
