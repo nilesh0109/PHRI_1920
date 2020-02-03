@@ -84,10 +84,9 @@ class SentenceList:
 
                 # storing audio file
                 time_stamp = time.strftime("%m%d-%H%M%S", time.gmtime())
-                file_path = f'../recorded_sounds/{self.context}_{time_stamp}.wav'
-                with wave.open(file_path, 'wb') as wav_file:
-                    wav_file.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
-                    wav_file.writeframes(audio_data.read())
+                file_path = self.base_dir + '/recorded_sounds/{}_{}.wav'.format(self.context, time_stamp)
+                with open(file_path, "wb") as f:
+                    f.write(audio_data.get_wav_data())
 
                 with self.client.connect() as connection:
                     # Transform the audio into a string
