@@ -63,7 +63,7 @@ class SentenceList:
             self.confidence_threshold = 0.3
             self.silence_timeout = 60
         else:
-            self.listener.phrase_threshold = 2
+            self.listener.phrase_threshold = 1
             self.listener.pause_threshold = 1.5
 
             if context == "scene_0" or context == "scene_1":
@@ -80,7 +80,7 @@ class SentenceList:
 
     def recognize(self):
         with sr.Microphone() as source:
-            rospy.loginfo("\n--------------------- Listening for Microphone Input-------------------")
+            rospy.loginfo("\n--------------------- Listening for Microphone Input -------------------")
             try:
                 # Collect raw audio from microphone.
                 audio_data = self.listener.listen(source, timeout=self.silence_timeout)
@@ -90,7 +90,7 @@ class SentenceList:
                 file_path = self.base_dir + '/recorded_sounds/{}_{}.wav'.format(self.context, time_stamp)
                 with open(file_path, "wb") as f:
                     f.write(audio_data.get_wav_data())
-
+                rospy.loginfo("\n--------------------- Sending recording to Docks -------------------")
                 with self.client.connect() as connection:
                     # Transform the audio into a string
                     hypotheses, _ = connection.recognize(audio_data, ['ds', 'greedy'])
