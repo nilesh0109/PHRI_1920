@@ -5,59 +5,56 @@ import threading
 import time
 import os
 import rospy
-from pynput.keyboard import Key, Controller
+from os.path import dirname, abspath
 
-exitFlag = 0
-cliplength = [0, 30, 30, 30, 30]
-counter = 0
+
 
 
 class myVideoThread(threading.Thread):
     def __init__(self, threadID, filename):
         threading.Thread.__init__(self)
         self.threadID = threadID
-        self.filename = filename
+        self.filename = dirname(abspath(__file__)) + '/hrivid.mp4'
 
     def run(self):
         startvideo(self.filename)
 
-
-class myPauseThread(threading.Thread):
-    def __init__(self, threadID, length):
-        threading.Thread.__init__(self)
-        self.threadID = threadID
-        self.length = length
-        self.keyboard = Controller()
-
-    def run(self):
-        pausevideoafter(self.keyboard, self.length)
-
-
 def startvideo(filename):
     os.system(
-        str("DISPLAY=:0.1 vlc --fullscreen --global-key-play-pause=a" + str(filename))
+        str("DISPLAY=:0.1 vlc --fullscreen " + str(filename))
     )
 
 
-def pausevideoafter(keyboard, seconds):
+def pause_trigger():
+    os.system(
+        "dbus-send --type=method_call --dest=org.mpris.MediaPlayer2.vlc /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause")
+
+def play_video(seconds):
+    print("playing video for %i seconds" % seconds)
+    pause_trigger()
     time.sleep(seconds)
-    keyboard.press("a")
-    keyboard.release("a")
+    pause_trigger()
+    print("Video stopped")
 
 
 def handle_video_request(req):
-    thread2 = myPauseThread(2, cliplength[req.scene_number])
-    counter += 1
+    play_video(cliplength[req.scene_number])
+    return True
 
 
 def video_server():
     rospy.init_node("play_video_server")
-    s = rospy.Service("play_video", PlayVideo, handle_video_request)
-    thread1 = myVideoThread(1, "filename.mp4")
-    thread2 = myPauseThread(2, 0)
     print("Video service launched")
+    thread1 = myVideoThread(1, dirname(abspath(__file__)) + '/hrivid.mp4')
+    thread1.start()
+    time.sleep(1)
+    pause_trigger()
+    s = rospy.Service("play_video", PlayVideo, handle_video_request)
     rospy.spin()
 
 
 if __name__ == "__main__":
+    exitFlag = 0
+    cliplength = [0, 36, 42, 49, 41, 49]
     video_server()
+

@@ -1,5 +1,6 @@
 boto3
 catkin_pkg
+cffi
 empy
 pyaml
 rospkg
@@ -9,3 +10,6 @@ SpeechRecognition
 urllib3==1.23
 pyalsaaudio
 PyAudio
+
+# docks dependencies
+-r scripts/flaskcom/requirements.txt
