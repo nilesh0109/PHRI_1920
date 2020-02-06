@@ -15,8 +15,8 @@ class SentenceList:
     # Class Constants:
     base_dir = dirname(dirname(abspath(__file__)))
     protocols = {"done": "done",  # maps the context to the corresponding mission/emergency protocol
-                 "scene_0": "mission", "scene_1": "emergency",
-                 "scene_2": "emergency", "scene_3": "emergency", "scene_4": "emergency"}
+                 "scene_0": "mission", 
+                 "scene_1": "emergency", "scene_2": "emergency", "scene_3": "emergency", "scene_4": "emergency"}
     sentences = {}  # the possible sentences of the mission/emergency protocol
 
     def __init__(self):
@@ -135,23 +135,23 @@ class SentenceList:
         else:
             return "repetition_request"
 
-def recognize_file(self, file_path):
-    with sr.AudioFile(file_path) as source:
-        rospy.loginfo("\n--------------------- Listening for Microphone Input -------------------")
-        try:
-
-            with self.client.connect() as connection:
-                # Transform the audio into a string
-                hypotheses, _ = connection.recognize(audio_data, ['ds', 'greedy'])
-                rospy.loginfo("Docks2 understood: %s", hypotheses.lower())
-                # Match the understood sentence to the best candidate from the sentence list
-                return connection.postprocess(self.post_processor, hypotheses)
-        except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
-            rospy.loginfo("Timeout: %s", e)
-            return None, 0  # => will be turned into 'repetition_request' / 'timeout'
-        except BaseException as e:
-            rospy.loginfo("Error occured in recognition: %s", e)
-            return "fallback", 0  # => need for fallback.
+# def recognize_file(self, file_path): #Function to be finished!!!!!! PEPI DON´T TOUCH
+#     with sr.AudioFile(file_path) as source:
+#         rospy.loginfo("\n--------------------- Listening for Microphone Input -------------------")
+#         try:
+#
+#             with self.client.connect() as connection:
+#                 # Transform the audio into a string
+#                 hypotheses, _ = connection.recognize(audio_data, ['ds', 'greedy'])
+#                 rospy.loginfo("Docks2 understood: %s", hypotheses.lower())
+#                 # Match the understood sentence to the best candidate from the sentence list
+#                 return connection.postprocess(self.post_processor, hypotheses)
+#         except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
+#             rospy.loginfo("Timeout: %s", e)
+#             return None, 0  # => will be turned into 'repetition_request' / 'timeout'
+#         except BaseException as e:
+#             rospy.loginfo("Error occured in recognition: %s", e)
+#             return "fallback", 0  # => need for fallback.
 
 if __name__ == "__main__":
     processor = SentenceList()
