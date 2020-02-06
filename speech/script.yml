@@ -26,8 +26,12 @@
         <prosody pitch="-15%"><prosody rate="-25%" volume="medium"> one </prosody>question</prosody>
         <break time="0.01s"/> from the mission protocol.</speak>
     - speaker: S
+      text: >
+        <speak>Preparations for lift-off complete. When ready to embark on the mission, please say <break time="0.01s"/> 
+        "<phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/><prosody rate="slow">start </prosody><emphasis>lift-off</emphasis> protocol".</speak>
+    - speaker: S
       text: <speak><emphasis>Five. Four. Three. Two. One. Lift-<prosody pitch="-5%" rate="medium">off.</prosody></emphasis></speak>
-- scene: # 0.5 This scene has to be revised.
+- scene: # 1
     - speaker: S
       text: >
         <speak>Route to Xantonia is undefined. Action needed to avoid getting lost.</speak>
@@ -44,7 +48,7 @@
         <speak><prosody rate="-5%">You can <emphasis level="moderate">now</emphasis> ask your
         <emphasis level="reduced">crew</emphasis><break time="0.01s"/></prosody>
         <prosody pitch="-15%"><prosody rate="-25%" volume="medium"> one </prosody>question</prosody>
-        <amazon:breath volume="x-soft" duration="x-short"/> from the mission protocol.</speak>
+        <amazon:breath volume="x-soft" duration="x-short"/> from the emergency protocol.</speak>
     - speaker: S
       text: >
         <speak>Please distribute resources to decide <prosody rate="90%"> how to find a route</prosody> to take.
@@ -52,7 +56,7 @@
     - speaker: S
       text: >
         <speak> Thank you, <break strength = "x-weak"/> commander. Please place all the Energy cells back into your compartment.</speak>
-- scene: # 1
+- scene: # 2
     - speaker: S
       text: >
         <speak><prosody volume="x-loud" pitch="high">Warning! </prosody><break strength="strong"/>
@@ -89,7 +93,7 @@
         <prosody pitch="-8%">Calculating.</prosody><break time="0.8s"/>
         <prosody pitch="-8%">Calculating.</prosody><break time="0.8s"/>
         Immediate change of course to land on the closest planet. Adjusting course immediately.</speak>
-- scene: #2
+- scene: # 3
     - speaker: S
       text: >
         <speak>Approaching planet. <break/> Sensors show an atmosphere. <break/> Autopilot active at 70%. <break/>
@@ -108,7 +112,7 @@
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
     - speaker: S
       text: <speak>Please place all the Energy cells back into your compartment commander.</speak>
-- scene: #3
+- scene: #4
     - speaker: S
       text: >
         <speak>Landing successful. <prosody volume="x-loud" pitch="high">Warning! </prosody><break strength="strong"/>
