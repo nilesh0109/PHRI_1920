@@ -17,9 +17,15 @@ from std_msgs.msg import String
 class Fexp:
 
     def __init__(self, position, label):
-        fex_json = self.create_paths(label)
+        try:
+            fex_json = self.create_paths(label)
+        except Exception as e:
+            Move.lprint("Could not create paths!!")
+            Move.lprint(e)
+            return
         self.position = position
         self.label = label
+
         try:
             if self.position == "LEFT":
                 ports = serial.tools.list_ports.comports()
@@ -35,7 +41,7 @@ class Fexp:
         with open(fex_json) as json_file:
             self.explist = json.load(json_file)
 
-        Move.lprint("Fex Subscriber is ready.")
+        Move.lprint("Fex Subscriber is ready for " + self.label)
 
     @staticmethod
     def create_paths(label):
@@ -45,27 +51,27 @@ class Fexp:
 
         # Find the path to the file
         file_directory = Path(os.path.dirname(os.path.abspath(__file__)))
-        Move.lprint("The path to the file is: ", file_directory)
+        Move.lprint("The path to the file is: %s", file_directory)
 
         # Create a path to the mappings file
         mappings = os.path.join(file_directory.parent, constants.MAPPINGS_FORMAT_FEX)
         fex_json = mappings.format(label)
-        Move.lprint("The fex json file is: ", fex_json)
+        Move.lprint("The fex json file is: "+ fex_json)
 
         return fex_json
 
     def play(self, param):
-        Move.lprint("Input data: {}", param.data)
+        Move.lprint("Input data: %s", param.data)
         start = time.time()
         for i in range(0, len(self.explist[param.data])):
             delay = self.explist[param.data][i][constants.KEY_EXPRESSION_DELAY]
             ex = self.explist[param.data][i][constants.KEY_FACE_EXPRESSION]
             time.sleep(delay)
-            Move.lprint("Expression to execute is: {}".format(ex))
+            Move.lprint("Robot "+ self.label+", Expression to execute is: " + ex)
             self.fe.sendFaceExpression(ex)
         end = time.time()
         elapsed_time = end - start
-        Move.lprint("Playing an expression took ", elapsed_time, "seconds")
+        Move.lprint("Playing an expression for " + self.label+" took %s seconds", elapsed_time)
         self.relax()
         Move.lprint("Relaxing is done")
 
