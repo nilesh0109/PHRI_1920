@@ -6,6 +6,7 @@ import sys
 from CubeDetection import cube_detect
 import time
 import numpy as np
+import os
 
 def handle_resources_request(req):
     success = False
@@ -25,6 +26,13 @@ def check_table_empty(req):
     timeout = 30
     scene_num = req.scene_number
     
+    time_file = "timeout_file.txt"
+
+    if not os.path.exists(time_file):
+        f = open(time_file, "w+")
+    else:
+        f = open(time_file, "a+")
+        
     rospy.loginfo("Automatic timeout of %d seconds started" % (timeout))
     
     while True:         
@@ -38,7 +46,12 @@ def check_table_empty(req):
                 break
             
         if time.time() - start > timeout:
+            rospy.loginfo("Timed Out")
             break
+        
+    total_time = time.time() - start
+    f.write("Check Empty Timeout - %s\r\n" %(total_time))
+    f.close()
     rospy.loginfo("Table is now empty")    
     return CountResourcesResponse(True)
     
