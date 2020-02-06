@@ -1,5 +1,5 @@
-scene0:
-  #- event: "image"
+scene_0:
+  # - event: "video"
   - event: "utterance"
     delay: 1.5
     speaker: "A"
@@ -23,12 +23,13 @@ scene0:
     speaker: "S"
     audio: "scene_0_S_line_2"
   # - event: "question"
+  # - event: "pause"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
     audio: "scene_0_S_line_3"
+scene_1:
   # - event: "video"
-scene1:
   - event: "utterance"
     delay: 1.5
     speaker: "S"
@@ -56,11 +57,11 @@ scene1:
     speaker: "S"
     audio: "scene_1_S_line_3"
   # - event: "unallocation"
-scene2:
-  #- event: "image"
+scene_2:
+  # - event: "video"
   #- event: "alarm"
   - event: "utterance"
-    delay: 1
+    delay: 1.5
     speaker: "S"
     audio: "scene_2_S_line_0"
   - event: "utterance"
@@ -86,14 +87,12 @@ scene2:
     speaker: "S"
     audio: "scene_2_S_line_3"
   # - event: "unallocation"
+scene_3:
   # - event: "video"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
     audio: "scene_2_S_line_4"
-scene3:
-  #- event: "image"
-  #- event: "alarm"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
@@ -110,20 +109,19 @@ scene3:
     delay: 1.5
     speaker: "S"
     audio: "scene_3_S_line_1"
-  #- event: "question"
+  # - event: "question"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
     audio: "scene_3_S_line_2"
-  #- event: "allocation"
+  # - event: "allocation"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
     audio: "scene_3_S_line_3"
-  #- event: "unallocation"
-  #- event: "video"
-scene4:
-  #- event: "image"
+  # - event: "unallocation"
+scene_4:
+  # - event: "video"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
@@ -145,7 +143,7 @@ scene4:
     delay: 1.5
     speaker: "S"
     audio: "scene_4_S_line_2"
-  # - event: "allocation"
+  - event: "allocation"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
@@ -155,6 +153,7 @@ scene4:
     delay: 1.5
     speaker: "S"
     audio: "scene_4_S_line_4"
+scene_5:
   # - event: "video"
   - event: "utterance"
     delay: 1.5

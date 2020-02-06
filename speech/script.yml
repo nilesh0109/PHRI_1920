@@ -13,21 +13,24 @@
         <speak><prosody volume="x-loud">Hello commander</prosody>, I am your ship,
         <prosody volume="x-loud"><emphasis><phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo</phoneme></emphasis></prosody>.
         <break/> Before we start the journey, it would be wise to perform the pre-flight check.<break time="0.5s"/>
-        Please give <emphasis>each</emphasis> Crew Member <break time="0.01s"/>one<break time="0.01s"/> of your energy cells 
-        and say <break time="0.01s"/><phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/>
-        I’m done, when you’re done. </speak>
+        To do so please allocate to <emphasis>each</emphasis> Crew Member <emphasis>some</emphasis> of your energy cells and say 
+        <break time="0.01s"/><phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done, when you’re finished.</speak>
     - speaker: S
       text: >
-        <speak>Testing Lights.<break time="0.3s"/> Testing Sounds. <break time="0.3s"/><emphasis>All systems</emphasis> clear and ready.
-        <break time="0.3s"/>. Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>    
+        <speak> All systems are <emphasis>operational</emphasis>.
+        <break time="0.2s"/>. Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>    
     - speaker: S
       text: >
         <speak> Before we depart, you can ask your <emphasis level="reduced">crew</emphasis><break time="0.01s"/>
         <prosody pitch="-15%"><prosody rate="-25%" volume="medium"> one </prosody>question</prosody>
         <break time="0.01s"/> from the mission protocol.</speak>
     - speaker: S
+      text: >
+        <speak>Preparations for lift-off complete. When ready to embark on the mission, please say <break time="0.01s"/> 
+        "<phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/><prosody rate="slow">start </prosody><emphasis>lift-off</emphasis> protocol".</speak>
+    - speaker: S
       text: <speak><emphasis>Five. Four. Three. Two. One. Lift-<prosody pitch="-5%" rate="medium">off.</prosody></emphasis></speak>
-- scene: # 0.5 This scene has to be revised.
+- scene: # 1
     - speaker: S
       text: >
         <speak>Route to Xantonia is undefined. Action needed to avoid getting lost.</speak>
@@ -52,7 +55,7 @@
     - speaker: S
       text: >
         <speak> Thank you, <break strength = "x-weak"/> commander. Please place all the Energy cells back into your compartment.</speak>
-- scene: # 1
+- scene: # 2
     - speaker: S
       text: >
         <speak><prosody volume="x-loud" pitch="high">Warning! </prosody><break strength="strong"/>
@@ -89,7 +92,7 @@
         <prosody pitch="-8%">Calculating.</prosody><break time="0.8s"/>
         <prosody pitch="-8%">Calculating.</prosody><break time="0.8s"/>
         Immediate change of course to land on the closest planet. Adjusting course immediately.</speak>
-- scene: #2
+- scene: # 3
     - speaker: S
       text: >
         <speak>Approaching planet. <break/> Sensors show an atmosphere. <break/> Autopilot active at 70%. <break/>
@@ -104,11 +107,17 @@
         The heat shields might not be able to absorb the heat from entering the atmosphere.</speak>
     - speaker: S
       text: >
+        <speak><prosody rate="-5%">You can <emphasis level="moderate">now</emphasis> ask your
+        <emphasis level="reduced">crew</emphasis><break time="0.01s"/></prosody>
+        <prosody pitch="-15%"><prosody rate="-25%" volume="medium"> one </prosody>question</prosody>
+        <amazon:breath volume="x-soft" duration="x-short"/> from the emergency protocol.</speak>
+    - speaker: S
+      text: >
         <speak> Please divide your resources accordingly. <break time="0.1s"/> Let me know when you’re done by saying <break time="0.01s"/>
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
     - speaker: S
       text: <speak>Please place all the Energy cells back into your compartment commander.</speak>
-- scene: #3
+- scene: #4
     - speaker: S
       text: >
         <speak>Landing successful. <prosody volume="x-loud" pitch="high">Warning! </prosody><break strength="strong"/>

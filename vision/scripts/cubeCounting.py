@@ -17,7 +17,7 @@ def blob_detect(img):
 
     # Filter by Area.
     params.filterByArea = True
-    params.minArea = 50
+    params.minArea = 200
 
     # Filter by Circularity
     params.filterByCircularity = True
@@ -44,14 +44,16 @@ def blob_detect(img):
     im_with_keypoints = cv2.drawKeypoints(img, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
     # Show keypoints
-    #plt.figure(figsize=(15,15))
+    #plt.figure()
     #plt.imshow(im_with_keypoints, cmap="gray")
     return len(keypoints)
     
 def thre1(img):
-    ret,thresh = cv2.threshold(img,130,255,cv2.THRESH_BINARY)
-#    plt.figure(figsize=(15,15))
-#    plt.imshow(thresh, cmap="gray")
+    ret,thresh = cv2.threshold(img,115, 255,cv2.THRESH_BINARY)  #127, 255
+    thresh = cv2.GaussianBlur(thresh,(15,15),0)
+    
+    #plt.figure()
+    #plt.imshow(thresh, cmap="gray")
     return thresh
 
 def thre2(img):
@@ -135,17 +137,16 @@ def hf(img):
 #crop the read img into 3 fronts: left robot, right one and the participant.
 #return cropped surfaces in following order: participant, left robo, right robo
 def preprocess(img):
-    gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    left_robot_img = rotateImage(gray, 40).copy()
-    left_robot_img = left_robot_img[920:1190, 1010:1300]    
+    gray= cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
+    left_robot_img = rotateImage(gray, 35).copy()
+    left_robot_img = left_robot_img[775:1100, 970:1300]
     
-    right_robot_img = rotateImage(gray, 120).copy()
-    right_robot_img = right_robot_img[290:570, 1040:1330]    
+    right_robot_img = rotateImage(gray, 117).copy()
+    right_robot_img = right_robot_img[210:550, 850:1200]
     
-    participant = rotateImage(gray, -10).copy()
-    participant = participant[480:760, 1020:1320]
+    participant = rotateImage(gray, -15).copy()
+    participant = participant[300:650, 1100:1500].copy()
     return participant , left_robot_img , right_robot_img
-
 
 
 #Place the cubes in distance of each other
@@ -154,6 +155,32 @@ def preprocess(img):
 def count_cubes(img):
     
     thr = thre1(img)
-    _, nr = hf(thr)
     
-    return nr
+    thr = closing(thr)
+    """    
+    layer = thr.copy()
+    gaussian_pyramid = [layer]
+    for i in range(6):
+        layer = cv2.pyrDown(layer)
+        gaussian_pyramid.append(layer)
+    # Laplacian Pyramid
+    layer = gaussian_pyramid[5]
+    #cv2.imshow("6", layer)
+    laplacian_pyramid = [layer]
+    for i in range(5, 0, -1):
+        size = (gaussian_pyramid[i - 1].shape[1], gaussian_pyramid[i - 1].shape[0])
+        gaussian_expanded = cv2.pyrUp(gaussian_pyramid[i], dstsize=size)
+        laplacian = cv2.subtract(gaussian_pyramid[i - 1], gaussian_expanded)
+        laplacian_pyramid.append(laplacian)
+        
+        
+    lay = laplacian_pyramid[-2]
+    plt.figure()
+    plt.imshow(lay)
+    """
+    nr = blob_detect(thr)
+    
+    #_, nr = hf(lay)
+    
+    return nr 
+
