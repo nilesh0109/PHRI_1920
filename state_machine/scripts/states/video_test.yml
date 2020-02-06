@@ -1,18 +1,24 @@
 scene_0:
   - event: "video"
+    audio: ""
   - event: "pause"
 scene_1:
   - event: "video"
+    audio: "scene_1_S_line_0"
   - event: "pause"
 scene_2:
   - event: "video"
+    audio: "scene_2_S_line_0"
   - event: "pause"
 scene_3:
   - event: "video"
+    audio: "scene_3_S_line_0"
   - event: "pause"
 scene_4:
   - event: "video"
+    audio: "scene_4_S_line_0"
   - event: "pause"
 scene_5:
   - event: "video"
+    audio: "scene_4_S_line_5"
   - event: "pause"

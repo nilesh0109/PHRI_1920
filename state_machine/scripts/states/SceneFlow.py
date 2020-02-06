@@ -75,6 +75,9 @@ class SceneFlow(smach.State):
             outcome = "return_cubes"
         elif event == "video":
             userdata.scene_number = self.scene_index
+            userdata.speaker = "S"
+            userdata.audio = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
+            userdata.delay = 0
             outcome = "play_video"
         elif event == "pause":
             raw_input("\033[92mPress enter to initialize starting sequence.\033[0m")

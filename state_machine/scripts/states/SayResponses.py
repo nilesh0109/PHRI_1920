@@ -27,6 +27,7 @@ class SayResponses(smach.State):
 
     def execute(self, userdata):
         rospy.loginfo("Executing state RESOLVE_QUESTION")
+        rospy.loginfo("Question: %s", userdata.question)
         if userdata.question == "done_confirmation":
             self.answer_index = 0
             return "done_confirmation"
