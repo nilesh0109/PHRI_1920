@@ -15,13 +15,15 @@ class SayResponses(smach.State):
                 "participant_input",
                 "questions_done",
                 "done_confirmation",
-                "recognition_fallback"
+                "recognition_fallback",
             ],
             input_keys=["question", "last_ship_line"],
             output_keys=["speaker", "audio", "delay", "param"],
         )
         self.repeat_once = False
         self.answer_index = 0
+        self.timeouts = 0
+        self.max_timeouts = 1
         with open(dirname(abspath(__file__)) + "/questions.yml", "r") as f:
             self.question_answers = yaml.safe_load(f)
 
@@ -30,11 +32,22 @@ class SayResponses(smach.State):
         rospy.loginfo("Question: %s", userdata.question)
         if userdata.question == "done_confirmation":
             self.answer_index = 0
+            self.timeouts = 0
             return "done_confirmation"
         elif userdata.question == "fallback":
+            self.timeouts = 0
             return "recognition_fallback"
         answers = self.question_answers[userdata.question]
-        if userdata.question == "timeout" or userdata.question == "repetition_request":
+        if userdata.question == "timeout":
+            if self.timeouts < self.max_timeouts:
+                if not self.repeat_once:
+                    self.timeouts += 1
+                    self.repeat_once = True
+            else:
+                self.timeouts = 0
+                return "recognition_fallback"
+        if userdata.question == "repetition_request":
+            self.timeouts = 0
             self.repeat_once = True
         if self.answer_index < len(answers):
             answer = answers[self.answer_index]
@@ -63,4 +76,5 @@ class SayResponses(smach.State):
                 self.repeat_once = False
                 return "participant_input"
             else:
+                self.timeouts = 0
                 return "questions_done"

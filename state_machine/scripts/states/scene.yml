@@ -1,5 +1,6 @@
 scene_0:
   - event: "video"
+    audio: ""
   - event: "utterance"
     delay: 1.5
     speaker: "A"
@@ -30,6 +31,7 @@ scene_0:
     audio: "scene_0_S_line_3"
 scene_1:
   - event: "video"
+    audio: ""
   - event: "utterance"
     delay: 1.5
     speaker: "S"
@@ -59,6 +61,7 @@ scene_1:
   - event: "unallocation"
 scene_2:
   - event: "video"
+    audio: ""
   #- event: "alarm"
   - event: "utterance"
     delay: 1.5
@@ -89,6 +92,7 @@ scene_2:
   - event: "unallocation"
 scene_3:
   - event: "video"
+    audio: ""
   - event: "utterance"
     delay: 1.5
     speaker: "S"
@@ -122,6 +126,7 @@ scene_3:
   - event: "unallocation"
 scene_4:
   - event: "video"
+    audio: ""
   - event: "utterance"
     delay: 1.5
     speaker: "S"
@@ -155,6 +160,7 @@ scene_4:
     audio: "scene_4_S_line_4"
 scene_5:
   - event: "video"
+    audio: ""
   - event: "utterance"
     delay: 1.5
     speaker: "S"
