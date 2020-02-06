@@ -107,6 +107,12 @@
         The heat shields might not be able to absorb the heat from entering the atmosphere.</speak>
     - speaker: S
       text: >
+        <speak><prosody rate="-5%">You can <emphasis level="moderate">now</emphasis> ask your
+        <emphasis level="reduced">crew</emphasis><break time="0.01s"/></prosody>
+        <prosody pitch="-15%"><prosody rate="-25%" volume="medium"> one </prosody>question</prosody>
+        <amazon:breath volume="x-soft" duration="x-short"/> from the emergency protocol.</speak>
+    - speaker: S
+      text: >
         <speak> Please divide your resources accordingly. <break time="0.1s"/> Let me know when you’re done by saying <break time="0.01s"/>
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
     - speaker: S
