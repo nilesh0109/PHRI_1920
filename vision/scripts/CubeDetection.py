@@ -19,8 +19,8 @@ def cube_detect(scene_num, participant_num=0):
 
     #take an image
     full_image = take_image()
-#    full_image= cv2.imread('/informatik2/students/home/8bhatia/PHRI1920/vision-phri1920/cube_count/test2.jpg')
-
+#    full_image= cv2.imread('/informatik2/students/home/8bhatia/PHRI1920/vision-phri1920/cube_count/participant_8_FullImage_2020-01-30T12:14:00.445908.png')
+    
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
     P_cubes = count_cubes(P_img)
@@ -68,7 +68,7 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
   
     else:
 #        print os.getcwd()
-        os.chdir("../../..")
+        os.chdir(directory)
 #        print os.getcwd()
         direc = os.getcwd()
         directories = os.walk(direc).next()[1]
@@ -120,10 +120,14 @@ def take_image():
     #print cam
     cam.set(3, cam_resolution[0])
     cam.set(4, cam_resolution[1])
+#    print cam.get(3)
+#    print cam.get(4)
     
+    time.sleep(0.1)
     s, img = cam.read()
 
     if s:    # frame captured without any errors
-        #cv2.imshow("cam-test",img)
+#        cv2.imshow("cam-test",img)
+#        cv2.waitKey(0)
         time.sleep(0.1)
         return img
