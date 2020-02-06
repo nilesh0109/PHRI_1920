@@ -16,6 +16,6 @@ KEY_FACE_EXPRESSION = "fe"
 # Names
 NODENAME_NAME_FORMAT = "nicopose_{}"
 SERVICE_NAME_FORMAT = "{}/pose"
-TOPIC_NAME_FORMAT = "{}/fex"
+TOPIC_NAME_FORMAT = "/{}/fex"
 SERVICE_NODE_NAME = "pose"
 TOPIC_NODE_NAME = "fex"
