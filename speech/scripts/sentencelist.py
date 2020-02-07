@@ -15,8 +15,8 @@ class SentenceList:
     # Class Constants:
     base_dir = dirname(dirname(abspath(__file__)))
     protocols = {"done": "done",  # maps the context to the corresponding mission/emergency protocol
-                 "scene_0": "mission", 
-                 "scene_1": "emergency", "scene_2": "emergency", "scene_3": "emergency", "scene_4": "emergency"}
+                 "scene_0": "mission", "scene_1": "mission",
+                 "scene_2": "emergency", "scene_3": "emergency", "scene_4": "emergency"}
     sentences = {}  # the possible sentences of the mission/emergency protocol
 
     def __init__(self):
@@ -130,7 +130,7 @@ class SentenceList:
             return "done_confirmation"
         elif matched_line < self.context_sentences:
             return self.context + "_question_" + str(matched_line)
-        elif matched_line < (self.context_sentences + no_sentences):
+        elif self.context!="done" and matched_line < (self.context_sentences + no_sentences):
             return "no_question"
         else:
             return "repetition_request"
@@ -186,7 +186,9 @@ if __name__ == "__main__":
             docks_hypotheses, confidence = processor.recognize_file(test_dir + filename)
             sentence = processor.match_sentence(docks_hypotheses, confidence)
             my_print("Recognized " + sentence + ": \"" + docks_hypotheses + "\". Confidence " + str(confidence))
-            if filename.startswith(sentence):
+            filename_array = filename.split("_")
+            sentence_array = sentence.split("_")
+            if filename_array[0] == sentence_array[0]:
                 correct += 1
                 my_print(colored("Original: " + filename, "green"))
             else:
