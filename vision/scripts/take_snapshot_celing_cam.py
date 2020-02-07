@@ -89,7 +89,7 @@ def save_images(participant_num, P_img, left_robot_img, right_robot_img, P_cubes
 #        return False
 
 
-def take_image():
+def take_image(f):
     cam_path = VideoDevice.get_all_devices()
     cam_resolution = [2304,1536]
     for i in range(len(cam_path)):
@@ -110,7 +110,7 @@ def take_image():
         #cv2.imshow("cam-test",img)
         time.sleep(0.1)
         #cv2.destroyWindow("cam-test")
-        cv2.imwrite("filename3.jpg",img) #save image
+        cv2.imwrite("%s.png"%f,img) #save image
         return img
 
 
@@ -136,5 +136,13 @@ def check_table_empty():
 #print cube_detect(1)
 
 #check_table_empty()
-      
-take_image()  
+import argparse
+
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('filename', metavar='N', type=int, nargs='+',
+                    help='an integer for the accumulator')
+
+
+args = parser.parse_args()
+
+take_image(args.filename)  
