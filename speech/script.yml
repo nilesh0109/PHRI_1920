@@ -47,7 +47,7 @@
         <speak><prosody rate="-5%">You can <emphasis level="moderate">now</emphasis> ask your
         <emphasis level="reduced">crew</emphasis><break time="0.01s"/></prosody>
         <prosody pitch="-15%"><prosody rate="-25%" volume="medium"> one </prosody>question</prosody>
-        <amazon:breath volume="x-soft" duration="x-short"/> from the emergency protocol.</speak>
+        <amazon:breath volume="x-soft" duration="x-short"/> from the mission protocol.</speak>
     - speaker: S
       text: >
         <speak>Please distribute resources to decide <prosody rate="90%"> how to find a route</prosody> to take.
