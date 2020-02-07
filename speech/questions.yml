@@ -12,19 +12,16 @@
         - answer: <speak> I am lieutenant <say-as interpret-as="digits">732</say-as>-A. I am in charge of the ships shields, as well as the cooling system and the on-planet drone deployment.</speak>
         - answer: <speak> I am lieutenant <say-as interpret-as="digits">732</say-as>-B. I oversee the ships laser systems, the aerial stabilization system and the oxygen and water recycle module.</speak>
 - scene: #1
-    - question: # Can you tell me more about our mission?
-        - answer: <speak>We are transporting the antimatter to Xantonia all in one piece.</speak>
-        - answer: <speak>We are on our way to Xantonia to deliver the antimatter.</speak>
-    - question: # Have you been to Xantonia before?
-        - answer: <speak>No, but I have been on many journeys that were similar.</speak>
-        - answer: <speak> No, however, I have been to its solar system before.</speak>
-    - question: # What type of ship is this?
-        - answer: <speak>The <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo</phoneme> is a Javelin-class runner. It was produced by the Anvil Aerospace corporation.</speak>
-        - answer: <speak>This ship was designed to be versatile in any situation. While the cargo capacity is limited, its speed makes it perfect to transport time sensitive goods.</speak>
-    - question: # What is the crews function on this ship?
-        - answer: <speak>I <break time="0.01s"/> am in charge of the ships shields, as well as the cooling system and the on-planet drone deployment.</speak>
-        - answer: <speak> I <break time="0.01s"/> oversee the ships laser systems, the aerial stabilization system and the oxygen and water recycle module.</speak>
-- scene: #2
+    - question: # Lieutenants, can you tell me more about the solutions?
+        - answer: <speak>The <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo</phoneme> comes equipped with the Atlas 3000 radar. A scanner of this caliber will be able to locate the optimal path to Xantonia.</speak>
+        - answer: <speak>The extensive satellite system has the finest pathfinding technology which the federation can offer. No doubt we will be able to plan the best route to Xantonia</speak>
+    - question: # How confident are you in these solutions?
+        - answer: <speak>Our Atlas 3000 radar is a cutting edge wonder of technology. Locating the correct route would be an easy task with it’s specifications.</speak>
+        - answer: <speak>Once we engage the federation’s satellite system, the Animo Nav Beacons will be more than able to scan for the best possible path.</speak>
+    - question: # What do you think about each others ideas?
+        - answer: <speak>Relying on the federation’s satellite system would not be wise <break time="0.01s"/> as we would not obtain a proper path specific to our ship.</speak>
+        - answer: <speak>Using the resources of the federation would be better than any scanner we possess on board the <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo</phoneme>.</speak>
+- scene: # 2
     - question: # Lieutenants, can you tell me more about the solutions?
         - answer: <speak>Our scans show no asteroids that our X<say-as interpret-as="digits">86</say-as>-Twinfire can’t make short work of. The remaining debris should be no problem for our hull.</speak>
         - answer: <speak>Since this is a new ship type with improved Tachyon-shields <break time="0.01s"/> we should be able to deflect even the bigger asteroids without a problem.</speak>
