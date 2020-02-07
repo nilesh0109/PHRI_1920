@@ -1,5 +1,6 @@
 import mido
-
+import sys
+import yaml
 
 class LightController:
 
@@ -9,9 +10,14 @@ class LightController:
 
     def __init__(self, port_name='CH345:CH345 MIDI 1 36:0'):
         self.out_port = mido.open_output(port_name)
+        # Load configuration file:
+        with open('light_patterns.yml', mode='r') as yml_file:
+            self.light_patterns = yaml.safe_load(yml_file)['light_patterns']
 
     def set_lights(self, setting):
-        return
+        w, r, g, b = self.light_patterns[setting]
+        [self.white_spotlight_on(light_id, cold=w, warm=w) for light_id in range(1)]
+        [self.rgb_spotlight_on(light_id, red=r, green=g, blue=b) for light_id in range(4)]
 
     def white_spotlight_on(self, light_id, cold=1.0, warm=1.0):
         if light_id not in range(4):
@@ -48,11 +54,18 @@ class LightController:
         self.out_port.send(mido.Message("note_off", note=83 + light_id * 3))
         self.out_port.send(mido.Message("note_off", note=84 + light_id * 3))
 
-    def all_off(self):
+    def blackout_on(self):
         self.out_port.send(mido.Message("note_on", note=102))
+
+    def blackout_off(self):
+        self.out_port.send(mido.Message("note_off", note=102))
 
     def close(self):
         self.out_port.close()
 
     def __del__(self):
         self.close()
+
+if __name__ == "__main__":
+    ct = LightController()
+    ct.set_lights(sys.argv[1])
