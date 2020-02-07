@@ -109,9 +109,7 @@ def take_image():
     for i in range(len(cam_path)):
         if cam_path[i][-1:] == "0":
             cam = cam_path[i]
-#            print cam
             cam = 0
-#            print cam
             break
         else:
             cam = 1
@@ -120,14 +118,10 @@ def take_image():
     #print cam
     cam.set(3, cam_resolution[0])
     cam.set(4, cam_resolution[1])
-#    print cam.get(3)
-#    print cam.get(4)
-    
+
     time.sleep(0.1)
     s, img = cam.read()
 
     if s:    # frame captured without any errors
-#        cv2.imshow("cam-test",img)
-#        cv2.waitKey(0)
         time.sleep(0.1)
         return img
