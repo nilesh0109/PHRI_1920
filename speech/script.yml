@@ -54,7 +54,7 @@
         Let me know when you’re done by saying <break time="0.01s"/><phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
     - speaker: S
       text: >
-        <speak> Thank you, <break strength = "x-weak"/> commander. Please place all the Energy cells back into your compartment.</speak>
+        <speak> Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis><break time ="1s"/>, modules activated.<break time="1s"/> Please place all the Energy cells back into your compartment.</speak>
 - scene: # 2
     - speaker: S
       text: >
@@ -83,7 +83,7 @@
         Let me know when you’re done by saying <amazon:breath volume="x-soft" duration="x-short"/>
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
     - speaker: S
-      text: <speak>Please place all the Energy cells back into your compartment commander.</speak>
+      text: <speak> Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis><break time ="1s"/>, modules activated.<break time="1s"/> Please place all the Energy cells back into your compartment.</speak>
     - speaker: S
       text: >
         <speak>Unsuccessful. <break time="0.1s"/>Ship damaged. <break time="0.1s"/>
@@ -145,8 +145,7 @@
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
     - speaker: S
       text: >
-        <speak>Thank you,<break strength="x-weak"/> Commander.
-        Please place all the Energy cells <emphasis>back</emphasis> into <emphasis><phoneme alphabet="ipa" ph="jɔr"> your</phoneme></emphasis>compartment.</speak>
+        <speak> Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis><break time ="1s"/>, modules activated.<break time="1s"/> Please place all the Energy cells back into your compartment.</speak>
     - speaker: S
       text: >
         <speak><emphasis level="reduced">Cooling</emphasis> system successfully restored to full capacity.
