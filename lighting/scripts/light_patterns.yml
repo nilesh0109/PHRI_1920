@@ -10,3 +10,4 @@ light_patterns:
   waiting:   [30, 30, 60, 60]
   success:   [30, 10, 80, 10]
   failure:   [30, 80, 10, 10]
+  blackout:  [0, 0, 0, 0]

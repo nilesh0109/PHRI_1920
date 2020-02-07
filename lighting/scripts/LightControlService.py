@@ -13,15 +13,10 @@ def handle_light_request(req):
     return LightControlResponse(True)
 
 def light_control_server():
-
     rospy.init_node('light_control_server', anonymous=True)
     rospy.Service('light_control', LightControl, handle_light_request)
     rospy.loginfo("Light control service launched.")
     rospy.spin()
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        handle_light_request(sys.argv[1])
-    else:
-        print("Need a setting to set the lights to.")
-        exit(1)
+    light_control_server()
