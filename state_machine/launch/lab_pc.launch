@@ -1,0 +1,5 @@
+<launch>
+    <node name="video"      pkg="video" type="play_video.py"/>
+    <node name="synthesis"  pkg="speech"   ns="S" type="SpeechSynthesisStub.py" args="S"/>
+</launch>
+
