@@ -104,7 +104,7 @@ class Move:
             elapsed_time = end - start
             self.lprint("Playing a movement for " + self.label +" took %s seconds" , elapsed_time)
 
-            self.relax()
+            # self.relax()
             res.msgback = 1
         except Exception as e:
             self.lprint(e)
