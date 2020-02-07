@@ -150,6 +150,6 @@
     - speaker: S
       text: >
         <speak><emphasis level="reduced">Cooling</emphasis> system successfully restored to full capacity.
-        Safe departure from planet <emphasis>possible</emphasis>.<break strength="medium"/> <emphasis>Take-off</emphasis> imminent.</speak>
+        Safe departure from planet possible.<break time="0.3s"/> Commencing take off to Xantonia.</speak>
     - speaker: S
-      text: <speak> Reaching Xantonia. <break strength="strong"/> <emphasis level="moderate">Ready</emphasis> for landing.</speak>
+      text: <speak><emphasis><prosody volume="loud">Welcome</prosody></emphasis> to Xantonia commander. <break strength="strong"/> your journey is <prosody volume="loud">complete</prosody></speak>
