@@ -1,9 +1,9 @@
 import rospy
 import sys
 from os.path import dirname, abspath
-from os import listdir
-import wave
+from os import listdir, devnull
 import time
+from termcolor import colored
 
 import speech_recognition as sr
 
@@ -73,7 +73,7 @@ class SentenceList:
                 self.context_sentences = 3
 
             self.confidence_threshold = 0.5
-            self.silence_timeout = 10
+            self.silence_timeout = 20
 
 
         if context == "scene_0" or context == "scene_1":
@@ -135,35 +135,67 @@ class SentenceList:
         else:
             return "repetition_request"
 
-# def recognize_file(self, file_path): #Function to be finished!!!!!! PEPI DON´T TOUCH
-#     with sr.AudioFile(file_path) as source:
-#         rospy.loginfo("\n--------------------- Listening for Microphone Input -------------------")
-#         try:
-#
-#             with self.client.connect() as connection:
-#                 # Transform the audio into a string
-#                 hypotheses, _ = connection.recognize(audio_data, ['ds', 'greedy'])
-#                 rospy.loginfo("Docks2 understood: %s", hypotheses.lower())
-#                 # Match the understood sentence to the best candidate from the sentence list
-#                 return connection.postprocess(self.post_processor, hypotheses)
-#         except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
-#             rospy.loginfo("Timeout: %s", e)
-#             return None, 0  # => will be turned into 'repetition_request' / 'timeout'
-#         except BaseException as e:
-#             rospy.loginfo("Error occured in recognition: %s", e)
-#             return "fallback", 0  # => need for fallback.
+    def recognize_file(self, file_path):
+        print_off()
+        with sr.WavFile(file_path) as source:
+            audio_data = self.listener.record(source)
+            try:
+
+                with self.client.connect() as connection:
+                    # Transform the audio into a string
+                    hypotheses, _ = connection.recognize(audio_data, ['ds', 'greedy'])
+                    print_on()
+                    my_print("Docks2 understood: " + hypotheses.lower())
+                    # Match the understood sentence to the best candidate from the sentence list
+                    return connection.postprocess(self.post_processor, hypotheses)
+            except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
+                my_print("Timeout: " + str(e))
+                return None, 0  # => will be turned into 'repetition_request' / 'timeout'
+            except BaseException as e:
+                my_print("Error occured in recognition: " + str(e))
+                return "fallback", 0  # => need for fallback.
+
+def get_context_from_file(filename):
+    file_elements = filename.split("_")
+    if file_elements[0] == "scene":
+        return file_elements[0] + "_" + file_elements[1]
+    else:
+        return file_elements[0]
+
+def print_on():
+    sys.stdout = sys.__stdout__
+
+def print_off():
+    sys.stdout = open(devnull, 'w')
+
+def my_print(sentence):
+    print_on()
+    print(sentence)
+    print_off()
 
 if __name__ == "__main__":
     processor = SentenceList()
     processor.initialize()
-    # if sys.argv[1] =='test':
-    #     test_dir = sys.argv[2]
-    #     for filename in listdir(test_dir):
-    #
-    #
-    # else:
-    processor.configure(sys.argv[1])
-    print("-------- Listening -------")
-    docks_hypotheses, confidence = processor.recognize()
-    sentence = processor.match_sentence(docks_hypotheses, confidence)
-    print(sentence)
+    if sys.argv[1] =='test':
+        print_off()
+        test_dir = processor.base_dir + "/recorded_sounds/" + sys.argv[2]
+        correct=0
+        for filename in listdir(test_dir):
+            my_print("")
+            processor.configure(get_context_from_file(filename))
+            docks_hypotheses, confidence = processor.recognize_file(test_dir + filename)
+            sentence = processor.match_sentence(docks_hypotheses, confidence)
+            my_print("Recognized " + sentence + ": \"" + docks_hypotheses + "\". Confidence " + str(confidence))
+            if filename.startswith(sentence):
+                correct += 1
+                my_print(colored("Original: " + filename, "green"))
+            else:
+                my_print(colored("Original: " + filename, "red"))
+        my_print("\ntotal score: " + str(correct) + "/" + str(len(listdir(test_dir))))
+
+    else:
+        processor.configure(sys.argv[1])
+        print("-------- Listening -------")
+        docks_hypotheses, confidence = processor.recognize()
+        sentence = processor.match_sentence(docks_hypotheses, confidence)
+        print(sentence)
