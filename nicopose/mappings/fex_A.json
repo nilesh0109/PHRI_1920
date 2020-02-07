@@ -87,6 +87,12 @@
       "fe": "happiness"
     }
   ],
+  "scene_0_S_line_4": [
+    {
+      "expression_delay": 0,
+      "fe": "neutral"
+    }
+  ],
   "scene_1_A_line_0": [
     {
       "expression_delay": 0,

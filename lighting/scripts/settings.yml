@@ -1,3 +1,0 @@
-# This YAML file contains all distinct light settings.
-# It is loaded by the LightMIDIController to respond to 'set_lights' requests.
-

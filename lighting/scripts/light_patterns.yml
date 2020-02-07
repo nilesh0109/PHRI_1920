@@ -1,0 +1,12 @@
+# This YAML file contains all distinct light settings.
+# It is loaded by the LightMIDIController to respond to 'set_lights' requests.
+
+# Every light pattern has:
+#  - a name, for it to be identified by the LightControlService.
+#  - pattern: a list, consisting of intensity values for the white, red, green and blue light channel.
+
+light_patterns:
+  immersion: [20, 20, 20, 20]
+  waiting:   [30, 30, 60, 60]
+  success:   [30, 10, 80, 10]
+  failure:   [30, 80, 10, 10]
