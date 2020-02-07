@@ -25,7 +25,7 @@ class Move:
         :param sm: S or M
         """
         try:
-            utm_json, joints_json, moves_path = self.create_paths(label, position)
+            utm_json, joints_json, moves_path = self.create_paths(label, position, sm)
         except Exception as e:
             Move.lprint("Could not create paths!!")
             Move.lprint(e)
@@ -46,28 +46,20 @@ class Move:
         except ValueError as e:
             self.lprint("Couldn't parse a json file: %s", utm_json)
             self.lprint(e)
-
+        self.lprint(utm_json)
         self.lprint("Pos service is ready for "+self.label)
 
     @staticmethod
-    def lprint(*args):
+    def lprint(*params):
         rospy.loginfo("<--------------------------------->")
-        for i in range(0, len(args)):
-            rospy.loginfo(args[i])
+        for i in range(0,len(params)):
+            rospy.loginfo(params[i])
         rospy.loginfo("<--------------------------------->")
         #print(args)
         return
 
     @staticmethod
-    def lprintl(label, *args):
-        rospy.loginfo("<-------------- "+label+" -------------->")
-        for i in range(0, len(args)):
-            rospy.loginfo(args[i])
-        rospy.loginfo("<--------------------------------->")
-        return
-
-    @staticmethod
-    def create_paths(label, position):
+    def create_paths(label, position, sm):
         """
         Create paths for mappings, moves and joints specification.
         """
@@ -78,8 +70,8 @@ class Move:
 
         # Create a path to the mappings file
         mappings = os.path.join(file_directory.parent, constants.MAPPINGS_FORMAT_UTMOVE)
-        utm_json = mappings.format(label, position)
-        #Move.lprint("The utm json file is: %s", utm_json)
+        utm_json = mappings.format(label, sm)
+        Move.lprint("Utm json file: "+utm_json)
 
         # Create a path to the joints specification file
         joints_json = os.path.join(file_directory.parent, constants.JOINTS_SPECIFICATION_FILE)
@@ -173,13 +165,9 @@ if __name__ == "__main__":
         args.robotPosition = "LEFT"
     else:
         args.robotPosition = "RIGHT"
-    if args.SM == 0:
-        args.SM = "S"
-    else:
-        args.SM = "M"
-    #Move.lprint("Position is %s; label is %s", args.robotPosition, args.robotLabel)
+    Move.lprint([args.robotPosition,args.SM])
     node_name = constants.NODENAME_NAME_FORMAT.format(args.robotLabel)
-    rospy.init_node(node_name, anonymous=True, log_level=rospy.DEBUG)
+    rospy.init_node(node_name, anonymous=True)
     m = Move(args.robotLabel, args.robotPosition, args.SM)
     s = rospy.Service(constants.SERVICE_NODE_NAME, Pose, m.response)
     rospy.spin()

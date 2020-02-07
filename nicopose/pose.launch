@@ -1,6 +1,6 @@
 <launch>
     <arg name="llabel" default="A"/>
-    <arg name="lnvc" default="1"/>
+    <arg name="lnvc" default="S"/>
     
     <node name="fex"        pkg="nicopose" ns="$(arg llabel)" type="fexSub.py"              args="--label $(arg llabel) " />
     <node name="pose"       pkg="nicopose" ns="$(arg llabel)" type="poseService.py"         args="--label $(arg llabel) --SM $(arg lnvc)"/>
