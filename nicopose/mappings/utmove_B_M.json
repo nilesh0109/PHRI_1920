@@ -9,7 +9,7 @@
     "gesture_delay": 0,
     "speech_delay": 0,
     "speed": 0.08,
-    "pose_filename": "look.csv"
+    "pose_filename": "s0b0_BM.csv"
   },
   "scene_1_A_line_0": {
     "gesture_delay": 0.7,
@@ -21,7 +21,7 @@
     "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look.csv"
+    "pose_filename": "s1b0_BM.csv"
   },
   "scene_2_A_line_0": {
     "gesture_delay": 0.9,
@@ -33,7 +33,7 @@
     "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look.csv"
+    "pose_filename": "s2b0_BM.csv"
   },
   "scene_3_A_line_0": {
     "gesture_delay": 0,
@@ -45,7 +45,7 @@
     "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look.csv"
+    "pose_filename": "s3b0_BM.csv"
   },
   "scene_4_A_line_0": {
     "gesture_delay": 2,
@@ -57,7 +57,7 @@
     "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look.csv"
+    "pose_filename": "s4b0_BM.csv"
   },
   "scene_2_S_line_0": {
     "gesture_delay": 0,
@@ -207,7 +207,7 @@
     "gesture_delay": 0,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look.csv"
+    "pose_filename": "point_left.csv"
   },
   "scene_0_question_1_answer_A": {
     "gesture_delay": 0,
@@ -255,7 +255,7 @@
     "gesture_delay": 0,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look.csv"
+    "pose_filename": "open_arms.csv"
   },
   "scene_1_question_1_answer_A": {
     "gesture_delay": 0,
@@ -267,7 +267,7 @@
     "gesture_delay": 0,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look.csv"
+    "pose_filename": "s3q0_left.csv"
   },
   "scene_1_question_2_answer_A": {
     "gesture_delay": 0,
@@ -279,7 +279,7 @@
     "gesture_delay": 0,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look.csv"
+    "pose_filename": "confident.csv"
   },
   "scene_1_question_3_answer_A": {
     "gesture_delay": 0,
@@ -303,7 +303,7 @@
     "gesture_delay": 0.5,
     "speech_delay": 0,
     "speed": 0.03,
-    "pose_filename": "look.csv"
+    "pose_filename": "point_left.csv"
   },
   "scene_2_question_1_answer_A": {
     "gesture_delay": 0,
@@ -315,7 +315,7 @@
     "gesture_delay": 0,
     "speech_delay": 0,
     "speed": 0.08,
-    "pose_filename": "look.csv"
+    "pose_filename": "confident.csv"
   },
   "scene_2_question_2_answer_A": {
     "gesture_delay": 1,
@@ -327,7 +327,7 @@
     "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.08,
-    "pose_filename": "look.csv"
+    "pose_filename": "confident.csv"
   },
   "scene_3_question_0_answer_A": {
     "gesture_delay": 0,
@@ -339,7 +339,7 @@
     "gesture_delay": 0,
     "speech_delay": 0,
     "speed": 0.08,
-    "pose_filename": "look.csv"
+    "pose_filename": "s3q0_left.csv"
   },
   "scene_3_question_1_answer_A": {
     "gesture_delay": 0,
@@ -351,7 +351,7 @@
     "gesture_delay": 0,
     "speech_delay": 0,
     "speed": 0.08,
-    "pose_filename": "look.csv"
+    "pose_filename": "s3q0_left.csv"
   },
   "scene_3_question_2_answer_A": {
     "gesture_delay": 1.5,
@@ -363,7 +363,7 @@
     "gesture_delay": 2.5,
     "speech_delay": 0,
     "speed": 0.08,
-    "pose_filename": "look.csv"
+    "pose_filename": "no.csv"
   },
   "scene_4_question_0_answer_A": {
     "gesture_delay": 0.5,
@@ -375,7 +375,7 @@
     "gesture_delay": 6,
     "speech_delay": 0,
     "speed": 0.08,
-    "pose_filename": "look.csv"
+    "pose_filename": "point_left.csv"
   },
   "scene_4_question_1_answer_A": {
     "gesture_delay": 1,
@@ -387,7 +387,7 @@
     "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.08,
-    "pose_filename": "look.csv"
+    "pose_filename": "confident.csv"
   },
   "scene_4_question_2_answer_A": {
     "gesture_delay": 0,
@@ -399,6 +399,6 @@
     "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.08,
-    "pose_filename": "look.csv"
+    "pose_filename": "confident.csv"
   }
 }
