@@ -5,9 +5,8 @@ import rospy
 import smach
 from smach_ros import ServiceState
 from speech.srv import SpeechRecognition
-from video.srv import PlayVideo
 from vision.srv import CountResources
-from states import SceneFlow, SayResponses, MakeUtterance
+from states import SceneFlow, SayResponses, MakeUtterance, RecognitionFallback, PlayVideo
 
 # main
 def main():
@@ -91,6 +90,12 @@ def main():
         )
 
         smach.StateMachine.add(
+            "GET_QUESTION_FALLBACK",
+            RecognitionFallback.RecognitionFallback(),
+            transitions={"manual_answer": "RESOLVE_QUESTION"},
+        )
+
+        smach.StateMachine.add(
             "RESOLVE_QUESTION",
             SayResponses.SayResponses(),
             transitions={
@@ -100,6 +105,7 @@ def main():
                 "participant_input": "GET_QUESTION",
                 "questions_done": "SCENE",
                 "done_confirmation": "CUBE_COUNT",
+                "recognition_fallback": "GET_QUESTION_FALLBACK",
             },
             remapping={"question": "sentence"},
         )
@@ -122,8 +128,8 @@ def main():
 
         smach.StateMachine.add(
             "PLAY_VIDEO",
-            ServiceState("/play_video", PlayVideo, request_slots=["scene_number"]),
-            transitions={"succeeded": "SCENE"},
+            PlayVideo.PlayVideoWithSound(),
+            transitions={"video_done": "SCENE"},
         )
 
         smach.StateMachine.add(
@@ -152,12 +158,6 @@ def main():
                 "utterance_failed": "RESOLVE_QUESTION",
             },
         )
-        # Callback for service response
-        # def add_two_result_cb(userdata, response):
-        #    rospy.loginfo("Result: %i" % response.sum)
-        #    return 'succeeded'
-
-        # ServiceState(.., response_cb=add_two_result_cb, ..)
 
     # Execute SMACH plan
     outcome = sm.execute()

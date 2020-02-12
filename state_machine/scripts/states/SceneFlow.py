@@ -45,19 +45,18 @@ class SceneFlow(smach.State):
             else:
                 return "scenes_finished"
         event = self.script[self.scenes[self.scene_index]][self.dialog]["event"]
+        rospy.loginfo("Scene: %i, Entry: %i, Event: %s", self.scene_index, self.dialog, event)
         outcome = "unknown_event"
         if event == "utterance":
             # print(self.script[self.scenes[self.scene_index]][self.dialog]["parameters"]["speaker"])
             speaker = self.script[self.scenes[self.scene_index]][self.dialog]["speaker"]
             audio = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
+            delay = self.script[self.scenes[self.scene_index]][self.dialog]["delay"]
+            rospy.loginfo("Speaker: %s, Audio: %s, Delay %f", speaker, audio, delay)
             userdata.speaker = speaker
             userdata.audio = audio
-            userdata.param = self.script[self.scenes[self.scene_index]][self.dialog][
-                "audio"
-            ]
-            userdata.delay = self.script[self.scenes[self.scene_index]][self.dialog][
-                "delay"
-            ]
+            userdata.param = audio
+            userdata.delay = delay
             if speaker == "S":
                 userdata.last_ship_line = audio
                 outcome = "say_ship_line"
@@ -76,6 +75,9 @@ class SceneFlow(smach.State):
             outcome = "return_cubes"
         elif event == "video":
             userdata.scene_number = self.scene_index
+            userdata.speaker = "S"
+            userdata.audio = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
+            userdata.delay = 0
             outcome = "play_video"
         elif event == "pause":
             raw_input("\033[92mPress enter to initialize starting sequence.\033[0m")

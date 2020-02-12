@@ -19,8 +19,8 @@ def cube_detect(scene_num, participant_num=0):
 
     #take an image
     full_image = take_image()
-#    full_image= cv2.imread('/informatik2/students/home/8bhatia/PHRI1920/vision-phri1920/cube_count/test2.jpg')
-
+#    full_image= cv2.imread('/informatik2/students/home/8bhatia/PHRI1920/vision-phri1920/cube_count/participant_8_FullImage_2020-01-30T12:14:00.445908.png')
+    
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
     P_cubes = count_cubes(P_img)
@@ -56,8 +56,7 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
             os.mkdir(scene_)
             rospy.loginfo("Created directory %s" %(scene_))
             os.chdir(scene_)
-#            print os.getcwd()
-#            print"------------------------------------------"
+
         else:
             participant_id = "participant_" + "1"
             os.mkdir(participant_id)
@@ -66,12 +65,10 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
             os.mkdir(scene_)
             rospy.loginfo("Created directory %s" %(scene_))
             os.chdir(scene_)
-#            print os.getcwd()
-#            print"------------------------------------------"
-   
+  
     else:
 #        print os.getcwd()
-        os.chdir("../../..")
+        os.chdir(directory)
 #        print os.getcwd()
         direc = os.getcwd()
         directories = os.walk(direc).next()[1]
@@ -112,23 +109,19 @@ def take_image():
     for i in range(len(cam_path)):
         if cam_path[i][-1:] == "0":
             cam = cam_path[i]
-#            print cam
             cam = 0
-#            print cam
             break
         else:
             cam = 1
-            print cam
         
     cam = cv2.VideoCapture(0)
     #print cam
     cam.set(3, cam_resolution[0])
     cam.set(4, cam_resolution[1])
-    
+
+    time.sleep(0.1)
     s, img = cam.read()
 
     if s:    # frame captured without any errors
-        #cv2.imshow("cam-test",img)
         time.sleep(0.1)
-        rospy.loginfo("Created directory captured image")
         return img
