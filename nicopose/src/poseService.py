@@ -47,13 +47,13 @@ class Move:
             self.lprint("Couldn't parse a json file: %s", utm_json)
             self.lprint(e)
         self.lprint(utm_json)
+        self.mov.play_movement(self.moves_path + "/" +"look.csv", move_speed=0.05)
         self.lprint("Pos service is ready for "+self.label)
 
     @staticmethod
     def lprint(*params):
         rospy.loginfo("<--------------------------------->")
-        for i in range(0,len(params)):
-            rospy.loginfo(params[i])
+        rospy.loginfo(params)
         rospy.loginfo("<--------------------------------->")
         #print(args)
         return
