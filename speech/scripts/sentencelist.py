@@ -10,6 +10,7 @@ import speech_recognition as sr
 
 import docks2_remote.docks2_remote.postprocessor as postprocessor
 from docks2_remote import Client
+from speech.srv import SpeechSynthesis
 
 
 class SentenceList:
@@ -23,6 +24,7 @@ class SentenceList:
     def __init__(self):
         # Server settings from Johannes Twiefel: accessible only from the Informatikum network
         self.client = Client(server='sysadmin@wtmitx1', port=55101)
+        self.synth = rospy.ServiceProxy('/S/speech_synthesis', SpeechSynthesis)
         self.listener = sr.Recognizer()
         # Filter ambient lab noise using a previously recorded sound file
         with sr.AudioFile(self.base_dir + "/recorded_sounds/lab_noise.wav") as noise:
@@ -81,12 +83,15 @@ class SentenceList:
             self.context_sentences = 4
 
     def recognize(self):
+        # sound: start recording
+        self.synth("recording_start", "S", 0)
+        rospy.loginfo("\n--------------------- Listening for Microphone Input -------------------")
         with sr.Microphone() as source:
-            rospy.loginfo("\n--------------------- Listening for Microphone Input -------------------")
             try:
                 # Collect raw audio from microphone.
                 audio_data = self.listener.listen(source, timeout=self.silence_timeout)
-
+                # sound: done recording
+                self.synth("recording_done", "S", 0)
                 # storing audio file
                 time_stamp = time.strftime("%m%d-%H%M%S", time.gmtime())
                 file_path = self.base_dir + '/recorded_sounds/{}_{}.wav'.format(self.context, time_stamp)
