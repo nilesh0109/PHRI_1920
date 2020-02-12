@@ -10,7 +10,9 @@ processor = sl.SentenceList()
 def handle_recognition_request(req):
     # Calibrate the microphone
     if req.context == "calibrate":
-        return processor.calibrate()
+        rospy.loginfo("Calibrating microphone..")
+        processor.calibrate()
+        return SpeechRecognitionResponse("calibrated")
     try:
         rospy.loginfo("Received context: %s", req.context)
         processor.configure(req.context)
