@@ -6,5 +6,4 @@
 *.swp
 venv
 NICO.log
-speech/scripts/SpeechSynthesisStub.py
 *~

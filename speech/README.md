@@ -14,14 +14,15 @@ When above a certain threshold, it will return with the most plausible sentence.
 
 **Start the service**
 ```
-rosrun speech SpeechRecognitionStub.py
+rosrun speech SpeechRecognitionStub.py <ROBOT_NAME(optional)>
 ```
-
+it will start the service \ROBOT_NAME(if provided)\speech_recognition
 **Call the service**
 ```
 rosservice call speech_recognition <context>
 ```
-
+speech_recognition is the service name to be used: Generally it is in following format
+\ROBOT_NAME(if provided)\speech_recognition
 where `context` can be either `scene_<number>` or `done`.
 
 ## Speech Production Service (TTS)
