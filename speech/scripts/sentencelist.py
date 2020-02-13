@@ -4,24 +4,30 @@ from os.path import dirname, abspath
 from os import listdir, devnull
 import time
 from termcolor import colored
+from textblob import TextBlob
 
 import speech_recognition as sr
 
 import docks2_remote.docks2_remote.postprocessor as postprocessor
 from docks2_remote import Client
+from speech.srv import SpeechSynthesis
 
 
 class SentenceList:
     # Class Constants:
     base_dir = dirname(dirname(abspath(__file__)))
-    protocols = {"done": "done",  # maps the context to the corresponding mission/emergency protocol
+    protocols = {"lift_off":"liftoff",
+                "done": "done",
+                 # maps the context to the corresponding mission/emergency protocol
                  "scene_0": "mission", "scene_1": "mission",
                  "scene_2": "emergency", "scene_3": "emergency", "scene_4": "emergency"}
+
     sentences = {}  # the possible sentences of the mission/emergency protocol
 
     def __init__(self):
         # Server settings from Johannes Twiefel: accessible only from the Informatikum network
         self.client = Client(server='sysadmin@wtmitx1', port=55101)
+        self.synth = rospy.ServiceProxy('/S/speech_synthesis', SpeechSynthesis)
         self.listener = sr.Recognizer()
         # Filter ambient lab noise using a previously recorded sound file
         with sr.AudioFile(self.base_dir + "/recorded_sounds/lab_noise.wav") as noise:
@@ -56,16 +62,18 @@ class SentenceList:
         # - silence_timeout: seconds before an error is raised when no speech is recorded.
         self.context = context
         self.post_processor = "{}_sentencelist_postprocessor".format(self.protocols[context])
-        if context == "done":
+        if context == "done" or context =="liftoff":
             self.listener.phrase_threshold = 1
-            self.listener.pause_threshold = 1
-
-            self.context_sentences = 1
+            self.listener.pause_threshold = 0.8
+            if context == "done":
+                self.context_sentences = 4
+            else:
+                self.context_sentences = 3
             self.confidence_threshold = 0.3
             self.silence_timeout = 60
         else:
             self.listener.phrase_threshold = 1
-            self.listener.pause_threshold = 1.5
+            self.listener.pause_threshold = 0.5
 
             if context == "scene_0" or context == "scene_1":
                 self.context_sentences = 4
@@ -80,12 +88,15 @@ class SentenceList:
             self.context_sentences = 4
 
     def recognize(self):
+        # sound: start recording
+        self.synth("recording_start", "S", 0)
+        rospy.loginfo("\n--------------------- Listening for Microphone Input -------------------")
         with sr.Microphone() as source:
-            rospy.loginfo("\n--------------------- Listening for Microphone Input -------------------")
             try:
                 # Collect raw audio from microphone.
                 audio_data = self.listener.listen(source, timeout=self.silence_timeout)
-
+                # sound: done recording
+                self.synth("recording_done", "S", 0)
                 # storing audio file
                 time_stamp = time.strftime("%m%d-%H%M%S", time.gmtime())
                 file_path = self.base_dir + '/recorded_sounds/{}_{}.wav'.format(self.context, time_stamp)
@@ -97,10 +108,21 @@ class SentenceList:
                     hypotheses, _ = connection.recognize(audio_data, ['ds', 'greedy'])
                     rospy.loginfo("Docks2 understood: %s", hypotheses.lower())
                     # Match the understood sentence to the best candidate from the sentence list
-                    return connection.postprocess(self.post_processor, hypotheses)
+                    match, confidence = connection.postprocess(self.post_processor, hypotheses)
+                # No need to match when below confidence threshold
+                if confidence > self.confidence_threshold: return match, confidence
+                else:
+                    rospy.loginfo("Low confidence, recognized with confidence %s:\n \'%s\'", confidence, match)
+                    if self.context == "done" or self.context=="lift_off":
+                        return "repetition_request", confidence
+                    elif TextBlob(hypotheses.lower()).sentiment[0] < 0:  # The sentence is negative
+                        rospy.loginfo("Negativity of sentence: " + str(TextBlob(hypotheses.lower()).sentiment[0]))
+                        return "no_question", confidence
+                    else:
+                        return "timeout", confidence
             except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
                 rospy.loginfo("Timeout: %s", e)
-                return None, 0  # => will be turned into 'repetition_request' / 'timeout'
+                return "", 0  # => will be turned into 'repetition_request' / 'timeout'
             except BaseException as e:
                  rospy.loginfo("Error occured in recognition: %s", e)
                  return "fallback", 0 # => need for fallback.
@@ -114,20 +136,18 @@ class SentenceList:
         # The number of sentences that indicate that the user does not want to ask any questions.
         no_sentences = 4
 
-        # Unpredicted error occured, fallback needed.
-        if docks_hypotheses == "fallback":
-            return "fallback"
-
         # No need to match when below confidence threshold
         if confidence <= self.confidence_threshold:
-            rospy.loginfo("Recognized with confidence %s:\n \'%s\'", confidence, docks_hypotheses)
-            return "repetition_request" if self.context == "done" else "timeout"
+            return docks_hypotheses
+
 
         # Extracting sentence_id from recognition data.
         matched_line = self.sentences[self.protocols[self.context]].index(docks_hypotheses + "\n")
         rospy.loginfo("Recognized line number %s, %s with confidence %s.", matched_line, docks_hypotheses, confidence)
-        if self.context == "done" and matched_line == 0:
+        if self.context == "done" and matched_line < self.context_sentences:
             return "done_confirmation"
+        elif self.context == "lift_off" and matched_line < self.context_sentences:
+            return "lift_off_confirmation"
         elif matched_line < self.context_sentences:
             return self.context + "_question_" + str(matched_line)
         elif self.context!="done" and matched_line < (self.context_sentences + no_sentences):
@@ -138,21 +158,33 @@ class SentenceList:
     def recognize_file(self, file_path):
         print_off()
         with sr.WavFile(file_path) as source:
-            audio_data = self.listener.record(source)
             try:
-
+                audio_data = self.listener.listen(source, timeout=self.silence_timeout)
                 with self.client.connect() as connection:
                     # Transform the audio into a string
                     hypotheses, _ = connection.recognize(audio_data, ['ds', 'greedy'])
                     print_on()
-                    my_print("Docks2 understood: " + hypotheses.lower())
+                    unsupressed_print("Docks2 understood: " + hypotheses.lower())
                     # Match the understood sentence to the best candidate from the sentence list
-                    return connection.postprocess(self.post_processor, hypotheses)
+                    match, confidence = connection.postprocess(self.post_processor, hypotheses)
+                    # No need to match when below confidence threshold
+                if confidence > self.confidence_threshold:
+                    return match, confidence
+                else:
+                    unsupressed_print("Low confidence, recognized \"" + match + "\" with confidence " + str("%.2f" % confidence))
+                    if self.context == "done":
+                        return "repetition_request", confidence
+                    elif TextBlob(hypotheses.lower()).sentiment[0] < 0:  # The sentence is negative
+                        unsupressed_print("Negativity of sentence: " + str(TextBlob(hypotheses.lower()).sentiment[0]))
+                        return "no_question", confidence
+                    else:
+                        return "timeout", confidence
+                return connection.postprocess(self.post_processor, hypotheses)
             except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
-                my_print("Timeout: " + str(e))
-                return None, 0  # => will be turned into 'repetition_request' / 'timeout'
+                unsupressed_print("Timeout: " + str(e))
+                return "", 0  # => will be turned into 'repetition_request' / 'timeout'
             except BaseException as e:
-                my_print("Error occured in recognition: " + str(e))
+                unsupressed_print("Error occured in recognition: " + str(e))
                 return "fallback", 0  # => need for fallback.
 
 def get_context_from_file(filename):
@@ -168,7 +200,7 @@ def print_on():
 def print_off():
     sys.stdout = open(devnull, 'w')
 
-def my_print(sentence):
+def unsupressed_print(sentence):
     print_on()
     print(sentence)
     print_off()
@@ -178,22 +210,22 @@ if __name__ == "__main__":
     processor.initialize()
     if sys.argv[1] =='test':
         print_off()
-        test_dir = processor.base_dir + "/recorded_sounds/" + sys.argv[2]
+        test_dir = processor.base_dir + "/recorded_sounds/" + sys.argv[2] + "/"
         correct=0
         for filename in listdir(test_dir):
-            my_print("")
+            unsupressed_print("")
             processor.configure(get_context_from_file(filename))
             docks_hypotheses, confidence = processor.recognize_file(test_dir + filename)
             sentence = processor.match_sentence(docks_hypotheses, confidence)
-            my_print("Recognized " + sentence + ": \"" + docks_hypotheses + "\". Confidence " + str(confidence))
+            unsupressed_print("Recognized " + sentence + ": \"" + docks_hypotheses + "\". Confidence " + str("%.2f" % confidence))
             filename_array = filename.split("_")
             sentence_array = sentence.split("_")
             if filename_array[0] == sentence_array[0]:
                 correct += 1
-                my_print(colored("Original: " + filename, "green"))
+                unsupressed_print(colored("Original: " + filename, "green"))
             else:
-                my_print(colored("Original: " + filename, "red"))
-        my_print("\ntotal score: " + str(correct) + "/" + str(len(listdir(test_dir))))
+                unsupressed_print(colored("Original: " + filename, "red"))
+        unsupressed_print("\ntotal score: " + str(correct) + "/" + str(len(listdir(test_dir))))
 
     else:
         processor.configure(sys.argv[1])
