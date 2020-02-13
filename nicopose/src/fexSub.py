@@ -35,6 +35,7 @@ class Fexp:
                         break
             else:
                 self.fe = faceExpression()
+            self.fe.sendFaceExpression("neutral")
         except Exception as e:
             Move.lprint(e)
 
@@ -63,6 +64,10 @@ class Fexp:
     def play(self, param):
         Move.lprint("Input data: %s", param.data)
         start = time.time()
+        if not self.explist.get(param.data, None):
+            Move.lprint("not found:" + param.data)
+            return
+
         for i in range(0, len(self.explist[param.data])):
             delay = self.explist[param.data][i][constants.KEY_EXPRESSION_DELAY]
             ex = self.explist[param.data][i][constants.KEY_FACE_EXPRESSION]
