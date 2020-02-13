@@ -1,7 +1,7 @@
 {
   "scene_0_A_line_0": [
     {
-      "expression_delay": 7,
+      "expression_delay": 2,
       "fe": "happiness"
     },
     {
@@ -194,7 +194,7 @@
   "scene_2_B_line_0": [
     {
       "expression_delay": 3,
-      "fe": "disgust"
+      "fe": "neutral"
     },
     {
       "expression_delay": 2,
@@ -280,15 +280,7 @@
   "scene_2_S_line_4": [
     {
       "expression_delay": 1,
-      "fe": "sadness"
-    },
-    {
-      "expression_delay": 2,
-      "fe": "neutral"
-    },
-    {
-      "expression_delay": 11,
-      "fe": "sadness"
+      "fe": "fear"
     },
     {
       "expression_delay": 2,
@@ -445,7 +437,7 @@
       "fe": "sadness"
     },
     {
-      "expression_delay": 1,
+      "expression_delay": 2,
       "fe": "neutral"
     }
   ],
