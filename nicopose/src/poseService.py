@@ -17,14 +17,15 @@ class Move:
     A class for executing robot's movements.
     """
 
-    def __init__(self, label, position):
+    def __init__(self, label, position, sm):
         """
         Initialize a Move class.
         :param label: A or B.
         :param position: LEFT or RIGHT
+        :param sm: S or M
         """
         try:
-            utm_json, joints_json, moves_path = self.create_paths(label, position)
+            utm_json, joints_json, moves_path = self.create_paths(label, position, sm)
         except Exception as e:
             Move.lprint("Could not create paths!!")
             Move.lprint(e)
@@ -45,37 +46,39 @@ class Move:
         except ValueError as e:
             self.lprint("Couldn't parse a json file: %s", utm_json)
             self.lprint(e)
-
+        self.lprint(utm_json)
+        self.mov.play_movement(self.moves_path + "/" +"look.csv", move_speed=0.05)
         self.lprint("Pos service is ready for "+self.label)
 
     @staticmethod
-    def lprint(*args):
-        rospy.loginfo("============================")
-        rospy.loginfo(args)
-        print(args)
+    def lprint(*params):
+        rospy.loginfo("<--------------------------------->")
+        rospy.loginfo(params)
+        rospy.loginfo("<--------------------------------->")
+        #print(args)
+        return
 
     @staticmethod
-    def create_paths(label, position):
+    def create_paths(label, position, sm):
         """
         Create paths for mappings, moves and joints specification.
         """
         rospy.loginfo(os.path.abspath(__file__))
         # Find the path to the file
         file_directory = Path(os.path.dirname(os.path.abspath(__file__)))
-        Move.lprint("The path to the file is: %s", file_directory)
+        #Move.lprint("The path to the file is: %s", file_directory)
 
         # Create a path to the mappings file
         mappings = os.path.join(file_directory.parent, constants.MAPPINGS_FORMAT_UTMOVE)
-        utm_json = mappings.format(label, position)
-        Move.lprint("The utm json file is: %s", utm_json)
+        utm_json = mappings.format(label, sm)
+        Move.lprint("Utm json file: "+utm_json)
 
         # Create a path to the joints specification file
         joints_json = os.path.join(file_directory.parent, constants.JOINTS_SPECIFICATION_FILE)
-        Move.lprint("The joints json file is: %s", joints_json)
+        #Move.lprint("The joints json file is: %s", joints_json)
 
         # Create a path to the moves file
-        moves_path= os.path.join(file_directory.parent, constants.MOVES_FOLDER_NAME)
-
+        moves_path = os.path.join(file_directory.parent, constants.MOVES_FOLDER_NAME)
         return utm_json, joints_json, moves_path
 
     def response(self, uid):
@@ -94,15 +97,15 @@ class Move:
 
             sp = self.utmlist[uid.param][constants.KEY_SPEED]
             gesture_delay = self.utmlist[uid.param][constants.KEY_GESTURE_DELAY]
-            self.lprint("Gesture delay is %s", gesture_delay)
+            #self.lprint("Gesture delay is %s", gesture_delay)
             time.sleep(gesture_delay)
 
             start = time.time()
-            Move.lprint("PLAYING MOVEMENT: %s", filename)
+            #Move.lprint("PLAYING MOVEMENT: %s", filename)
             self.mov.play_movement(filename, move_speed=sp)
             end = time.time()
             elapsed_time = end - start
-            self.lprint("Playing a movement for " + self.label +" took %s seconds" , elapsed_time)
+            self.lprint("Playing a movement for {} took {} seconds".format(self.label, elapsed_time))
 
             # self.relax()
             res.msgback = 1
@@ -121,7 +124,7 @@ class Move:
         self.robot.openHand("LHand")
         end = time.time()
         elapsed_time = end - start
-        self.lprint("Relaxing for " + self.label+" took %s seconds", elapsed_time)
+        #self.lprint("Relaxing for " + self.label+" took %s seconds", elapsed_time)
 
     def disable_torque_body(self):
         """
@@ -131,9 +134,6 @@ class Move:
             if motor.name == "head_z" or motor.name == "head_y":
                 continue
             motor.compliant = True
-
-
-        
 
 
 if __name__ == "__main__":
@@ -152,11 +152,22 @@ if __name__ == "__main__":
         type=str,
         default="LEFT",
     )
+    parser.add_argument(
+        "--SM",
+        dest="SM",
+        help="S for Still. M for Moving",
+        type=str,
+        default="S",
+    )
 
     args = parser.parse_known_args()[0]
-    Move.lprint("Position is %s; label is %s", args.robotPosition, args.robotLabel)
+    if args.robotLabel == 'A':
+        args.robotPosition = "LEFT"
+    else:
+        args.robotPosition = "RIGHT"
+    Move.lprint([args.robotPosition,args.SM])
     node_name = constants.NODENAME_NAME_FORMAT.format(args.robotLabel)
     rospy.init_node(node_name, anonymous=True)
-    m = Move(args.robotLabel, args.robotPosition)
+    m = Move(args.robotLabel, args.robotPosition, args.SM)
     s = rospy.Service(constants.SERVICE_NODE_NAME, Pose, m.response)
     rospy.spin()

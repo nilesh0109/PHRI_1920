@@ -18,8 +18,7 @@ import rospy
 def cube_detect(scene_num, participant_num=0):
 
     #take an image
-    full_image = take_image()
-#    full_image= cv2.imread('/informatik2/students/home/8bhatia/PHRI1920/vision-phri1920/cube_count/participant_8_FullImage_2020-01-30T12:14:00.445908.png')
+    full_image = take_image(participant_num)
     
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
@@ -101,7 +100,7 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
     return True
 
 
-def take_image():
+def take_image(p_num):
     cam_path = VideoDevice.get_all_devices()
 #    print cam_path
     cam_resolution = [2304,1536]
@@ -113,9 +112,12 @@ def take_image():
             break
         else:
             cam = 1
-        
+    
+    if p_num !=0:
+        rospy.loginfo("!!!--- Close Cheese if open ---!!!")
+    
     cam = cv2.VideoCapture(0)
-    #print cam
+        
     cam.set(3, cam_resolution[0])
     cam.set(4, cam_resolution[1])
 

@@ -16,9 +16,12 @@ from speech.srv import SpeechSynthesis
 class SentenceList:
     # Class Constants:
     base_dir = dirname(dirname(abspath(__file__)))
-    protocols = {"done": "done",  # maps the context to the corresponding mission/emergency protocol
+    protocols = {"lift_off":"liftoff",
+                "done": "done",
+                 # maps the context to the corresponding mission/emergency protocol
                  "scene_0": "mission", "scene_1": "mission",
                  "scene_2": "emergency", "scene_3": "emergency", "scene_4": "emergency"}
+
     sentences = {}  # the possible sentences of the mission/emergency protocol
 
     def __init__(self):
@@ -59,11 +62,13 @@ class SentenceList:
         # - silence_timeout: seconds before an error is raised when no speech is recorded.
         self.context = context
         self.post_processor = "{}_sentencelist_postprocessor".format(self.protocols[context])
-        if context == "done":
+        if context == "done" or context =="liftoff":
             self.listener.phrase_threshold = 1
             self.listener.pause_threshold = 0.8
-
-            self.context_sentences = 4
+            if context == "done":
+                self.context_sentences = 4
+            else:
+                self.context_sentences = 3
             self.confidence_threshold = 0.3
             self.silence_timeout = 60
         else:
@@ -108,7 +113,7 @@ class SentenceList:
                 if confidence > self.confidence_threshold: return match, confidence
                 else:
                     rospy.loginfo("Low confidence, recognized with confidence %s:\n \'%s\'", confidence, match)
-                    if self.context == "done":
+                    if self.context == "done" or self.context=="lift_off":
                         return "repetition_request", confidence
                     elif TextBlob(hypotheses.lower()).sentiment[0] < 0:  # The sentence is negative
                         rospy.loginfo("Negativity of sentence: " + str(TextBlob(hypotheses.lower()).sentiment[0]))
@@ -141,6 +146,8 @@ class SentenceList:
         rospy.loginfo("Recognized line number %s, %s with confidence %s.", matched_line, docks_hypotheses, confidence)
         if self.context == "done" and matched_line < self.context_sentences:
             return "done_confirmation"
+        elif self.context == "lift_off" and matched_line < self.context_sentences:
+            return "lift_off_confirmation"
         elif matched_line < self.context_sentences:
             return self.context + "_question_" + str(matched_line)
         elif self.context!="done" and matched_line < (self.context_sentences + no_sentences):
