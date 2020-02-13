@@ -10,6 +10,8 @@ SpeechRecognition
 urllib3==1.23
 pyalsaaudio
 PyAudio
+nltk
+textblob
 
 # docks dependencies
 -r scripts/flaskcom/requirements.txt
