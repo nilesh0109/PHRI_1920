@@ -214,7 +214,7 @@
   "scene_0_question_1_answer_A": {
     "gesture_delay": 0,
     "speech_delay": 0,
-    "speed": 0.05,
+    "speed": 0.03,
     "pose_filename": "look_left.csv"
   },
   "scene_0_question_1_answer_B": {
