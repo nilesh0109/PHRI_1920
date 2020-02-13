@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-from vision.srv import CountResources, CountResourcesResponse #, CheckEmpty, CheckEmptyResponse
+from vision.srv import CountResources, CountResourcesResponse
 import rospy
 import sys
 from CubeDetection import cube_detect
 import time
 import numpy as np
+from os.path import dirname, abspath
 import os
 
 def handle_resources_request(req):
@@ -26,13 +27,9 @@ def check_table_empty(req):
     timeout = 30
     scene_num = req.scene_number
     
-    time_file = "timeout_file.txt"
-
-    if not os.path.exists(time_file):
-        f = open(time_file, "w+")
-    else:
-        f = open(time_file, "a+")
-        
+    rospy.loginfo("Checking for empty Table")
+    time_file = dirname(abspath(__file__)) + "/../../../data/timeouts.txt"
+    mode = 'a+' if os.path.exists(time_file) else 'w+'       
     rospy.loginfo("Automatic timeout of %d seconds started" % (timeout))
     
     while True:         
@@ -50,11 +47,13 @@ def check_table_empty(req):
             break
         
     total_time = time.time() - start
-    f.write("Check Empty Timeout - %s\r\n" %(total_time))
-    f.close()
+    with open(time_file, mode) as f:
+        f.write("Check Empty Timeout - %s\r\n" %(total_time))
+        
     rospy.loginfo("Table is now empty")    
     return CountResourcesResponse(True)
     
+
 
 def count_resources_server(robot_name=''):
     rospy.init_node('count_resources_allocated')
