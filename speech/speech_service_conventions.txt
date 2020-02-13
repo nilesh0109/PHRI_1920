@@ -1,14 +1,22 @@
 Production service:
 
     Receives: an id and a delay:
-        id -> "scene"_number_speaker_speakerline | "scene"_number_"question"_number_"answer"_speaker | "repeat"
+        id -> "scene"_number_speaker_speakerline | "scene"_number_"question"_number_"answer"_speaker | "repeat" | "feedback"_speaker_number
             number -> "0" | "1" | "2" | ...
             speaker -> "a" | "b" | "s"
             speakerline -> "0" | "1" | "2" | ...
+			number -> "0" | ... | "7"
         delay -> in seconds?
-    
+
+	'''
+    "scene"_number_speaker_speakerline = 
+	"scene"_number_"question"_number_"answer"_speaker =
+	"repeat" =
+	"feedback"_scene_number_cubesA_cubesB = 
+	'''
+
     Does: play the script line, question or answer with correspondent filename. On the 2 speakers connected to the robot.
-            (There will be two services that do this one for each robot)
+            (There will be 3 services that do this one for each robot and the ship)
     
     Returs: Confirms that it has completed the task successfully.
             
@@ -16,10 +24,23 @@ Production service:
 Recognition service:
 
     Receives: an id that describes the situation
-        id -> "scene"_number | "done"
+        id -> "scene"_number | "done" | "lift_off"
             number -> "0" | "1" | "2" | "3" | "4"
         
     Does: Starts listening from the microphone and identifies what has been said based on the situation.
     
-    Returns: "scene"_number_"question"_number | "repetition_request" | "done_confirmation" | "timeout" | "no_question"
+    Returns: "scene"_number_"question"_number | "done_confirmation" | "lift_off_confirmation" | "repetition_request" | "timeout" | "no_question"
         number -> "0" | "1" | "2" | ...
+
+
+
+
+strong_threshold = 4
+if cubesA >= strong_threshold -> "scene"_number_"strong_"A" (failure/success based on scene)
+if cubesB >= strong_threshold -> "scene"_number_"strong"_"B" (failure/success based on scene)
+if cubesA > cubesB: "scene"_number_"win"_"A" (failure/success A, success/failure B)
+if cubesB > cubesA: "scene"_number_"win"_"B" (failure/success A, success/failure B)
+if cubesA = cubesB: "scene"_number_"equal"
+
+
+failure/success is sensitive to scene
