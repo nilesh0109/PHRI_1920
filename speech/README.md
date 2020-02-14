@@ -40,7 +40,7 @@ to the provided scene_ID. It also publishes the audio progress on `speech_progre
 
 **Start the service**
 ```
-rosrun speech SpeechSynthesisStub.py
+rosrun speech SpeechSynthesisStub.py <ROBOT_NAME(optional)>
 ```
 
 **Call the service**
