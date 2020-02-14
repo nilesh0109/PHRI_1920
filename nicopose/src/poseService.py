@@ -48,6 +48,7 @@ class Move:
             self.lprint(e)
         self.lprint(utm_json)
         self.mov.play_movement(self.moves_path + "/" +"look.csv", move_speed=0.05)
+        self.relax()
         self.lprint("Pos service is ready for "+self.label)
 
     @staticmethod
