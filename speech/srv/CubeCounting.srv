@@ -1,0 +1,5 @@
+int16 scene_id
+int16 num_cubes_A
+int16 num_cubes_B
+---
+bool success
