@@ -189,10 +189,10 @@ class SentenceList:
 
 def get_context_from_file(filename):
     file_elements = filename.split("_")
-    if file_elements[0] == "scene":
-        return file_elements[0] + "_" + file_elements[1]
-    else:
+    if file_elements[0] == "done":
         return file_elements[0]
+    else:
+        return file_elements[0] + "_" + file_elements[1]
 
 def print_on():
     sys.stdout = sys.__stdout__

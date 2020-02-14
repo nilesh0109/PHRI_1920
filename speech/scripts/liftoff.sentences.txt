@@ -1,4 +1,4 @@
 lift-off
-wendigo start lift-off protocol
+wendigo start lift-off
 wendigo lift-off
 ready for lift-off
