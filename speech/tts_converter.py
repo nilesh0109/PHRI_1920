@@ -100,7 +100,9 @@ for scene_idx, scene in enumerate(feedback):
 		    # call AWS Polly
             response = polly_client.synthesize_speech(Text=line["text"], VoiceId=voice, TextType='ssml', Engine=engine, OutputFormat='pcm')
 		    # write PCM data to a .wav file
-            file_path = f'generated_sounds/scene_{scene_idx}_{linet_to_text[line_idx]}.wav'
+            if scene_idx > 1
+                file_path = f'generated_sounds/feedback_scene_{scene_idx}_{linet_to_text[line_idx]}.wav'
+            file_path = f'generated_sounds/feedback_scene_{scene_idx}.wav
             with wave.open(file_path, 'wb') as wav_file:
                 wav_file.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
                 wav_file.writeframes(response['AudioStream'].read())
