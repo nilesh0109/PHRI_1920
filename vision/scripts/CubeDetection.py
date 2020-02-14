@@ -14,13 +14,12 @@ import time
 from cubeCounting import preprocess, count_cubes
 from os.path import dirname, abspath
 import rospy
-#from cv_bridge import CvBridge
-#from sensor_msgs.msg import Image
 
 
 def cube_detect(scene_num, participant_num=0):
 
     #take an image
+#    full_image= cv2.imread('/informatik2/students/home/8bhatia/catkin_ws/src/vision/scripts/imgs/participant_8_FullImage_2020-02-14T11:31:00.596588.png')
     full_image = take_image(participant_num)
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
