@@ -36,11 +36,12 @@ Recognition service:
 
 
 strong_threshold = 4
-if cubesA >= strong_threshold -> "scene"_number_"strong_"A" (failure/success based on scene)
-if cubesB >= strong_threshold -> "scene"_number_"strong"_"B" (failure/success based on scene)
+if cubesA >= strong_threshold: "scene"_number_"strong_"A" (failure/success based on scene)
+if cubesB >= strong_threshold: "scene"_number_"strong"_"B" (failure/success based on scene)
 if cubesA > cubesB: "scene"_number_"win"_"A" (failure/success A, success/failure B)
 if cubesB > cubesA: "scene"_number_"win"_"B" (failure/success A, success/failure B)
 if cubesA = cubesB: "scene"_number_"equal"
+if cubesA == cubesB == 0: "scene"_number_"none"
 
 
 failure/success is sensitive to scene

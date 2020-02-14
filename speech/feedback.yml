@@ -1,0 +1,65 @@
+- scene: # 0
+    - speaker: S # Strong A
+		text: > 
+    - speaker: S # Strong B
+		text: > 
+    - speaker: S # Win A
+		text: > 
+    - speaker: S # Win B
+		text: > 
+    - speaker: S # Equal
+		text: > 
+    - speaker: S # None
+		text: > 
+- scene: # 1
+    - speaker: S # Strong A
+		text: > 
+    - speaker: S # Strong B
+		text: > 
+    - speaker: S # Win A
+		text: > 
+    - speaker: S # Win B
+		text: > 
+    - speaker: S # Equal
+		text: > 
+    - speaker: S # None
+		text: > 
+- scene: # 2
+    - speaker: S # Strong A
+		text: > 
+    - speaker: S # Strong B
+		text: > 
+    - speaker: S # Win A
+		text: > 
+    - speaker: S # Win B
+		text: > 
+    - speaker: S # Equal
+		text: > 
+    - speaker: S # None
+		text: > 
+- scene: # 3
+    - speaker: S # Strong A
+		text: > 
+    - speaker: S # Strong B
+		text: > 
+    - speaker: S # Win A
+		text: > 
+    - speaker: S # Win B
+		text: > 
+    - speaker: S # Equal
+		text: > 
+    - speaker: S # None
+		text: > 
+- scene: # 4
+    - speaker: S # Strong A
+		text: > 
+    - speaker: S # Strong B
+		text: > 
+    - speaker: S # Win A
+		text: > 
+    - speaker: S # Win B
+		text: > 
+    - speaker: S # Equal
+		text: > 
+    - speaker: S # None
+		text: > 
