@@ -14,7 +14,9 @@ def get_audio_filename(scene_id, cubesA, cubesB):
     STRONG_THRESHOLD = 5
     if  0<= scene_id < 5:
         filename = 'feedback_scene_'+str(scene_id)
-        if cubesA >= STRONG_THRESHOLD:
+        if 0 <= scene_id < 2:
+            return filename
+        elif cubesA >= STRONG_THRESHOLD:
             filename += '_strong_A'
         elif cubesB >= STRONG_THRESHOLD:
             filename += '_strong_B'
