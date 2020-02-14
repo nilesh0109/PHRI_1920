@@ -14,20 +14,29 @@ import time
 from cubeCounting import preprocess, count_cubes
 from os.path import dirname, abspath
 import rospy
+import numpy as np
 
 
 def cube_detect(scene_num, participant_num=0):
 
     #take an image
 #    full_image= cv2.imread('/informatik2/students/home/8bhatia/catkin_ws/src/vision/scripts/imgs/participant_8_FullImage_2020-02-14T11:31:00.596588.png')
-    full_image = take_image(participant_num)
+    imgs = []
+    for _ in range(3):
+        full_image = take_image(participant_num)
+        imgs.append(full_image)
+        
+    idx = np.argmax([cv2.Laplacian(img, cv2.CV_64F).var() for img in imgs])
+    
+    full_image = imgs[idx]
+#    full_image = take_image(participant_num)
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
     P_cubes = count_cubes(P_img)
     left_robot_cubes = count_cubes(left_robot_img)
     right_robot_cubes = count_cubes(right_robot_img)
     
-    rospy.loginfo("\nRobot A cubes : {}".format(left_robot_cubes))
+    rospy.loginfo("Robot A cubes : {}".format(left_robot_cubes))
     rospy.loginfo("Robot B cubes : {}".format(right_robot_cubes))
     
     if participant_num != 0:
@@ -125,12 +134,13 @@ def take_image(p_num):
             cam = 1
     
     if p_num !=0:
-        rospy.loginfo("\n!!!--- Close Cheese if open ---!!!")
+        rospy.loginfo("!!!--- Close Cheese if open ---!!!")
     
     cam = cv2.VideoCapture(0)
         
     cam.set(3, cam_resolution[0])
     cam.set(4, cam_resolution[1])
+#    cam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
 
     time.sleep(0.1)
     s, img = cam.read()
