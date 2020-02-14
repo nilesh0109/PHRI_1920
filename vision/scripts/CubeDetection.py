@@ -27,6 +27,8 @@ def cube_detect(scene_num, participant_num=0):
     left_robot_cubes = count_cubes(left_robot_img)
     right_robot_cubes = count_cubes(right_robot_img)
     
+    rospy.loginfo("\nRobot A cubes : {}".format(left_robot_cubes))
+    rospy.loginfo("Robot B cubes : {}".format(right_robot_cubes))
     
     if participant_num != 0:
         response, A_img_path, B_img_path = save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes, full_image)
@@ -123,7 +125,7 @@ def take_image(p_num):
             cam = 1
     
     if p_num !=0:
-        rospy.loginfo("!!!--- Close Cheese if open ---!!!")
+        rospy.loginfo("\n!!!--- Close Cheese if open ---!!!")
     
     cam = cv2.VideoCapture(0)
         

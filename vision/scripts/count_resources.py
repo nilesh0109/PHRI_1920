@@ -24,23 +24,27 @@ def check_table_empty(req):
     table1 = []
     table2 = []
     start = time.time()
-    timeout = 30
+    timeout = 20
     scene_num = req.scene_number
     
-    rospy.loginfo("Checking for empty Table")
+    rospy.loginfo("---- Checking for empty Table ----")
     time_file = dirname(abspath(__file__)) + "/../../../data/timeouts.txt"
     mode = 'a+' if os.path.exists(time_file) else 'w+'       
     rospy.loginfo("Automatic timeout of %d seconds started" % (timeout))
     
-    while True:         
+    while True:     
+        time.sleep(0.1)
         object1, object2 = cube_detect(scene_num, 0) #checks empty table
         table1.append(object1)
         table2.append(object2)
-        time.sleep(0.2)
+        
+        if table1[-1] == 0 and table2[-1] == 0:
+            break
+        
 #        print table1, table2
-        if len(table1) > 3:
-            if np.average(table1[-3:]) == 0 and np.average(table2[-3:]) == 0:
-                break
+#        if len(table1) > 2:
+#            if np.average(table1[-3:]) == 0 and np.average(table2[-3:]) == 0:
+#                break
             
         if time.time() - start > timeout:
             rospy.loginfo("Timed Out")
