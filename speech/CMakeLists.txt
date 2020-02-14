@@ -58,6 +58,7 @@ find_package(catkin REQUIRED COMPONENTS
    FILES
    SpeechSynthesis.srv
    SpeechRecognition.srv
+   CubeCounting.srv
  )
 
 ## Generate actions in the 'action' folder

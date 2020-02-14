@@ -54,59 +54,60 @@ answer_mapping = {0: 'A', 1:'B'}
 voice = speakers[name]['voice']
 engine = speakers[name]['engine']
 for scene_idx, scene in enumerate(questions):
-	for question_idx, question in enumerate(scene['scene']):
-		for answer_idx, answer in enumerate(question['question']):
-		    try:
-		        # call AWS Polly
-		        response = polly_client.synthesize_speech(Text=answer["answer"], VoiceId=voice, TextType='ssml',
-		                                                  Engine=engine, OutputFormat='pcm')
-		        # write PCM data to a .wav file
-		        file_path = f'generated_sounds/scene_{scene_idx}_question_{question_idx}_answer_{answer_mapping[answer_idx]}.wav'
-		        with wave.open(file_path, 'wb') as wav_file:
-		            wav_file.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
-		            wav_file.writeframes(response['AudioStream'].read())
-		        print(f'Processed Scene {scene_idx}, Question {question_idx}, Answer{answer_mapping[answer_idx]}.')
-		    except Exception as e:
-		        print(f'Error in Scene {scene_idx},Question {question_idx}, Answer{answer_mapping[answer_idx]}.'
-		              f'\n Error: {e}'
-		              f'\n Text: {answer["answer"]}')
+    for question_idx, question in enumerate(scene['scene']):
+        for answer_idx, answer in enumerate(question['question']):
+            try:
+                # call AWS Polly
+                response = polly_client.synthesize_speech(Text=answer["answer"], VoiceId=voice, TextType='ssml',
+                                                          Engine=engine, OutputFormat='pcm')
+                # write PCM data to a .wav file
+                file_path = f'generated_sounds/scene_{scene_idx}_question_{question_idx}_answer_{answer_mapping[answer_idx]}.wav'
+                with wave.open(file_path, 'wb') as wav_file:
+                    wav_file.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
+                    wav_file.writeframes(response['AudioStream'].read())
+                print(f'Processed Scene {scene_idx}, Question {question_idx}, Answer{answer_mapping[answer_idx]}.')
+            except Exception as e:
+                print(f'Error in Scene {scene_idx},Question {question_idx}, Answer{answer_mapping[answer_idx]}.'
+                      f'\n Error: {e}'
+                      f'\n Text: {answer["answer"]}')
 
 # Request for repetition
 name = repetition[0]['sentence'][0]['speaker']
 voice = speakers[name]['voice']
 engine = speakers[name]['engine']
 try:
-	response = polly_client.synthesize_speech(Text=repetition[0]['sentence'][0]['text'], VoiceId=voice, TextType='ssml', Engine=engine, OutputFormat='pcm')
-	file_path = 'generated_sounds/repeat.wav'
-	with wave.open(file_path, 'wb') as wav_file:
-		wav_file.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
-		wav_file.writeframes(response['AudioStream'].read())
-	print(f'Processed repetition')
+    response = polly_client.synthesize_speech(Text=repetition[0]['sentence'][0]['text'], VoiceId=voice, TextType='ssml', Engine=engine, OutputFormat='pcm')
+    file_path = 'generated_sounds/repeat.wav'
+    with wave.open(file_path, 'wb') as wav_file:
+        wav_file.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
+        wav_file.writeframes(response['AudioStream'].read())
+    print(f'Processed repetition')
 except Exception as e:
-	print(f'Error in repetition'
-			f'\n Error: {e}'
-	        f'\n Text: {repetition[0]["text"]}')
+    print(f'Error in repetition'
+            f'\n Error: {e}'
+            f'\n Text: {repetition[0]["text"]}')
 
 
 # Feedback files
-line_to_text = {0: "strong_A", 1: "strong_B", 2:"win_A", 3:"win_B", 4:"equal", 5:"none"}
+line_to_text = {0: "strong_A", 1: "strong_B", 2:"win_A", 3:"win_B", 4:"equal"}
 
 for scene_idx, scene in enumerate(feedback):
-    for line_idx in enumerate(scene):
+    for line_idx, line in enumerate(scene['scene']):
         name = line["speaker"]
         voice = speakers[name]['voice']
         engine = speakers[name]['engine']
         try:
-		    # call AWS Polly
+            # call AWS Polly
             response = polly_client.synthesize_speech(Text=line["text"], VoiceId=voice, TextType='ssml', Engine=engine, OutputFormat='pcm')
-		    # write PCM data to a .wav file
-            if scene_idx > 1
-                file_path = f'generated_sounds/feedback_scene_{scene_idx}_{linet_to_text[line_idx]}.wav'
-            file_path = f'generated_sounds/feedback_scene_{scene_idx}.wav
+            # write PCM data to a .wav file
+            if scene_idx > 1:
+                file_path = f'generated_sounds/feedback_scene_{scene_idx}_{line_to_text[line_idx]}.wav'
+            else:
+                file_path = f'generated_sounds/feedback_scene_{scene_idx}.wav'
             with wave.open(file_path, 'wb') as wav_file:
                 wav_file.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
                 wav_file.writeframes(response['AudioStream'].read())
-		    # increment the speaker index
+            # increment the speaker index
             print(f'Processed Scene {scene_idx}, Line {line_to_text[line_idx]}.')
         except Exception as e:
-                print(f'Error in Scene {scene_idx}, Line {line_to_text[line_idx]}:' f'\n Error: {e}' f'\n Text: {line["text"]}')
+            print(f'Error in Scene {scene_idx}, Line {line_to_text[line_idx]}:' f'\n Error: {e}' f'\n Text: {line["text"]}')

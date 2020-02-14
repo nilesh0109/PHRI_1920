@@ -5,7 +5,7 @@
       "fe": "happiness"
     },
     {
-      "expression_delay": 1,
+      "expression_delay": 3,
       "fe": "neutral"
     }
   ],
@@ -183,7 +183,7 @@
   ],
   "scene_2_A_line_0": [
     {
-      "expression_delay": 0,
+      "expression_delay": 0.2,
       "fe": "surprise"
     },
     {
