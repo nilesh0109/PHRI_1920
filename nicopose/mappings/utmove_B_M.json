@@ -362,7 +362,7 @@
   "scene_3_question_2_answer_B": {
     "gesture_delay": 1.5,
     "speech_delay": 0,
-    "speed": 0.08,
+    "speed": 0.06,
     "pose_filename": "no.csv"
   },
   "scene_4_question_0_answer_A": {
@@ -396,7 +396,7 @@
     "pose_filename": "look_left.csv"
   },
   "scene_4_question_2_answer_B": {
-    "gesture_delay": 0.5,
+    "gesture_delay": 0,
     "speech_delay": 0,
     "speed": 0.08,
     "pose_filename": "confident.csv"

@@ -60,7 +60,7 @@
     "pose_filename": "look_right.csv"
   },
   "scene_0_S_line_0": {
-    "gesture_delay": 3,
+    "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.03,
     "pose_filename": "look_at_cubes_left.csv"
@@ -96,7 +96,7 @@
     "pose_filename": "look.csv"
   },
   "scene_1_S_line_2": {
-    "gesture_delay": 3,
+    "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.03,
     "pose_filename": "look_at_cubes_left.csv"
@@ -120,7 +120,7 @@
     "pose_filename": "look.csv"
   },
   "scene_2_S_line_2": {
-    "gesture_delay": 3,
+    "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.03,
     "pose_filename": "look_at_cubes_left.csv"
@@ -150,7 +150,7 @@
     "pose_filename": "look.csv"
   },
   "scene_3_S_line_2": {
-    "gesture_delay": 3,
+    "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.05,
     "pose_filename": "look_at_cubes_left.csv"
@@ -174,7 +174,7 @@
     "pose_filename": "look.csv"
   },
   "scene_4_S_line_2": {
-    "gesture_delay": 3,
+    "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.03,
     "pose_filename": "look_at_cubes_left.csv"
