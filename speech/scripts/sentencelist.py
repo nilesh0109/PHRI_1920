@@ -65,7 +65,11 @@ class SentenceList:
         if context == "done" or context == "lift_off":
             self.listener.phrase_threshold = 1
             self.listener.pause_threshold = 0.8
-            self.context_sentences = 4
+            if context =="done":
+                self.context_sentences = 5
+            else:
+                self.context_sentences = 4
+                
             self.confidence_threshold = 0.3
             
             if context == "done":
