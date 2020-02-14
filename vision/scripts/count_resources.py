@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from vision.srv import CountResources, CountResourcesResponse
+from vision.srv import CheckEmpty, CheckEmptyResponse
 import rospy
 import sys
 from CubeDetection import cube_detect
@@ -51,7 +52,7 @@ def check_table_empty(req):
         f.write("Check Empty Timeout - %s\r\n" %(total_time))
         
     rospy.loginfo("Table is now empty")    
-    return CountResourcesResponse(True)
+    return CheckEmptyResponse(True)
     
 
 
@@ -60,7 +61,7 @@ def count_resources_server(robot_name=''):
 
     s = rospy.Service(robot_name+'/count_objects', CountResources, handle_resources_request)
     
-    e = rospy.Service(robot_name+'/check_empty', CountResources, check_table_empty)
+    e = rospy.Service(robot_name+'/check_empty', CheckEmpty, check_table_empty)
 
     rospy.loginfo("VISION services launched")
 
