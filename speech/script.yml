@@ -27,7 +27,7 @@
     - speaker: S
       text: >
         <speak>Preparations for lift-off complete. When ready to embark on the mission, please say <break time="0.01s"/> 
-        "<phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/><prosody rate="slow">start </prosody><emphasis>lift-off</emphasis> protocol".</speak>
+        "<phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/><prosody rate="slow">start </prosody><emphasis>lift-off</emphasis>".</speak>
     - speaker: S
       text: <speak><emphasis>Five. Four. Three. Two. One. Lift-<prosody pitch="-5%" rate="medium">off.</prosody></emphasis></speak>
 - scene: # 1
@@ -47,7 +47,7 @@
         <speak><prosody rate="-5%">You can <emphasis level="moderate">now</emphasis> ask your
         <emphasis level="reduced">crew</emphasis><break time="0.01s"/></prosody>
         <prosody pitch="-15%"><prosody rate="-25%" volume="medium"> one </prosody>question</prosody>
-        <amazon:breath volume="x-soft" duration="x-short"/> from the mission protocol.</speak>
+        <amazon:breath volume="x-soft" duration="x-short"/> from the emergency protocol.</speak>
     - speaker: S
       text: >
         <speak>Please distribute resources to decide <prosody rate="90%"> how to find a route</prosody> to take.
@@ -116,7 +116,7 @@
         <speak> Please divide your resources accordingly. <break time="0.1s"/> Let me know when you’re done by saying <break time="0.01s"/>
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
     - speaker: S
-      text: <speak>Please place all the Energy cells back into your compartment commander.</speak>
+      text: <speak> Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis><break time ="1s"/>, modules activated.<break time="1s"/> Please place all the Energy cells back into your compartment.</speak>
 - scene: #4
     - speaker: S
       text: >

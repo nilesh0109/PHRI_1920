@@ -12,7 +12,7 @@
         - answer: <speak> I am lieutenant <say-as interpret-as="digits">732</say-as>-A. I am in charge of the ships shields, as well as the cooling system and the on-planet drone deployment.</speak>
         - answer: <speak> I am lieutenant <say-as interpret-as="digits">732</say-as>-B. I oversee the ships laser systems, the aerial stabilization system and the oxygen and water recycle module.</speak>
 - scene: #1
-    - question: # Lieutenants, can you tell me more about the solutions?
+    - question: # Can you tell me more about the solutions?
         - answer: <speak>The <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo</phoneme> comes equipped with the Atlas 3000 radar. A scanner of this caliber will be able to locate the optimal path to Xantonia.</speak>
         - answer: <speak>The extensive satellite system has the finest pathfinding technology which the federation can offer. No doubt we will be able to plan the best route to Xantonia</speak>
     - question: # How confident are you in these solutions?
@@ -22,7 +22,7 @@
         - answer: <speak>Relying on the federation’s satellite system would not be wise <break time="0.01s"/> as we would not obtain a proper path specific to our ship.</speak>
         - answer: <speak>Using the resources of the federation would be better than any scanner we possess on board the <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo</phoneme>.</speak>
 - scene: # 2
-    - question: # Lieutenants, can you tell me more about the solutions?
+    - question: # Can you tell me more about the solutions?
         - answer: <speak>Our scans show no asteroids that our X<say-as interpret-as="digits">86</say-as>-Twinfire can’t make short work of. The remaining debris should be no problem for our hull.</speak>
         - answer: <speak>Since this is a new ship type with improved Tachyon-shields <break time="0.01s"/> we should be able to deflect even the bigger asteroids without a problem.</speak>
     - question: # How confident are you in these solutions?
@@ -32,7 +32,7 @@
         - answer: <speak>The Tachyon-fields are not a guaranteed defense against asteroid-inflicted damage that exceeds the maximum threshold of shock our hull can endure. </speak>
         - answer: <speak>Since we are flying at a very high speed, the X<say-as interpret-as="digits">86</say-as>-Twinfire might not be able to acquire targets going at the speed of light in the direction of our ship.</speak>
 - scene: #3
-    - question: # Lieutenants, can you tell me more about the solutions?
+    - question: # Can you tell me more about the solutions?
         - answer: <speak>The advanced quintuple aero-fins can utilize their full air draft manipulation only with additional current manipulation from the engine.</speak>
         - answer: <speak>The beryllium additive in the heat shield needs additional energy or the absorbed heat might not disperse fast enough.</speak>
     - question: # How confident are you in these solutions?
@@ -42,7 +42,7 @@
         - answer: <speak>After our journey through the asteroid field, we have no knowledge about the integrity of the thrusters.</speak>
         - answer: <speak>There is no point in overcharging the shields if we cannot secure a safe landing.</speak>
 - scene: #4
-    - question: # Lieutenants, can you tell me more about the solutions?
+    - question: # Can you tell me more about the solutions?
        - answer: <speak>The detected flora has a striking resemblance to Terra-B<say-as interpret-as="digits">638</say-as>, drones have previously managed to extract the necessary amounts of glycol for the cooling fluid.</speak>
        - answer: <speak>Our models show that reprogramming the water de-vapourizer should not pose a significant challenge. The  gathered gas can be reassembled into the cooling fluid.</speak> 
     - question: # How confident are you in these solutions?
