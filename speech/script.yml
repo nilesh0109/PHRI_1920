@@ -14,11 +14,7 @@
         <prosody volume="x-loud"><emphasis><phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo</phoneme></emphasis></prosody>.
         <break/> Before we start the journey, it would be wise to perform the pre-flight check.<break time="0.5s"/>
         To do so please allocate to <emphasis>each</emphasis> Crew Member <emphasis>some</emphasis> of your energy cells and say 
-        <break time="0.01s"/><phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done, when you’re finished.</speak>
-    - speaker: S
-      text: >
-        <speak> All systems are <emphasis>operational</emphasis>.
-        <break time="0.2s"/>. Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>    
+        <break time="0.01s"/><phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done, when you’re finished.</speak>   
     - speaker: S
       text: >
         <speak> Before we depart, you can ask your <emphasis level="reduced">crew</emphasis><break time="0.01s"/>
@@ -52,9 +48,7 @@
       text: >
         <speak>Please distribute resources to decide <prosody rate="90%"> how to find a route</prosody> to take.
         Let me know when you’re done by saying <break time="0.01s"/><phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
-    - speaker: S
-      text: >
-        <speak> Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis><break time ="1s"/>, modules activated.<break time="1s"/> Please place all the Energy cells back into your compartment.</speak>
+
 - scene: # 2
     - speaker: S
       text: >
@@ -82,8 +76,6 @@
         <speak><emphasis>Please</emphasis> allocate your resources between <emphasis>you</emphasis> and your <emphasis>crew</emphasis>.
         Let me know when you’re done by saying <amazon:breath volume="x-soft" duration="x-short"/>
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
-    - speaker: S
-      text: <speak> Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis><break time ="1s"/>, modules activated.<break time="1s"/> Please place all the Energy cells back into your compartment.</speak>
     - speaker: S
       text: >
         <speak>Unsuccessful. <break time="0.1s"/>Ship damaged. <break time="0.1s"/>
@@ -115,8 +107,6 @@
       text: >
         <speak> Please divide your resources accordingly. <break time="0.1s"/> Let me know when you’re done by saying <break time="0.01s"/>
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
-    - speaker: S
-      text: <speak> Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis><break time ="1s"/>, modules activated.<break time="1s"/> Please place all the Energy cells back into your compartment.</speak>
 - scene: #4
     - speaker: S
       text: >
@@ -143,9 +133,6 @@
         <speak><emphasis>Please divide </emphasis> your resources between <emphasis>you</emphasis> and your <emphasis>crew</emphasis>.
         Let me know when you’re done by saying <amazon:breath volume="x-soft" duration="x-short"/>
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
-    - speaker: S
-      text: >
-        <speak> Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis><break time ="1s"/>, modules activated.<break time="1s"/> Please place all the Energy cells back into your compartment.</speak>
     - speaker: S
       text: >
         <speak><emphasis level="reduced">Cooling</emphasis> system successfully restored to full capacity.
