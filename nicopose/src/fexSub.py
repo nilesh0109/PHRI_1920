@@ -78,11 +78,7 @@ class Fexp:
         end = time.time()
         elapsed_time = end - start
         Move.lprint("Playing an expression for " + self.label+" took %s seconds", elapsed_time)
-        self.relax()
         Move.lprint("Relaxing is done")
-
-    def relax(self):
-        self.fe.sendFaceExpression("neutral")
 
 
 if __name__ == "__main__":
