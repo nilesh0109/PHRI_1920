@@ -6,8 +6,10 @@
 #  - pattern: a list, consisting of intensity values for the white, red, green and blue light channel.
 
 light_patterns:
-  immersion: [20, 20, 20, 20]
-  waiting:   [30, 30, 60, 60]
-  success:   [30, 10, 80, 10]
-  failure:   [30, 80, 10, 10]
   blackout:  [0, 0, 0, 0]
+  white:     [1, 0, 0, 0]
+  red:       [0, 1, 0, 0]
+  green:     [0, 0, 1, 0]
+  blue:      [0, 0, 0, 1]
+  cyan:      [0, 0, 0.1, 0.1] # Tell Shahd if this changes!!!
+  alarm:     [0, 0.1, 0, 0]

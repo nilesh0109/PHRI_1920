@@ -1,0 +1,12 @@
+scene_0:
+  - event: "light_setting"
+    setting: "cyan"
+  - event: "pause"
+  - event: "light_setting"
+    setting: "blackout"
+  - event: "pause"
+  - event: "light_setting"
+    setting: "alarm"
+  - event: "pause"
+  - event: "light_setting"
+    setting: "cyan"

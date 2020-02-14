@@ -1,4 +1,6 @@
 scene_0:
+  - event: "light_setting"
+    setting: "cyan"
   - event: "video"
     audio: ""
   - event: "utterance"
@@ -24,18 +26,28 @@ scene_0:
     speaker: "S"
     audio: "scene_0_S_line_2"
   - event: "question"
-  - event: "pause"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
     audio: "scene_0_S_line_3"
+  - event: "lift_off"
+  - event: "utterance"
+    delay: 1.5
+    speaker: "S"
+    audio: "scene_0_S_line_4"
 scene_1:
+  - event: "light_setting"
+    setting: "blackout"
   - event: "video"
     audio: "video/sounds1"
+  - event: "light_setting"
+    setting: "alarm"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
     audio: "scene_1_S_line_0"
+  - event: "light_setting"
+    setting: "cyan"
   - event: "utterance"
     delay: 3
     speaker: "A"
@@ -54,19 +66,24 @@ scene_1:
     speaker: "S"
     audio: "scene_1_S_line_2"
   - event: "allocation"
-  - event: "utterance"
-    delay: 1.5
-    speaker: "S"
-    audio: "scene_1_S_line_3"
+  #- event: "utterance"
+  #  delay: 1.5
+   # speaker: "S"
+   # audio: "scene_1_S_line_3"
   - event: "unallocation"
 scene_2:
+  - event: "light_setting"
+    setting: "blackout"
   - event: "video"
     audio: "video/sounds2"
-  #- event: "alarm"
+  - event: "light_setting"
+    setting: "alarm"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
     audio: "scene_2_S_line_0"
+  - event: "light_setting"
+    setting: "cyan"
   - event: "utterance"
     delay: 4.5
     speaker: "A"
@@ -91,12 +108,18 @@ scene_2:
     audio: "scene_2_S_line_3"
   - event: "unallocation"
 scene_3:
+  - event: "light_setting"
+    setting: "blackout"
   - event: "video"
     audio: "video/sounds3"
+  - event: "light_setting"
+    setting: "alarm"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
     audio: "scene_2_S_line_4"
+  - event: "light_setting"
+    setting: "cyan"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
@@ -119,18 +142,24 @@ scene_3:
     speaker: "S"
     audio: "scene_3_S_line_2"
   - event: "allocation"
-  - event: "utterance"
-    delay: 1.5
-    speaker: "S"
-    audio: "scene_3_S_line_3"
+  #- event: "utterance"
+   # delay: 1.5
+   # speaker: "S"
+   # audio: "scene_3_S_line_3"
   - event: "unallocation"
 scene_4:
+  - event: "light_setting"
+    setting: "blackout"
   - event: "video"
     audio: "video/sounds4"
+  - event: "light_setting"
+    setting: "alarm"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
     audio: "scene_4_S_line_0"
+  - event: "light_setting"
+    setting: "cyan"
   - event: "utterance"
     delay: 1.5
     speaker: "A"
@@ -159,8 +188,12 @@ scene_4:
     speaker: "S"
     audio: "scene_4_S_line_4"
 scene_5:
+  - event: "light_setting"
+    setting: "blackout"
   - event: "video"
     audio: "video/sounds5"
+  - event: "light_setting"
+    setting: "cyan"
   - event: "utterance"
     delay: 1.5
     speaker: "S"

@@ -131,3 +131,4 @@ repetition_request:
   - speaker: "S"
     audio: "" # not needed here since it uses last ship line
     delay: 0
+no_question: []

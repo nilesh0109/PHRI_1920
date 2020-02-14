@@ -19,4 +19,5 @@ def light_control_server():
     rospy.spin()
 
 if __name__ == "__main__":
+    lights.set_lights('cyan')
     light_control_server()

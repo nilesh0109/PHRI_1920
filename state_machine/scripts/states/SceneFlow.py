@@ -2,6 +2,7 @@ import smach
 import rospy
 from os.path import dirname, abspath
 import yaml
+import random
 
 
 class SceneFlow(smach.State):
@@ -17,6 +18,8 @@ class SceneFlow(smach.State):
                 "return_cubes",
                 "play_video",
                 "pause",
+                "lift_off",
+                "set_lights",
                 "unknown_event",
                 "scenes_finished",
             ],
@@ -29,12 +32,15 @@ class SceneFlow(smach.State):
                 "delay",
                 "last_ship_line",
                 "param",
+                "light_setting",
             ],
         )
         self.scene_index = scene
         self.dialog = dialog
         self.load_dialog_script(scene_file)
         self.scenes = sorted(self.script.keys())
+        self.reverse_order = random.random() < 0.5
+        self.robot_offset = -1
 
     def execute(self, userdata):
         rospy.loginfo("Executing state SCENE")
@@ -50,23 +56,38 @@ class SceneFlow(smach.State):
         if event == "utterance":
             # print(self.script[self.scenes[self.scene_index]][self.dialog]["parameters"]["speaker"])
             speaker = self.script[self.scenes[self.scene_index]][self.dialog]["speaker"]
-            audio = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
-            delay = self.script[self.scenes[self.scene_index]][self.dialog]["delay"]
+            audio = ""
+            delay = 0.0
+            if speaker == "S":
+                audio = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
+                delay = self.script[self.scenes[self.scene_index]][self.dialog]["delay"]
+                userdata.speaker = speaker
+                userdata.audio = audio
+                userdata.param = audio
+                userdata.delay = delay
+                userdata.last_ship_line = audio
+                self.reverse_order = random.random() < 0.5
+                outcome = "say_ship_line"
+            else:
+                self.robot_offset *= -1
+                speaker = self.script[self.scenes[self.scene_index]][self.dialog + self.reverse_order * self.robot_offset]["speaker"]
+                audio = self.script[self.scenes[self.scene_index]][self.dialog + self.reverse_order * self.robot_offset]["audio"]
+                delay = self.script[self.scenes[self.scene_index]][self.dialog + self.reverse_order * self.robot_offset]["delay"]
+                if speaker == "A":
+                    outcome = "say_robot_line_a"
+                else:
+                    outcome = "say_robot_line_b"
             rospy.loginfo("Speaker: %s, Audio: %s, Delay %f", speaker, audio, delay)
             userdata.speaker = speaker
             userdata.audio = audio
             userdata.param = audio
             userdata.delay = delay
-            if speaker == "S":
-                userdata.last_ship_line = audio
-                outcome = "say_ship_line"
-            elif speaker == "A":
-                outcome = "say_robot_line_a"
-            else:
-                outcome = "say_robot_line_b"
         elif event == "question":
             userdata.scene = self.scenes[self.scene_index]
             outcome = "participant_input"
+        elif event == "light_setting":
+            userdata.light_setting = self.script[self.scenes[self.scene_index]][self.dialog]["setting"]
+            outcome = "set_lights"
         elif event == "allocation":
             userdata.scene = "done"
             userdata.scene_number = self.scene_index
@@ -79,8 +100,11 @@ class SceneFlow(smach.State):
             userdata.audio = self.script[self.scenes[self.scene_index]][self.dialog]["audio"]
             userdata.delay = 0
             outcome = "play_video"
+        elif event == "lift_off":
+            userdata.scene = "lift_off"
+            outcome = "lift_off"
         elif event == "pause":
-            raw_input("\033[92mPress enter to initialize starting sequence.\033[0m")
+            raw_input("\033[92mPress enter to continue.\033[0m")
             outcome = "pause"
         else:  # unknown event
             rospy.logwarn("Encountered unknown event %s", event)

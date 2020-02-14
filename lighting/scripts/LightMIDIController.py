@@ -19,7 +19,7 @@ class LightController:
     def set_lights(self, setting):
         w, r, g, b = self.light_patterns[setting]
         [self.white_spotlight_on(light_id, cold=w, warm=w) for light_id in range(4)]
-        [self.rgb_spotlight_on(light_id, red=r, green=g, blue=b) for light_id in range(1)]
+        [self.rgb_spotlight_on(light_id, red=r, green=g, blue=b) for light_id in range(2)]
 
     def set_light(self, light_id, intensity):
         self.out_port.send(mido.Message("note_on", note=light_id+69, velocity=int(intensity/100 * 127)))

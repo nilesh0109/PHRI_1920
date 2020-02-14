@@ -2,6 +2,7 @@ import smach
 import rospy
 from os.path import dirname, abspath
 import yaml
+import random
 
 
 class SayResponses(smach.State):
@@ -15,6 +16,7 @@ class SayResponses(smach.State):
                 "participant_input",
                 "questions_done",
                 "done_confirmation",
+                "lift_off_confirmation",
                 "recognition_fallback",
             ],
             input_keys=["question", "last_ship_line"],
@@ -24,6 +26,7 @@ class SayResponses(smach.State):
         self.answer_index = 0
         self.timeouts = 0
         self.max_timeouts = 1
+        self.reverse_order = random.random() < 0.5
         with open(dirname(abspath(__file__)) + "/questions.yml", "r") as f:
             self.question_answers = yaml.safe_load(f)
 
@@ -34,23 +37,26 @@ class SayResponses(smach.State):
             self.answer_index = 0
             self.timeouts = 0
             return "done_confirmation"
+        elif userdata.question == "lift_off_confirmation":
+            self.answer_index = 0
+            self.timeouts = 0
+            return "lift_off_confirmation"
         elif userdata.question == "fallback":
             self.timeouts = 0
             return "recognition_fallback"
         answers = self.question_answers[userdata.question]
-        if userdata.question == "timeout":
+        if (userdata.question == "timeout" or userdata.question == "repetition_request") and not self.repeat_once:
             if self.timeouts < self.max_timeouts:
-                if not self.repeat_once:
-                    self.timeouts += 1
-                    self.repeat_once = True
+                self.timeouts += 1
+                self.repeat_once = True
             else:
                 self.timeouts = 0
                 return "recognition_fallback"
-        if userdata.question == "repetition_request":
-            self.timeouts = 0
-            self.repeat_once = True
         if self.answer_index < len(answers):
-            answer = answers[self.answer_index]
+            if len(answers) == 2 and self.reverse_order:
+                answer = answers[1 - self.answer_index]
+            else:
+                answer = answers[self.answer_index]
             userdata.speaker = answer["speaker"]
             userdata.audio = (
                 userdata.last_ship_line
@@ -77,4 +83,5 @@ class SayResponses(smach.State):
                 return "participant_input"
             else:
                 self.timeouts = 0
+                self.reverse_order = random.random() < 0.5
                 return "questions_done"

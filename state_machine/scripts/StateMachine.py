@@ -4,9 +4,10 @@ import argparse
 import rospy
 import smach
 from smach_ros import ServiceState
-from speech.srv import SpeechRecognition
-from vision.srv import CountResources
-from states import SceneFlow, SayResponses, MakeUtterance, RecognitionFallback, PlayVideo
+from speech.srv import SpeechRecognition, SpeechSynthesis, SpeechSynthesisRequest, CubeCounting
+from vision.srv import CountResources, CheckEmpty
+from lighting.srv import LightControl
+from states import SceneFlow, SayResponses, MakeUtterance, RecognitionFallback, PlayVideo, VisionFallback, EvaluateCubes
 
 # main
 def main():
@@ -39,6 +40,11 @@ def main():
     sm.userdata.sentence = ""
     sm.userdata.qa_once = False
     sm.userdata.delay = 0
+    sm.userdata.light_setting = "blackout"
+    sm.userdata.A_image_path = ""
+    sm.userdata.B_image_path = ""
+    sm.userdata.A_cubes = 999
+    sm.userdata.B_cubes = 999
 
     # Open the container
     with sm:
@@ -52,8 +58,10 @@ def main():
                 "say_ship_line": "SPEAKS",
                 "participant_input": "GET_QUESTION",
                 "ressource_allocation": "GET_QUESTION",
+                "lift_off": "GET_QUESTION",
                 "return_cubes": "RETURN_CUBES",
                 "play_video": "PLAY_VIDEO",
+                "set_lights": "SET_LIGHTS",
                 "pause": "SCENE",
                 "unknown_event": "aborted",
                 "scenes_finished": "experiment_ended",
@@ -75,6 +83,16 @@ def main():
             "SPEAKS",
             MakeUtterance.MakeUtterance("/S/speech_synthesis"),
             transitions={"utterance_done": "SCENE", "utterance_failed": "SCENE"},
+        )
+
+        smach.StateMachine.add(
+            "SOUND",
+            ServiceState(
+                "S/speech_synthesis",
+                SpeechSynthesis,
+                request=SpeechSynthesisRequest("video/beep_quieter", "S", 0.0),
+            ),
+            transitions={"succeeded": "GET_QUESTION"},
         )
 
         smach.StateMachine.add(
@@ -105,6 +123,7 @@ def main():
                 "participant_input": "GET_QUESTION",
                 "questions_done": "SCENE",
                 "done_confirmation": "CUBE_COUNT",
+                "lift_off_confirmation": "SCENE",
                 "recognition_fallback": "GET_QUESTION_FALLBACK",
             },
             remapping={"question": "sentence"},
@@ -113,15 +132,28 @@ def main():
         smach.StateMachine.add(
             "CUBE_COUNT",
             ServiceState(
-                "/count_objects", CountResources, request_slots=["scene_number"]
+                "/count_objects", CountResources, request_slots=["scene_number"], response_slots=["A_image_path", "B_image_path", "A_cubes", "B_cubes"]
             ),
-            transitions={"succeeded": "SCENE"},
+            transitions={"succeeded": "CONFIRM_CUBES"},
+        )
+
+        smach.StateMachine.add(
+            "CONFIRM_CUBES",
+            VisionFallback.VisionFallback(),
+            transitions={"confirmed": "CUBE_FEEDBACK"},
+        )
+
+        smach.StateMachine.add(
+            "CUBE_FEEDBACK",
+            EvaluateCubes.EvaluateCubes(),
+            transitions={"evaluation_done": "SCENE", "evaluation_failed": "SCENE"},
+            remapping={"scene_id": "scene_number", "num_cubes_A": "A_cubes", "num_cubes_B": "B_cubes"}
         )
 
         smach.StateMachine.add(
             "RETURN_CUBES",
             ServiceState(
-                "/check_empty", CountResources, request_slots=["scene_number"]
+                "/check_empty", CheckEmpty, request_slots=["scene_number"]
             ),
             transitions={"succeeded": "SCENE"},
         )
@@ -130,6 +162,17 @@ def main():
             "PLAY_VIDEO",
             PlayVideo.PlayVideoWithSound(),
             transitions={"video_done": "SCENE"},
+        )
+
+        smach.StateMachine.add(
+            "SET_LIGHTS",
+            ServiceState(
+                "/light_control",
+                LightControl,
+                request_slots=["setting"],
+            ),
+            transitions={"succeeded": "SCENE"},
+            remapping={"setting": "light_setting"},
         )
 
         smach.StateMachine.add(
