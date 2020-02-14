@@ -49,9 +49,9 @@ def blob_detect(img):
     return len(keypoints)
     
 def thre1(img):
-    ret,thresh = cv2.threshold(img,115, 255,cv2.THRESH_BINARY)  #127, 255
-    thresh = cv2.GaussianBlur(thresh,(15,15),0)
-    
+    ret,thresh = cv2.threshold(img,75, 255,cv2.THRESH_BINARY)  #127, 255
+    #thresh = cv2.GaussianBlur(thresh,(15,15),0)
+    thresh = cv2.medianBlur(thresh,7)
     #plt.figure()
     #plt.imshow(thresh, cmap="gray")
     return thresh
@@ -153,7 +153,7 @@ def preprocess(img):
 #this algorithms works fine with shortly distant cubes and empty surface
 #input: cropped surface, output: number of cubes
 def count_cubes(img):
-    
+    img = cv2.GaussianBlur(img,(5,5),0)
     thr = thre1(img)
     
     thr = closing(thr)

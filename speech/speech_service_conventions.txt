@@ -1,14 +1,23 @@
 Production service:
 
     Receives: an id and a delay:
-        id -> "scene"_number_speaker_speakerline | "scene"_number_"question"_number_"answer"_speaker | "repeat"
+        id -> "scene"_number_speaker_speakerline | "scene"_number_"question"_number_"answer"_speaker | "repeat" | "feedback"_"scene"_number_cubesA_cubesB | 
             number -> "0" | "1" | "2" | ...
             speaker -> "a" | "b" | "s"
             speakerline -> "0" | "1" | "2" | ...
+			cubesA -> "0" | ... | "7"
+			cubesB ->
         delay -> in seconds?
-    
+
+	'''
+    "scene"_number_speaker_speakerline = sends the audio corresponding to speakerline to the right loud speaker.
+	"scene"_number_"question"_number_"answer"_speaker = sends the audio file corresponding to the answer of the speaking robot to its loudspeaker.
+	"repeat" = sends the audio where the ship asks the participant to repeat the question.
+	"feedback"_"scene"_number_cubesA_cubesB = sends the audio corresponding to the feedback based on the amount of cubes robot A and robot B got in a specific scene.
+	'''
+
     Does: play the script line, question or answer with correspondent filename. On the 2 speakers connected to the robot.
-            (There will be two services that do this one for each robot)
+            (There will be 3 services that do this one for each robot and the ship)
     
     Returs: Confirms that it has completed the task successfully.
             
@@ -16,10 +25,38 @@ Production service:
 Recognition service:
 
     Receives: an id that describes the situation
-        id -> "scene"_number | "done"
+        id -> "scene"_number | "done" | "lift_off"
             number -> "0" | "1" | "2" | "3" | "4"
+	
+		'''
+		"scene"_number = recognizes the questions from the right protocol that regard the scene.
+		"done" = recognizes "Wendigo, I'm done" when the participant finished allocating the cubes.
+		"lift_off" = recognizes "wendigo, start lift off" in scene 0.
         
     Does: Starts listening from the microphone and identifies what has been said based on the situation.
     
-    Returns: "scene"_number_"question"_number | "repetition_request" | "done_confirmation" | "timeout" | "no_question"
+    Returns: "scene"_number_"question"_number | "done_confirmation" | "lift_off_confirmation" | "repetition_request" | "timeout" | "fallback"
         number -> "0" | "1" | "2" | ...
+	
+	'''
+	"scene"_number_"question"_number = recognized one of the questions of the protocol corresponding to the scene. 
+	"done_confirmation" = recognized "Wendigo, I'm done" after cube allocation.
+	"lift_off_confirmation" = recognized "Wendigo, start lift-off" in scene 0.
+	"repetition_request" = the participant specifically asked the ship to repeat what was said. => ship repeats last line.
+	"timeout" = either the ship is not confident about what has been said or the participant did not talk. => ship says "sorry I did not understand ...".
+	"fallback" = either an unexpected error occured or the participant does not have any questions and said so explicitely => the experimenter needs to manually confirm what was said.
+	'''
+
+
+This is only valid for scene 2, 3 and 4.
+strong_threshold = 4
+if cubesA >= strong_threshold: "feedback_scene"_number_"strong_"A" (failure/success based on scene)
+if cubesB >= strong_threshold: "feedback_scene"_number_"strong"_"B" (failure/success based on scene)
+if cubesA > cubesB: "feedback_scene"_number_"win"_"A" (failure/success A, success/failure B)
+if cubesB > cubesA: "feedback_scene"_number_"win"_"B" (failure/success A, success/failure B)
+if cubesA = cubesB: "feedback_scene"_number_"equal"
+if cubesA == cubesB == 0: "feedback_scene"_number_"none"
+
+in scene 0 and 1 there is only 1 feedback called: "feedback_scene"_number
+
+failure/success is sensitive to scene

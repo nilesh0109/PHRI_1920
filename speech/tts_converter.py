@@ -15,6 +15,9 @@ with open('questions.yml', mode='r') as yml_file:
 with open('repetition.yml', mode='r') as yml_file:
     repetition = yaml.safe_load(yml_file)
 
+with open('feedback.yml', mode='r') as yml_file:
+    feedback = yaml.safe_load(yml_file)
+
 # Create a new Polly Session
 polly_client = boto3.Session().client('polly')
 
@@ -83,3 +86,25 @@ except Exception as e:
 	print(f'Error in repetition'
 			f'\n Error: {e}'
 	        f'\n Text: {repetition[0]["text"]}')
+
+
+# Feedback files
+line_to_text = {0: "strong_A", 1: "strong_B", 2:"win_A", 3:"win_B", 4:"equal", 5:"none"}
+
+for scene_idx, scene in enumerate(feedback):
+    for line_idx in enumerate(scene):
+        name = line["speaker"]
+        voice = speakers[name]['voice']
+        engine = speakers[name]['engine']
+        try:
+		    # call AWS Polly
+            response = polly_client.synthesize_speech(Text=line["text"], VoiceId=voice, TextType='ssml', Engine=engine, OutputFormat='pcm')
+		    # write PCM data to a .wav file
+            file_path = f'generated_sounds/scene_{scene_idx}_{linet_to_text[line_idx]}.wav'
+            with wave.open(file_path, 'wb') as wav_file:
+                wav_file.setparams((1, 2, 16000, 0, 'NONE', 'NONE'))
+                wav_file.writeframes(response['AudioStream'].read())
+		    # increment the speaker index
+            print(f'Processed Scene {scene_idx}, Line {line_to_text[line_idx]}.')
+        except Exception as e:
+                print(f'Error in Scene {scene_idx}, Line {line_to_text[line_idx]}:' f'\n Error: {e}' f'\n Text: {line["text"]}')
