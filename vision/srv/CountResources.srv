@@ -1,3 +1,6 @@
 int16 scene_number
 ---
-bool success
+string A_image_path
+string B_image_path
+int8 A_cubes
+int8 B_cubes

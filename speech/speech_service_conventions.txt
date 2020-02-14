@@ -1,12 +1,12 @@
 Production service:
 
     Receives: an id and a delay:
-        id -> "scene"_number_speaker_speakerline | "scene"_number_"question"_number_"answer"_speaker | "repeat" | "feedback"_"scene"_number_cubesA_cubesB | 
+        id -> "scene"_number_speaker_speakerline | "scene"_number_"question"_number_"answer"_speaker | "repeat" | "feedback"_"scene"_number_cubesA_cubesB | "speed"_currentspeed_"cubes"_cubesA_cubesB
             number -> "0" | "1" | "2" | ...
             speaker -> "a" | "b" | "s"
             speakerline -> "0" | "1" | "2" | ...
 			cubesA -> "0" | ... | "7"
-			cubesB ->
+			cubesB -> "0" | ... | "7"
         delay -> in seconds?
 
 	'''
@@ -14,8 +14,10 @@ Production service:
 	"scene"_number_"question"_number_"answer"_speaker = sends the audio file corresponding to the answer of the speaking robot to its loudspeaker.
 	"repeat" = sends the audio where the ship asks the participant to repeat the question.
 	"feedback"_"scene"_number_cubesA_cubesB = sends the audio corresponding to the feedback based on the amount of cubes robot A and robot B got in a specific scene.
+	"speed"_currentspeed_"cubes"_cubesA_cubesB = sends the audio that communicates the speed which is calculated on current speed and allocated cubes.
 	'''
-
+	*speed might be changed to distance*
+	
     Does: play the script line, question or answer with correspondent filename. On the 2 speakers connected to the robot.
             (There will be 3 services that do this one for each robot and the ship)
     
@@ -47,6 +49,7 @@ Recognition service:
 	"fallback" = either an unexpected error occured or the participant does not have any questions and said so explicitely => the experimenter needs to manually confirm what was said.
 	'''
 
+FEEDBACK CALCULATION:
 
 This is only valid for scene 2, 3 and 4.
 strong_threshold = 4
@@ -60,3 +63,6 @@ if cubesA == cubesB == 0: "feedback_scene"_number_"none"
 in scene 0 and 1 there is only 1 feedback called: "feedback_scene"_number
 
 failure/success is sensitive to scene
+
+
+SPEED CALCULATION:

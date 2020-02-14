@@ -13,10 +13,10 @@ def handle_resources_request(req):
     success = False
     scene_num = req.scene_number
     while success == False:
-        success = cube_detect(scene_num, 1) 
+        success, A_img_path, B_img_path, left_robot_cubes, right_robot_cubes = cube_detect(scene_num, 1) 
         
         if success:
-            return CountResourcesResponse(success)
+            return CountResourcesResponse(A_img_path, B_img_path, left_robot_cubes, right_robot_cubes)
             
         
 
@@ -65,6 +65,7 @@ def count_resources_server(robot_name=''):
     rospy.loginfo("VISION services launched")
 
     rospy.spin()
+
 
 
 

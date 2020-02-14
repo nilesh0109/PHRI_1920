@@ -16,7 +16,7 @@ from speech.srv import SpeechSynthesis
 class SentenceList:
     # Class Constants:
     base_dir = dirname(dirname(abspath(__file__)))
-    protocols = {"lift_off":"liftoff",
+    protocols = {"lift_off":"lift_off",
                 "done": "done",
                  # maps the context to the corresponding mission/emergency protocol
                  "scene_0": "mission", "scene_1": "mission",
@@ -62,15 +62,20 @@ class SentenceList:
         # - silence_timeout: seconds before an error is raised when no speech is recorded.
         self.context = context
         self.post_processor = "{}_sentencelist_postprocessor".format(self.protocols[context])
-        if context == "done" or context =="liftoff":
+        if context == "done" or context == "lift_off":
             self.listener.phrase_threshold = 1
             self.listener.pause_threshold = 0.8
-            if context == "done":
-                self.context_sentences = 4
+            if context =="done":
+                self.context_sentences = 5
             else:
-                self.context_sentences = 3
+                self.context_sentences = 4
+                
             self.confidence_threshold = 0.3
-            self.silence_timeout = 60
+            
+            if context == "done":
+                self.silence_timeout = 60
+            else:
+                self.silence_timeout = 15
         else:
             self.listener.phrase_threshold = 1
             self.listener.pause_threshold = 0.5
@@ -117,7 +122,7 @@ class SentenceList:
                         return "repetition_request", confidence
                     elif TextBlob(hypotheses.lower()).sentiment[0] < 0:  # The sentence is negative
                         rospy.loginfo("Negativity of sentence: " + str(TextBlob(hypotheses.lower()).sentiment[0]))
-                        return "no_question", confidence
+                        return "fallback", confidence
                     else:
                         return "timeout", confidence
             except sr.WaitTimeoutError as e:  # throws when "silence_timeout" is exceeded
@@ -134,7 +139,7 @@ class SentenceList:
         :return: sentence_id: The id of the sentence that was recognized.
         """
         # The number of sentences that indicate that the user does not want to ask any questions.
-        no_sentences = 4
+        no_sentences = 5
 
         # No need to match when below confidence threshold
         if confidence <= self.confidence_threshold:
@@ -151,7 +156,7 @@ class SentenceList:
         elif matched_line < self.context_sentences:
             return self.context + "_question_" + str(matched_line)
         elif self.context!="done" and matched_line < (self.context_sentences + no_sentences):
-            return "no_question"
+            return "fallback"
         else:
             return "repetition_request"
 
@@ -176,7 +181,7 @@ class SentenceList:
                         return "repetition_request", confidence
                     elif TextBlob(hypotheses.lower()).sentiment[0] < 0:  # The sentence is negative
                         unsupressed_print("Negativity of sentence: " + str(TextBlob(hypotheses.lower()).sentiment[0]))
-                        return "no_question", confidence
+                        return "fallback", confidence
                     else:
                         return "timeout", confidence
                 return connection.postprocess(self.post_processor, hypotheses)
@@ -189,10 +194,10 @@ class SentenceList:
 
 def get_context_from_file(filename):
     file_elements = filename.split("_")
-    if file_elements[0] == "scene":
-        return file_elements[0] + "_" + file_elements[1]
-    else:
+    if file_elements[0] == "done":
         return file_elements[0]
+    else:
+        return file_elements[0] + "_" + file_elements[1]
 
 def print_on():
     sys.stdout = sys.__stdout__
