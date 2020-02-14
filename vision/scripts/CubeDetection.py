@@ -14,22 +14,26 @@ import time
 from cubeCounting import preprocess, count_cubes
 from os.path import dirname, abspath
 import rospy
+#from cv_bridge import CvBridge
+#from sensor_msgs.msg import Image
+
 
 def cube_detect(scene_num, participant_num=0):
 
     #take an image
     full_image = take_image(participant_num)
-    
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
     P_cubes = count_cubes(P_img)
     left_robot_cubes = count_cubes(left_robot_img)
     right_robot_cubes = count_cubes(right_robot_img)
     
+    
     if participant_num != 0:
-        response = save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes, full_image)
+        response, A_img_path, B_img_path = save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes, full_image)
+        
         if response:
-            return True
+            return True, A_img_path, B_img_path, left_robot_cubes, right_robot_cubes
     else:
         return left_robot_cubes, right_robot_cubes
 
@@ -86,18 +90,24 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
     rospy.loginfo("Created directory images")
     os.chdir("images")
     
-    img_name = participant_id + "_robotA_cubes_" + str(left_robot_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
-    cv2.imwrite(img_name, left_robot_img)
-    img_name = participant_id + "_robotB_cubes_" + str(right_robot_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
-    cv2.imwrite(img_name, right_robot_img)
-    img_name = participant_id + "_cubes_" + str(P_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
-    cv2.imwrite(img_name, P_img)
-    img_name = participant_id + "_FullImage_" + datetime.datetime.today().isoformat() + '.png'
-    cv2.imwrite(img_name, full_image)
+    A_img_name = participant_id + "_robotA_cubes_" + str(left_robot_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
+    cv2.imwrite(A_img_name, left_robot_img)
+    
+    B_img_name = participant_id + "_robotB_cubes_" + str(right_robot_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
+    cv2.imwrite(B_img_name, right_robot_img)
+    
+    P_img_name = participant_id + "_cubes_" + str(P_cubes) + "_" + datetime.datetime.today().isoformat() + '.png'
+    cv2.imwrite(P_img_name, P_img)
+    
+    Full_img_name = participant_id + "_FullImage_" + datetime.datetime.today().isoformat() + '.png'
+    cv2.imwrite(Full_img_name, full_image)
     
     rospy.loginfo("saved images")
     
-    return True
+    A_path = os.getcwd() + "/" + A_img_name
+    B_path = os.getcwd() + "/" + B_img_name
+    
+    return True, A_path, B_path
 
 
 def take_image(p_num):

@@ -146,6 +146,8 @@ def preprocess(img):
     
     participant = rotateImage(gray, -15).copy()
     participant = participant[300:650, 1100:1500].copy()
+    
+    #left_robot_img = cv2.cvtColor(left_robot_img, cv2.COLOR_GRAY2BGR)
     return participant , left_robot_img , right_robot_img
 
 
