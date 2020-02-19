@@ -4,10 +4,23 @@ import argparse
 import rospy
 import smach
 from smach_ros import ServiceState
-from speech.srv import SpeechRecognition, SpeechSynthesis, SpeechSynthesisRequest, CubeCounting
+from speech.srv import (
+    SpeechRecognition,
+    SpeechSynthesis,
+    SpeechSynthesisRequest,
+    CubeCounting,
+)
 from vision.srv import CountResources, CheckEmpty
 from lighting.srv import LightControl
-from states import SceneFlow, SayResponses, MakeUtterance, RecognitionFallback, PlayVideo, VisionFallback, EvaluateCubes
+from states import (
+    SceneFlow,
+    SayResponses,
+    MakeUtterance,
+    RecognitionFallback,
+    PlayVideo,
+    VisionFallback,
+    EvaluateCubes,
+)
 
 # main
 def main():
@@ -132,9 +145,14 @@ def main():
         smach.StateMachine.add(
             "CUBE_COUNT",
             ServiceState(
-                "/count_objects", CountResources, request_slots=["scene_number"], response_slots=["A_image_path", "B_image_path", "A_cubes", "B_cubes"]
+                "/count_objects",
+                CountResources,
+                request_slots=["scene_number"],
+                response_slots=["A_image_path", "B_image_path", "A_cubes", "B_cubes"],
             ),
-            transitions={"succeeded": "CONFIRM_CUBES"},
+            transitions={
+                "succeeded": "CUBE_FEEDBACK"  # NOTE change back to "CONFIRM_CUBES" to reenable gui
+            },
         )
 
         smach.StateMachine.add(
@@ -147,14 +165,16 @@ def main():
             "CUBE_FEEDBACK",
             EvaluateCubes.EvaluateCubes(),
             transitions={"evaluation_done": "SCENE", "evaluation_failed": "SCENE"},
-            remapping={"scene_id": "scene_number", "num_cubes_A": "A_cubes", "num_cubes_B": "B_cubes"}
+            remapping={
+                "scene_id": "scene_number",
+                "num_cubes_A": "A_cubes",
+                "num_cubes_B": "B_cubes",
+            },
         )
 
         smach.StateMachine.add(
             "RETURN_CUBES",
-            ServiceState(
-                "/check_empty", CheckEmpty, request_slots=["scene_number"]
-            ),
+            ServiceState("/check_empty", CheckEmpty, request_slots=["scene_number"]),
             transitions={"succeeded": "SCENE"},
         )
 
@@ -166,11 +186,7 @@ def main():
 
         smach.StateMachine.add(
             "SET_LIGHTS",
-            ServiceState(
-                "/light_control",
-                LightControl,
-                request_slots=["setting"],
-            ),
+            ServiceState("/light_control", LightControl, request_slots=["setting"]),
             transitions={"succeeded": "SCENE"},
             remapping={"setting": "light_setting"},
         )

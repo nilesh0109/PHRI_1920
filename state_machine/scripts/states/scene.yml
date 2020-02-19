@@ -16,10 +16,10 @@ scene_0:
     speaker: "S"
     audio: "scene_0_S_line_0"
   - event: "allocation"
-  - event: "utterance"
-    delay: 1.5
-    speaker: "S"
-    audio: "scene_0_S_line_1"
+  # - event: "utterance"
+  #   delay: 1.5
+  #   speaker: "S"
+  #   audio: "scene_0_S_line_1"
   - event: "unallocation"
   - event: "utterance"
     delay: 1.5
@@ -66,10 +66,10 @@ scene_1:
     speaker: "S"
     audio: "scene_1_S_line_2"
   - event: "allocation"
-  #- event: "utterance"
-  #  delay: 1.5
-   # speaker: "S"
-   # audio: "scene_1_S_line_3"
+  # - event: "utterance"
+  #   delay: 1.5
+  #   speaker: "S"
+  #   audio: "scene_1_S_line_3"
   - event: "unallocation"
 scene_2:
   - event: "light_setting"
@@ -102,10 +102,10 @@ scene_2:
     speaker: "S"
     audio: "scene_2_S_line_2"
   - event: "allocation"
-  - event: "utterance"
-    delay: 1.5
-    speaker: "S"
-    audio: "scene_2_S_line_3"
+  # - event: "utterance"
+  #   delay: 1.5
+  #   speaker: "S"
+  #   audio: "scene_2_S_line_3"
   - event: "unallocation"
 scene_3:
   - event: "light_setting"
@@ -142,10 +142,10 @@ scene_3:
     speaker: "S"
     audio: "scene_3_S_line_2"
   - event: "allocation"
-  #- event: "utterance"
-   # delay: 1.5
-   # speaker: "S"
-   # audio: "scene_3_S_line_3"
+  # - event: "utterance"
+  #   delay: 1.5
+  #   speaker: "S"
+  #   audio: "scene_3_S_line_3"
   - event: "unallocation"
 scene_4:
   - event: "light_setting"
@@ -178,10 +178,10 @@ scene_4:
     speaker: "S"
     audio: "scene_4_S_line_2"
   - event: "allocation"
-  - event: "utterance"
-    delay: 1.5
-    speaker: "S"
-    audio: "scene_4_S_line_3"
+  # - event: "utterance"
+  #   delay: 1.5
+  #   speaker: "S"
+  #   audio: "scene_4_S_line_3"
   - event: "unallocation"
   - event: "utterance"
     delay: 1.5
