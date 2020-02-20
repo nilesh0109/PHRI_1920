@@ -19,8 +19,8 @@ class SentenceList:
     protocols = {"lift_off":"lift_off",
                 "done": "done",
                  # maps the context to the corresponding mission/emergency protocol
-                 "scene_0": "mission", "scene_1": "mission",
-                 "scene_2": "emergency", "scene_3": "emergency", "scene_4": "emergency"}
+                 "scene_0": "mission",
+                  "scene_1": "emergency", "scene_2": "emergency", "scene_3": "emergency", "scene_4": "emergency"}
 
     sentences = {}  # the possible sentences of the mission/emergency protocol
 
