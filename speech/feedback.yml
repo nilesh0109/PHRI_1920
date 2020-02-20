@@ -6,38 +6,37 @@
 - scene: # 1
     - speaker: S
       text: >
-        <speak> Thank you commander.
-        Processing energy distribution <emphasis level="reduced">now</emphasis><break time ="1s"/>, modules activated.
-        <break time="1s"/> Please place all the Energy cells back into your compartment.</speak>
+        <speak> Modules activated.
+        <break time="1s"/> Please place all the Energy cells back into your compartment. <break strength = "x-weak"/> commander</speak>
 - scene: # 2
     - speaker: S # Strong A
       text: >
-        <speak>Phasers not <prosody rate="medium">effective</prosody> <emphasis>despite</emphasis> significant energy boost <break time="0.5s"/> shield deflection almost successful but requires more energy.
+        <speak>Phasers <emphasis>not</emphasis> <prosody rate="slow">effective</prosody> <emphasis>despite</emphasis> significant energy boost <break time="0.5s"/> shield deflection almost successful but requires <emphasis>more</emphasis> <prosody rate="slow">energy.</prosody>
         <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Strong B
-      text: <speak>Shield deflection not <prosody rate="medium">effective</prosody> <emphasis>despite</emphasis> significant energy boost <break time="0.5s"/> phasers almost successful but requires more energy. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
+      text: <speak><prosody rate="slow">Shield</prosody> deflection <emphasis>not</emphasis> <prosody rate="slow">effective</prosody> <emphasis>despite</emphasis>  significant energy boost <break time="0.5s"/> phasers almost successful but require <emphasis>more</emphasis> <prosody rate="slow">energy.</prosody> <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Win A
       text: >
-        <speak>Phasers not successful <break time="0.5s"/> shield deflection almost successful but requires more energy. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
+        <speak>Phasers <emphasis>not</emphasis> successful <break time="0.5s"/> shield deflection almost successful but requires <emphasis>more</emphasis> <prosody rate="slow">energy.</prosody> <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Win B
       text: >
-        <speak>Shield deflection not successful <break time="0.5s"/> phasers almost successful but requires more energy. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
+        <speak><prosody rate="slow">Shield</prosody> deflection <emphasis>not</emphasis> successful <break time="0.5s"/> phasers almost successful but require  <emphasis>more</emphasis>  <prosody rate="slow">energy.</prosody> <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Equal
       text: >
-        <speak> Phasers and Shields not <prosody rate="slow">effective</prosody> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
+        <speak> Phasers and Shields <emphasis>not</emphasis> <prosody rate="slow">effective</prosody><break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
 - scene: # 3
     - speaker: S # Strong A
       text: >
-        <speak>Thrusters very effective due to significant energy boost. <break time="0.5s"/> Heat shields not effectively mitigating damage. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
+        <speak>Thrusters <emphasis>very effective</emphasis> <emphasis level="reduced">due</emphasis> to significant energy <emphasis level="reduced">boost</emphasis>. <break time="0.5s"/> Heat shields <emphasis>not</emphasis> effectively <prosody rate="slow"> mitigating </prosody> damage. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Strong B
       text: >
-        <speak>Heat shields very effective due to significant energy boost. <break time="0.5s"/>Thrusters not effective. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
+        <speak>Heat shields <emphasis>very effective</emphasis> <emphasis level="reduced">due</emphasis> to significant energy <emphasis level="reduced">boost</emphasis>. <break time="0.5s"/>Thrusters <emphasis>not</emphasis> effective. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Win A
       text: >
-        <speak>Thrusters effective. <break time="0.5s"/> Heat shields not effectively mitigating damage. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
+        <speak>Thrusters <prosody rate="slow">effective</prosody>. <break time="0.5s"/> Heat shields <emphasis>not</emphasis> effectively <prosody rate="slow">mitigating </prosody>damage. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Win B
       text: >
-        <speak>Heat shields effectively mitigating damage. <break time="0.5s"/> Thrusters not effective.
+        <speak>Heat shields effectively <prosody rate="slow">mitigating</prosody> damage. <break time="0.5s"/> Thrusters <emphasis>not</emphasis> effective.
         <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Equal
       text: >
@@ -45,13 +44,13 @@
 - scene: # 4
     - speaker: S # Strong A
       text: >
-        <speak>Drones very effective due to significant energy boost. <break time="0.5s"/> De-Vaporizer not effective. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
+        <speak>Drones <emphasis>very effective</emphasis> <emphasis level="reduced">due</emphasis> to significant energy <emphasis level="reduced">boost</emphasis>. <break time="0.5s"/> De-Vaporizer <emphasis>not</emphasis> effective. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Strong B
       text: >
-        <speak>De-Vaporizer very effective due to significant energy boost. <break time="0.5s"/>Drones not effective. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
+        <speak>De-Vaporizer <emphasis>very effective</emphasis> <emphasis level="reduced">due</emphasis> to significant energy <emphasis level="reduced">boost</emphasis>. <break time="0.5s"/>Drones <emphasis>not</emphasis> effective. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Win A
       text: >
-        <speak>Drones effective. <break time="0.5s"/> De-Vaporizer not effective.
+        <speak>Drones <emphasis>effective</emphasis>. <break time="0.5s"/> De-Vaporizer hj<emphasis>not</emphasis><prosody rate="slow"> effective</prosody>.
         <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Win B
       text: >
@@ -59,4 +58,4 @@
         <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Equal
       text: >
-        <speak> Drones and de-vaporizer successful<break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
+       <speak> <prosody rate="slow">Drones</prosody> and <prosody rate="slow">de-vaporizer</prosody> successful<break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
