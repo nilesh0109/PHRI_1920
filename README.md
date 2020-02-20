@@ -72,6 +72,16 @@ You can use launch scripts to avoid a lot of typing, which is described in the p
 1. Launch nicopose `roslaunch nicopose pose.launch llabel:=A lnvc:=M`
 2. Launch logging: `rostopic echo /rosout | grep msg`
 
+### Experiment set-up. Note, you need to change lnvc parameter according to your setup
+1. Computer LEFT:
+    1. Launch nicopose `roslaunch nicopose pose.launch llabel:=A lnvc:=M`
+    2. Launch logging: `rostopic echo /rosout | grep msg`
+    3. Execute `rosrun vision count_resources.py`
+2. Computer RIGHT:
+    1. Launch nicopose `roslaunch nicopose pose.launch llabel:=B lnvc:=S`
+    2. Launch logging: `rostopic echo /rosout | grep msg`
+    3. Execute `rosrun speech SpeechRecognitionStub.py` 
+
 
 #### Links
 
