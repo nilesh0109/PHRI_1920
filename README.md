@@ -81,7 +81,8 @@ You can use launch scripts to avoid a lot of typing, which is described in the p
 2. Computer RIGHT:
     1. Launch nicopose `roslaunch nicopose pose.launch llabel:=B lnvc:=S`
     2. Launch logging: `rostopic echo /rosout | grep msg`
-    3. Execute `rosrun speech SpeechRecognitionStub.py` 
+    3. Execute `rosrun speech SpeechRecognitionStub.py`
+3. Computer iCub
 
 
 #### Links
