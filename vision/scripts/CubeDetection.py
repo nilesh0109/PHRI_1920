@@ -22,7 +22,7 @@ def cube_detect(scene_num, participant_num=0):
     #take an image
 #    full_image= cv2.imread('/informatik2/students/home/8bhatia/catkin_ws/src/vision/scripts/imgs/participant_8_FullImage_2020-02-14T11:31:00.596588.png')
     imgs = []
-    for _ in range(3):
+    for _ in range(2):
         full_image = take_image(participant_num)
         imgs.append(full_image)
         
