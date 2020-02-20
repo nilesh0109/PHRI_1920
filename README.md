@@ -81,7 +81,11 @@ You can use launch scripts to avoid a lot of typing, which is described in the p
 2. Computer RIGHT:
     1. Launch nicopose `roslaunch nicopose pose.launch llabel:=B lnvc:=S`
     2. Execute `rosrun speech SpeechRecognitionStub.py`
-3. Computer iCub
+3. Computer iCub. Note, you must run `cd /data/home/hri/phri1920` and `source setup.bash in each session`
+    1. Execute  `roscore`
+    2. Execute `roslaunch state_machine lab_pc.launch`
+    3. Execute `rosrun state_machine StateMachine.py`, optional parameters are e.g. :  --scene=0 --entry=0
+    4. You can set the lights manually, if needed: `rosservice call /light_control "setting: 'cyan'"`
 
 
 #### Links
