@@ -72,7 +72,8 @@ You can use launch scripts to avoid a lot of typing, which is described in the p
 1. Launch nicopose `roslaunch nicopose pose.launch llabel:=A lnvc:=M`
 2. Launch logging: `rostopic echo /rosout | grep msg`
 
-### Experiment set-up. Note, you need to change lnvc parameter according to your setup. Start yakuake and then press F12. Open three sessions by clicking on plus button at the left bottom of the dropdown window. In each session execute the required commands:
+## Experiment set-up. 
+### Note, you need to change lnvc parameter according to your setup. Start yakuake and then press F12. Open three sessions by clicking on plus button at the left bottom of the dropdown window. In each session execute the required commands:
 1. Computer LEFT:
     1. Launch nicopose `roslaunch nicopose pose.launch llabel:=A lnvc:=M`
     2. Launch logging: `rostopic echo /rosout | grep msg`
