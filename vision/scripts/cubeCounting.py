@@ -49,7 +49,7 @@ def count_cubes(image):
     idx = np.where(center[:,0]==center[:,0].max())
     res = center[label.flatten()]
     res = res.reshape((image.shape))
-    if center[idx][0,0] > 25:
+    if center[idx][0,0] > 70:
         thr = res.copy()
         
         thr[np.where((thr!=center[idx]).any(axis=2))] = [0,0,0]
