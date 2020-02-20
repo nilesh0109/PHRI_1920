@@ -49,13 +49,17 @@ def count_cubes(image):
     idx = np.where(center[:,0]==center[:,0].max())
     res = center[label.flatten()]
     res = res.reshape((image.shape))
-    if center[idx][0,0] > 25:
+    if center[idx][0,0] > 70:
         thr = res.copy()
         
         thr[np.where((thr!=center[idx]).any(axis=2))] = [0,0,0]
         thr = cv2.medianBlur(thr, 7)
                 
         ret, labels = cv2.connectedComponents(thr[:,:,0])
+        
+        number = 7 - (ret-1)
+        if number < 0:
+            return 7
         return 7 - (ret-1)
     else:
         return 7
