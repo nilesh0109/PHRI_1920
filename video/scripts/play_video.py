@@ -54,5 +54,5 @@ def video_server():
 
 if __name__ == "__main__":
     exitFlag = 0
-    cliplength = [0, 26, 34, 34, 36, 53]
+    cliplength = [0, 37, 33, 34, 35, 53]
     video_server()

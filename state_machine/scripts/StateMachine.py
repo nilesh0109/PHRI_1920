@@ -20,6 +20,7 @@ from states import (
     PlayVideo,
     VisionFallback,
     EvaluateCubes,
+    CountCubes
 )
 
 # main
@@ -144,14 +145,9 @@ def main():
 
         smach.StateMachine.add(
             "CUBE_COUNT",
-            ServiceState(
-                "/count_objects",
-                CountResources,
-                request_slots=["scene_number"],
-                response_slots=["A_image_path", "B_image_path", "A_cubes", "B_cubes"],
-            ),
+            CountCubes.CountCubes(),
             transitions={
-                "succeeded": "CUBE_FEEDBACK"  # NOTE change back to "CONFIRM_CUBES" to reenable gui
+                "counting_done": "CUBE_FEEDBACK"  # NOTE change back to "CONFIRM_CUBES" to reenable gui
             },
         )
 
