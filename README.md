@@ -73,7 +73,7 @@ You can use launch scripts to avoid a lot of typing, which is described in the p
 2. Launch logging: `rostopic echo /rosout | grep msg`
 
 # Experiment set-up. 
-### Note, you need to change lnvc parameter according to your setup. Start yakuake and then press F12. Open sessions by clicking on plus button at the left bottom of the dropdown window. In each session execute the required commands:
+### Note, you need to change lnvc parameter according to your setup. Start terminal. In each terminal session execute the required commands:
 1. Computer LEFT:
     1. Launch nicopose `roslaunch nicopose pose.launch llabel:=A lnvc:=M`
     2. Launch logging: `rostopic echo /rosout | grep msg`
@@ -81,6 +81,7 @@ You can use launch scripts to avoid a lot of typing, which is described in the p
 2. Computer RIGHT:
     1. Launch nicopose `roslaunch nicopose pose.launch llabel:=B lnvc:=S`
     2. Execute `rosrun speech SpeechRecognitionStub.py`
+    3. Execute `rosservice call speech_recognition calibrate`
 3. Computer iCub. Note, you must run `cd /data/home/hri/phri1920` and `source setup.bash in each session`
     1. Execute  `roscore`
     2. Execute `roslaunch state_machine lab_pc.launch` before participant enters

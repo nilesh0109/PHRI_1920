@@ -17,28 +17,28 @@ import rospy
 import numpy as np
 
 
-def cube_detect(scene_num, participant_num=0):
+ddef cube_detect(scene_num, participant_num=0):
 
     #take an image
-#    full_image= cv2.imread('/informatik2/students/home/8bhatia/catkin_ws/src/vision/scripts/imgs/participant_8_FullImage_2020-02-14T11:31:00.596588.png')
-    imgs = []
-    for _ in range(3):
-        full_image = take_image(participant_num)
-        imgs.append(full_image)
-        
-    idx = np.argmax([cv2.Laplacian(img, cv2.CV_64F).var() for img in imgs])
-    
-    full_image = imgs[idx]
-#    full_image = take_image(participant_num)
+#    full_image= cv2.imread('/informatik2/students/home/8bhatia/catkin_ws/src/vision/scripts/imgs/participant_6_FullImage_2020-02-20T14:09:08.533795.png')
+#    imgs = []
+#    for _ in range(2):
+#        full_image = take_image(participant_num)
+#        imgs.append(full_image)
+#        
+#    idx = np.argmax([cv2.Laplacian(img, cv2.CV_64F).var() for img in imgs])
+#    
+#    full_image = imgs[idx]
+    full_image = take_image(participant_num)
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
     P_cubes = count_cubes(P_img)
     left_robot_cubes = count_cubes(left_robot_img)
     right_robot_cubes = count_cubes(right_robot_img)
-    
+
     rospy.loginfo("Robot A cubes : {}".format(left_robot_cubes))
     rospy.loginfo("Robot B cubes : {}".format(right_robot_cubes))
-    
+
     if participant_num != 0:
         response, A_img_path, B_img_path = save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes, full_image)
         
