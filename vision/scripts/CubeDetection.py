@@ -141,8 +141,7 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
     
     os.chdir("../..")
     save_csv(scene_, participant_id ,left_robot_cubes, right_robot_cubes)
-    print os.getcwd()
-    
+
     return True, A_path, B_path
 
 
