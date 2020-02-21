@@ -47,6 +47,7 @@ class SentenceList:
 
     def calibrate(self):
         # Filter ambient lab noise
+        self.listener = sr.Recognizer()
         with sr.Microphone() as noise:
             self.listener.adjust_for_ambient_noise(noise, duration=3)
 
