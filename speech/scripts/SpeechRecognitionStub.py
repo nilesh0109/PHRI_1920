@@ -19,6 +19,7 @@ def handle_recognition_request(req):
         docks_hypotheses, confidence = processor.recognize()
         sentence = processor.match_sentence(docks_hypotheses, confidence)
         rospy.loginfo("Recognized: %s", sentence)
+	rospy.loginfo("------------------------------Finished recognition-----------------------------\n")
         return SpeechRecognitionResponse(sentence)
     except BaseException as e:
         rospy.loginfo("Error: %s", e)

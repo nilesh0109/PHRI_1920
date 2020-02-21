@@ -150,7 +150,6 @@ class SentenceList:
         matched_line = self.sentences[self.protocols[self.context]].index(docks_hypotheses + "\n")
         rospy.loginfo("Recognized line number %s, %s with confidence %s.", matched_line, docks_hypotheses, confidence)
         if self.context == "done" and matched_line < self.context_sentences:
-            self.synth("scene_0_S_line_1", "S", 0.5)
             return "done_confirmation"
         elif self.context == "lift_off" and matched_line < self.context_sentences:
             return "lift_off_confirmation"
