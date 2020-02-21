@@ -147,7 +147,7 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
 
 def take_image(p_num):
     cam_path = VideoDevice.get_all_devices()
-    print cam_path
+    #print cam_path
     cam_resolution = [2304,1536]
     
     for i in range(len(cam_path)):
@@ -161,7 +161,7 @@ def take_image(p_num):
     if p_num !=0:
         rospy.loginfo("!!!--- Close Cheese if open ---!!!")
     
-    cam = cv2.VideoCapture(1)
+    cam = cv2.VideoCapture(0)
         
     cam.set(3, cam_resolution[0])
     cam.set(4, cam_resolution[1])
