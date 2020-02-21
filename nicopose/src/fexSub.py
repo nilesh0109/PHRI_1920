@@ -27,14 +27,12 @@ class Fexp:
         self.label = label
 
         try:
-            if self.position == "LEFT":
-                ports = serial.tools.list_ports.comports()
-                for p in ports:
-                    if p.manufacturer and "duino" in p.manufacturer:
-                        self.fe = faceExpression(p.device)
-                        break
-            else:
-                self.fe = faceExpression("/dev/ttyACM0")
+            ports = serial.tools.list_ports.comports()
+            for p in ports:
+                if p.manufacturer and "duino" in p.manufacturer:
+                    self.fe = faceExpression(p.device)
+                    break
+
             self.fe.sendFaceExpression("neutral")
         except Exception as e:
             Move.lprint(e)
