@@ -25,7 +25,7 @@ def check_table_empty(req):
 #    table1 = []
 #    table2 = []
     start = time.time()
-    timeout = 20
+    timeout = 15
     scene_num = req.scene_number
     
     rospy.loginfo("---- Checking for empty Table ----")
