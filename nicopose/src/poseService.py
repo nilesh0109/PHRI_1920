@@ -106,7 +106,12 @@ class Move:
             elapsed_time = end - start
             self.lprint(">>> Playing a movement {} for {} took {} seconds".format(uid.param, self.label, elapsed_time))
 
-            self.relax()
+            '''
+            Relax assures that motors do not overload (in theory), but then
+            a robot does occasionally weird reflexes when it goes to a normal (base)
+            position. Therefore, we have commented it out to provide smoother movements.
+            '''
+            # self.relax()
             res.msgback = 1
         except Exception as e:
             self.lprint(e)
