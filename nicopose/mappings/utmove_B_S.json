@@ -372,7 +372,7 @@
     "pose_filename": "look_left.csv"
   },
   "scene_4_question_0_answer_B": {
-    "gesture_delay": 6,
+    "gesture_delay": 1,
     "speech_delay": 0,
     "speed": 0.08,
     "pose_filename": "look.csv"
