@@ -63,8 +63,8 @@ class SentenceList:
         self.context = context
         self.post_processor = "{}_sentencelist_postprocessor".format(self.protocols[context])
         if context == "done" or context == "lift_off":
-            self.listener.phrase_threshold = 1
-            self.listener.pause_threshold = 0.8
+            self.listener.phrase_threshold = 1.1
+            self.listener.pause_threshold = 1.0
             if context =="done":
                 self.context_sentences = 5
             else:
@@ -73,7 +73,7 @@ class SentenceList:
             self.confidence_threshold = 0.3
             
             if context == "done":
-                self.silence_timeout = 60
+                self.silence_timeout = 30
             else:
                 self.silence_timeout = 15
         else:
