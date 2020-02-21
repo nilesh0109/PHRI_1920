@@ -90,6 +90,12 @@ You can use launch scripts to avoid a lot of typing, which is described in the p
     4. You can set the lights manually, if needed: `rosservice call /light_control "setting: 'cyan'"`
 
 
+NB: 
+In case of face expression is not recognized for B (right PC)
+open a terminal
+1. check which ttyACM "ls /dev/ttyACM" and tab
+2. go to fexSub.py change specifically line 37, change to respective ttyACM
+
 #### Links
 
 [PHRI1920 Wiki](https://www2.informatik.uni-hamburg.de/WTM/wtm/wtmwiki/index.php/Category:Project_Human_Robot_Interaction_2019-20)
