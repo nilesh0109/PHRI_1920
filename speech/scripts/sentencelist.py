@@ -31,7 +31,7 @@ class SentenceList:
         self.listener = sr.Recognizer()
         # Filter ambient lab noise using a previously recorded sound file
         with sr.AudioFile(self.base_dir + "/recorded_sounds/lab_noise.wav") as noise:
-            self.listener.adjust_for_ambient_noise(noise, duration=3)
+            self.listener.adjust_for_ambient_noise(noise, duration=5)
 
     def initialize(self):
         # Create the sentencelist postprocessors on the Docks server

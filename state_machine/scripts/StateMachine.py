@@ -147,7 +147,8 @@ def main():
             "CUBE_COUNT",
             CountCubes.CountCubes(),
             transitions={
-                "counting_done": "CUBE_FEEDBACK"  # NOTE change back to "CONFIRM_CUBES" to reenable gui
+                "counting_done": "CUBE_FEEDBACK",  # NOTE change back to "CONFIRM_CUBES" to reenable gui
+                "counting_failed": "CONFIRM_CUBES"
             },
         )
 
