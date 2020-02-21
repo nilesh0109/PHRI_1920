@@ -56,6 +56,10 @@ def count_cubes(image):
         thr = cv2.medianBlur(thr, 7)
                 
         ret, labels = cv2.connectedComponents(thr[:,:,0])
+        
+        number = 7 - (ret-1)
+        if number < 0:
+            return 7
         return 7 - (ret-1)
     else:
         return 7
