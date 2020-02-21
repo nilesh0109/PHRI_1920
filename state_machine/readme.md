@@ -27,7 +27,7 @@ roslaunch state_machine lab_pc.launch
 
 RESTART AFTER EACH EXPERIMENT!!!
 
--these services should now be available (rosservice list):
+- these services should now be available (rosservice list):
   - /S/speech_synthesis
   - /cube_counting
   - /light_control
