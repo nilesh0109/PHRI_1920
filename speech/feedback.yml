@@ -50,7 +50,7 @@
         <speak>De-Vaporizer <emphasis>very effective</emphasis> <emphasis level="reduced">due</emphasis> to significant energy <emphasis level="reduced">boost</emphasis>. <break time="0.5s"/>Drones <emphasis>not</emphasis> effective. <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Win A
       text: >
-        <speak>Drones <emphasis>effective</emphasis>. <break time="0.5s"/> De-Vaporizer hj<emphasis>not</emphasis><prosody rate="slow"> effective</prosody>.
+        <speak>Drones <emphasis>effective</emphasis>. <break time="0.5s"/> De-Vaporizer <emphasis>not</emphasis><prosody rate="slow"> effective</prosody>.
         <break time="1s"/> Proceeding with energy equalization <break time="0.5s"/> Please place all the Energy cells back into your compartment, <break strength = "x-weak"/> commander.</speak>
     - speaker: S # Win B
       text: >
