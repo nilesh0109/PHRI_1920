@@ -17,21 +17,19 @@ class Move:
     A class for executing robot's movements.
     """
 
-    def __init__(self, label, position, sm):
+    def __init__(self, label, sm):
         """
         Initialize a Move class.
         :param label: A or B.
-        :param position: LEFT or RIGHT
         :param sm: S or M
         """
         try:
-            utm_json, joints_json, moves_path = self.create_paths(label, position, sm)
+            utm_json, joints_json, moves_path = self.create_paths(label, sm)
         except Exception as e:
             Move.lprint("Could not create paths!!")
             Move.lprint(e)
             return
 
-        self.position = position
         self.label = label
         self.robot = Motion.Motion(joints_json, vrep=False)
         self.mov = Mover.Mover(self.robot, stiff_off=True)
@@ -41,10 +39,10 @@ class Move:
             with open(utm_json) as json_file:
                 self.utmlist = json.load(json_file)
         except IOError as e:
-            self.lprint("The file is not found: %s", utm_json)
+            self.lprint("The file is not found:: ", utm_json)
             self.lprint(e)
         except ValueError as e:
-            self.lprint("Couldn't parse a json file: %s", utm_json)
+            self.lprint("Couldn't parse a json file:: ", utm_json)
             self.lprint(e)
         self.lprint(utm_json)
         self.mov.play_movement(self.moves_path + "/" +"look.csv", move_speed=0.05)
@@ -60,7 +58,7 @@ class Move:
         return
 
     @staticmethod
-    def create_paths(label, position, sm):
+    def create_paths(label, sm):
         """
         Create paths for mappings, moves and joints specification.
         """
@@ -106,9 +104,9 @@ class Move:
             self.mov.play_movement(filename, move_speed=sp)
             end = time.time()
             elapsed_time = end - start
-            self.lprint("Playing a movement for {} took {} seconds".format(self.label, elapsed_time))
+            self.lprint(">>> Playing a movement {} for {} took {} seconds".format(uid.param, self.label, elapsed_time))
 
-            # self.relax()
+            self.relax()
             res.msgback = 1
         except Exception as e:
             self.lprint(e)
@@ -147,13 +145,6 @@ if __name__ == "__main__":
         default="A",
     )
     parser.add_argument(
-        "--position",
-        dest="robotPosition",
-        help="LEFT or RIGHT",
-        type=str,
-        default="LEFT",
-    )
-    parser.add_argument(
         "--SM",
         dest="SM",
         help="S for Still. M for Moving",
@@ -162,13 +153,8 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_known_args()[0]
-    if args.robotLabel == 'A':
-        args.robotPosition = "LEFT"
-    else:
-        args.robotPosition = "RIGHT"
-    Move.lprint([args.robotPosition,args.SM])
     node_name = constants.NODENAME_NAME_FORMAT.format(args.robotLabel)
     rospy.init_node(node_name, anonymous=True)
-    m = Move(args.robotLabel, args.robotPosition, args.SM)
+    m = Move(args.robotLabel, args.SM)
     s = rospy.Service(constants.SERVICE_NODE_NAME, Pose, m.response)
     rospy.spin()
