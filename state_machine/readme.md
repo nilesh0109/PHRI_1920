@@ -1,8 +1,8 @@
 # Protocol
 - start projector setup:
- - press 1 on the dvi switch to switch to windows
- - (re)start the blackbox program and load the (second)most recent xml 	calibration (the one with xml in its name, NOT the bin one)
- - press 2 on the dvi switch to go back to linux
+  - press 1 on the dvi switch to switch to windows
+  - (re)start the blackbox program and load the (second)most recent xml 	calibration (the one with xml in its name, NOT the bin one)
+  - press 2 on the dvi switch to go back to linux
 
 - For EACH terminal/tab you open, do:
 
@@ -26,15 +26,16 @@ roslaunch state_machine lab_pc.launch
 ```
 
 RESTART AFTER EACH EXPERIMENT!!!
+
 -these services should now be available (rosservice list):
- - /S/speech_synthesis
- - /cube_counting
- - /light_control
- - /play_video
+  - /S/speech_synthesis
+  - /cube_counting
+  - /light_control
+  - /play_video
 
 ## start the experiment
 - make sure all the services are running
- - restart lab_pc.launch and motion services before each experiment!
+  - restart lab_pc.launch and motion services before each experiment!
 - run the state machine (this immediately starts the robots introducing themselves):
 
 ```
