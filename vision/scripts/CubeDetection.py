@@ -30,7 +30,6 @@ def cube_detect(scene_num, participant_num=0):
 #    
 #    full_image = imgs[idx]
     full_image = take_image(participant_num)
-    cv2.imshow("img", full_image)
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
     P_cubes = count_cubes(P_img)
