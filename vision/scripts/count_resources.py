@@ -21,8 +21,8 @@ def handle_resources_request(req):
         
 
 def check_table_empty(req):
-    table1 = []
-    table2 = []
+#    table1 = []
+#    table2 = []
     start = time.time()
     timeout = 20
     scene_num = req.scene_number
@@ -35,10 +35,10 @@ def check_table_empty(req):
     while True:     
         time.sleep(0.1)
         object1, object2 = cube_detect(scene_num, 0) #checks empty table
-        table1.append(object1)
-        table2.append(object2)
+#        table1.append(object1)
+#        table2.append(object2)
         
-        if table1[-1] == 0 and table2[-1] == 0:
+        if object1 == 0 and object2 == 0:
             break
         
 #        print table1, table2
@@ -57,7 +57,6 @@ def check_table_empty(req):
     rospy.loginfo("Table is now empty")    
     return CountResourcesResponse(True)
     
-
 
 def count_resources_server(robot_name=''):
     rospy.init_node('count_resources_allocated')

@@ -15,30 +15,30 @@ from cubeCounting import preprocess, count_cubes
 from os.path import dirname, abspath
 import rospy
 import numpy as np
-
+import csv
 
 def cube_detect(scene_num, participant_num=0):
 
     #take an image
-#    full_image= cv2.imread('/informatik2/students/home/8bhatia/catkin_ws/src/vision/scripts/imgs/participant_8_FullImage_2020-02-14T11:31:00.596588.png')
-    imgs = []
-    for _ in range(3):
-        full_image = take_image(participant_num)
-        imgs.append(full_image)
-        
-    idx = np.argmax([cv2.Laplacian(img, cv2.CV_64F).var() for img in imgs])
-    
-    full_image = imgs[idx]
-#    full_image = take_image(participant_num)
+#    full_image= cv2.imread('/informatik2/students/home/8bhatia/catkin_ws/src/vision/scripts/imgs/participant_6_FullImage_2020-02-20T14:09:08.533795.png')
+#    imgs = []
+#    for _ in range(2):
+#        full_image = take_image(participant_num)
+#        imgs.append(full_image)
+#        
+#    idx = np.argmax([cv2.Laplacian(img, cv2.CV_64F).var() for img in imgs])
+#    
+#    full_image = imgs[idx]
+    full_image = take_image(participant_num)
     P_img, left_robot_img, right_robot_img = preprocess(full_image)
     
     P_cubes = count_cubes(P_img)
     left_robot_cubes = count_cubes(left_robot_img)
     right_robot_cubes = count_cubes(right_robot_img)
-    
+
     rospy.loginfo("Robot A cubes : {}".format(left_robot_cubes))
     rospy.loginfo("Robot B cubes : {}".format(right_robot_cubes))
-    
+
     if participant_num != 0:
         response, A_img_path, B_img_path = save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes, full_image)
         
@@ -46,6 +46,28 @@ def cube_detect(scene_num, participant_num=0):
             return True, A_img_path, B_img_path, left_robot_cubes, right_robot_cubes
     else:
         return left_robot_cubes, right_robot_cubes
+
+
+def save_csv(scene_id, participant_id, left_cubes, right_cubes):
+
+    csv_file = participant_id + ".csv" 
+    rospy.loginfo("Executing SAVE_CSV")
+    fieldnames = ['scene', 'robot_a', 'robot_b']
+    
+    if not os.path.exists(csv_file):
+        mode = 'w+'
+        with open(csv_file, mode) as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerow({'scene': scene_id, 'robot_a': left_cubes, 'robot_b': right_cubes})
+            rospy.loginfo("saved csv")
+    else:
+        mode = 'a+'
+        with open(csv_file, mode) as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([scene_id, left_cubes, right_cubes])
+
+        rospy.loginfo("saved csv")
 
 
 def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left_robot_cubes, right_robot_cubes, full_image):
@@ -117,6 +139,10 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
     A_path = os.getcwd() + "/" + A_img_name
     B_path = os.getcwd() + "/" + B_img_name
     
+    os.chdir("../..")
+    save_csv(scene_, participant_id ,left_robot_cubes, right_robot_cubes)
+    print os.getcwd()
+    
     return True, A_path, B_path
 
 
@@ -140,7 +166,7 @@ def take_image(p_num):
         
     cam.set(3, cam_resolution[0])
     cam.set(4, cam_resolution[1])
-#    cam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
+    cam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
 
     time.sleep(0.1)
     s, img = cam.read()
