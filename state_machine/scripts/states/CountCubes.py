@@ -14,7 +14,7 @@ class CountCubes(smach.Concurrence):
     def __init__(self):
         super(CountCubes, self).__init__(
             input_keys=["scene_number"],
-            output_keys=["A_image_path", "B_image_path", "num_cubes_A", "num_cubes_B"],
+            output_keys=["A_image_path", "B_image_path", "A_cubes", "B_cubes"],
             outcomes=["counting_done", "counting_failed"],
             default_outcome="counting_failed",
             # outcome_map={"utterance_done": {"SPEAK": "speech_done", "NVC": "nvc_done"}},
@@ -23,7 +23,7 @@ class CountCubes(smach.Concurrence):
         # Open the container
         with self:
             smach.Concurrence.add("SPEAK",
-                                  ServiceState("/S/speech_synthesis", SpeechSynthesis, request=SpeechSynthesisRequest("scene_0_S_line_1")),
+                                  ServiceState("/S/speech_synthesis", SpeechSynthesis, request=SpeechSynthesisRequest("scene_0_S_line_1", "S", 0)),
                                   )
 
             smach.Concurrence.add(

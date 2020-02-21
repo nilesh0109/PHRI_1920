@@ -9,8 +9,12 @@ class LightController:
     def get_output_names():
         return mido.get_output_names()
 
-    def __init__(self, port_name='CH345:CH345 MIDI 1 36:0'):
-        self.out_port = mido.open_output(port_name)
+    def __init__(self, port_name='CH345:CH345 MIDI 1'):
+        for port in mido.get_output_names():
+            if port.startswith('CH345:CH345 MIDI 1'):
+                self.out_port = mido.open_output(port_name)
+                break
+
         # Load configuration file:
         conf_file = dirname(dirname(abspath(__file__))) + '/scripts/light_patterns.yml'
         with open(conf_file, mode='r') as yml_file:
