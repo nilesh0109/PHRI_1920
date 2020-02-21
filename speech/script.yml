@@ -17,7 +17,7 @@
         <break time="0.01s"/><phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done, when you’re finished.</speak>   
     - speaker: S # dummy line to keep file names consistent when lines are removed.
       text: >
-        <speak>Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis></speak>
+        <speak>Thank you commander. Processing energy distribution <prosody pitch="low"><emphasis level="reduced">now</emphasis></prosody></speak>
     - speaker: S
       text: >
         <speak> Before we depart, you can ask your <emphasis level="reduced">crew</emphasis><break time="0.01s"/>
@@ -51,9 +51,9 @@
       text: >
         <speak>Please distribute resources to decide <prosody rate="90%"> how to find a route</prosody> to take.
         Let me know when you’re done by saying <break time="0.01s"/><phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
-    - speaker: S # dummy line
+    - speaker: S
       text: >
-        <speak>Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis></speak>
+        <speak>Thank you commander. Processing energy distribution <prosody pitch="low"><emphasis level="reduced">now</emphasis></prosody></speak>
 - scene: # 2
     - speaker: S
       text: >
@@ -117,7 +117,7 @@
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
     - speaker: S # dummy line
       text: >
-        <speak>Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis></speak>
+        <speak>Thank you commander. Processing energy distribution <prosody pitch="low"><emphasis level="reduced">now</emphasis></prosody></speak>
 - scene: #4
     - speaker: S
       text: >
@@ -146,7 +146,7 @@
         <phoneme alphabet="ipa" ph="ˈwɛndɪɡoʊ"> Wendigo,</phoneme><break/> I’m done.</speak>
     - speaker: S # dummy line
       text: >
-        <speak>Thank you commander. Processing energy distribution <emphasis level="reduced">now</emphasis></speak>
+        <speak>Thank you commander. Processing energy distribution <prosody pitch="low"><emphasis level="reduced">now</emphasis></prosody></speak>
     - speaker: S
       text: >
         <speak><emphasis level="reduced">Cooling</emphasis> system successfully restored to full capacity.
