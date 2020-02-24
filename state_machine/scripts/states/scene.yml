@@ -26,6 +26,7 @@ scene_0:
     speaker: "S"
     audio: "scene_0_S_line_2"
   - event: "question"
+  - event: "pause"
   - event: "utterance"
     delay: 1.5
     speaker: "S"
