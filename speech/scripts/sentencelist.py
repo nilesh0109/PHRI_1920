@@ -90,9 +90,6 @@ class SentenceList:
             self.silence_timeout = 20
 
 
-        if context == "scene_0" or context == "scene_1":
-            self.context_sentences = 4
-
     def recognize(self):
         # sound: start recording
         self.synth("recording_start", "S", 0)
