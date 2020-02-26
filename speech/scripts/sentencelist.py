@@ -81,7 +81,7 @@ class SentenceList:
             self.listener.phrase_threshold = 1
             self.listener.pause_threshold = 0.5
 
-            if context == "scene_0" or context == "scene_1":
+            if context == "scene_0":
                 self.context_sentences = 4
             else:
                 self.context_sentences = 3
@@ -89,9 +89,6 @@ class SentenceList:
             self.confidence_threshold = 0.5
             self.silence_timeout = 20
 
-
-        if context == "scene_0" or context == "scene_1":
-            self.context_sentences = 4
 
     def recognize(self):
         # sound: start recording

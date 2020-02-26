@@ -106,12 +106,21 @@ def save_images(scene_num, P_img, left_robot_img, right_robot_img, P_cubes, left
         os.chdir(directory)
 #        print os.getcwd()
         direc = os.getcwd()
+#        print direc
         directories = os.walk(direc).next()[1]
 #        participant_id = os.listdir(directory)[-1:][0]
-        participant_id = sorted(directories)
-#        print participant_id
-        participant_id = participant_id[-1]
+
+        int_dirs = list(map(lambda dir_name: int(dir_name[12:]), directories))
+
+        sorted_participant = sorted(int_dirs)
+
+#        print sorted_participant
+
+        participant_id = 'participant_'+ str(sorted_participant[-1])
         os.chdir(participant_id)
+
+#        print os.getcwd()
+
         os.mkdir(scene_)
         rospy.loginfo("Created directory %s" %(scene_))
         os.chdir(scene_)
