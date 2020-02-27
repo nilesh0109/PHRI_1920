@@ -67,7 +67,7 @@ class SentenceList:
             self.listener.phrase_threshold = 1.1
             self.listener.pause_threshold = 1.0
             if context =="done":
-                self.context_sentences = 5
+                self.context_sentences = 6
             else:
                 self.context_sentences = 4
                 
