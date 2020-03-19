@@ -98,4 +98,4 @@ open a terminal
 
 #### Links
 
-[PHRI1920 Wiki](https://www2.informatik.uni-hamburg.de/WTM/wtm/wtmwiki/index.php/Category:Project_Human_Robot_Interaction_2019-20)
+[PHRI1920 Wiki](https://www2.informatik.uni-hamburg.de/wtm/wtm/wtmwiki/index.php/Project_Human_Robot_Interaction_2019-20_Set-up)
