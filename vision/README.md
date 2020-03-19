@@ -21,7 +21,7 @@ Service call
 
 * In count_resources.py --> check_empty()
     
-   - The automatic timeout is set for 30s can be changed accordingly
+   - The automatic timeout is set for 15s can be changed accordingly
 
 
 * if the same participant_number is provided again then the folder will be created with a time stamp prefix with that participant id
